@@ -14,7 +14,7 @@ economy:
     delete: "&fDeleted '&r$<riseItem.id>&7' item."
     create:
       no-item: "&7You must have some item in hand."
-      done: "&7Zapisano nowy item."
+      done: "&7Saved new item."
     items:
       list-entry: "&3$<index>. &f$<riseItem.id> &7- $<riseItem.name>&r"
       list: |2-
