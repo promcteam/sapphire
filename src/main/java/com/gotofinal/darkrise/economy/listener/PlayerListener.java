@@ -152,6 +152,10 @@ public class PlayerListener implements Listener
         {
             final ItemStack itemStack = iterator.next();
             DarkRiseItem riseItem = items.getItemByStack(itemStack);
+            if (riseItem == null)
+            {
+                continue;
+            }
             boolean dropOnDeath = riseItem.isDropOnDeath();
             if (! dropOnDeath)
             {
