@@ -3,6 +3,7 @@ package com.gotofinal.darkrise.economy;
 import java.io.File;
 
 import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
+import com.gotofinal.darkrise.economy.cfg.PlayerData;
 import com.gotofinal.darkrise.spigot.core.DarkRisePlugin;
 import com.gotofinal.diggler.core.nms.NMSPlayerUtils;
 import com.gotofinal.messages.Init;
@@ -90,6 +91,7 @@ public class DarkRiseEconomy extends DarkRisePlugin
     public void onEnable()
     {
         super.onEnable();
+        PlayerData.init();
         this.reloadConfigs();
 
     }
