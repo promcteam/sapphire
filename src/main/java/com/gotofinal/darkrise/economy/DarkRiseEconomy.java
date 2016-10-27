@@ -72,6 +72,12 @@ public class DarkRiseEconomy extends DarkRisePlugin
             textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
             return textComponent;
         });
+        RISE_ITEM.registerItem("displayName", (item) ->
+        {
+            TextComponent textComponent = new TextComponent(item.getName());
+            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
+            return textComponent;
+        });
         RISE_ITEM.registerItem("material", d -> d.getItem().getType());
         RISE_ITEM.registerItem("id", (item) ->
         {

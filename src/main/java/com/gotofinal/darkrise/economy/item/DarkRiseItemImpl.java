@@ -3,6 +3,7 @@ package com.gotofinal.darkrise.economy.item;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
@@ -13,6 +14,8 @@ import com.gotofinal.darkrise.spigot.core.utils.cmds.DelayedCommand;
 import com.gotofinal.darkrise.spigot.core.utils.cmds.R;
 import com.gotofinal.darkrise.spigot.core.utils.item.ItemBuilder;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -47,7 +50,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.commands = ((List<Map<String, Object>>) map.get("commands")).stream().map(DelayedCommand::new).collect(Collectors.toList());
     }
 
-    public DarkRiseItemImpl(final String id, final ItemStack item)
+    public DarkRiseItemImpl(String id, ItemStack item)
     {
         this.id = id.intern();
         this.item = item;
@@ -61,7 +64,8 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.commands = Collections.emptyList();
     }
 
-    public DarkRiseItemImpl(final String id, final ItemStack item, final boolean dropOnDeath, final int removeOnDeath, final boolean confirmOnUse, final int removeOnUse, final boolean canDrop, final boolean enabledEnchantedDurability, final DoubleRange chanceToLostDurability, final List<DelayedCommand> commands)
+    public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop,
+                            boolean enabledEnchantedDurability, DoubleRange chanceToLostDurability, List<DelayedCommand> commands)
     {
         this.id = id;
         this.item = item.clone();
@@ -136,7 +140,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     }
 
     @Override
-    public ItemStack getItem(final int amount)
+    public ItemStack getItem(int amount)
     {
         ItemStack clone = this.item.clone();
         clone.setAmount(amount);
@@ -144,18 +148,67 @@ public class DarkRiseItemImpl implements DarkRiseItem
     }
 
     @Override
-    public void invoke(final CommandSender sender)
+    public void invoke(CommandSender sender)
     {
         if (this.commands.isEmpty())
         {
             return;
         }
-        DelayedCommand.invoke(DarkRiseEconomy.getInstance(), sender, this.commands, R.r("{canDrop}", this.canDrop), R.r("{enabledEnchantedDurability}", this.enabledEnchantedDurability), R.r("{chanceToLostDurability}", this.chanceToLostDurability.toString()), R.r("{dropOnDeath}", this.dropOnDeath), R.r("{removeOnDeath}", this.removeOnDeath), R.r("{confirmOnUse}", this.confirmOnUse), R.r("removeOnUse", this.removeOnUse), R.r("{id}", this.id), R.r("{name}", this.getName()));
+        DelayedCommand.invoke(DarkRiseEconomy.getInstance(), sender, this.commands, R.r("{canDrop}", this.canDrop),
+                              R.r("{enabledEnchantedDurability}", this.enabledEnchantedDurability),
+                              R.r("{chanceToLostDurability}", this.chanceToLostDurability.toString()), R.r("{dropOnDeath}", this.dropOnDeath),
+                              R.r("{removeOnDeath}", this.removeOnDeath), R.r("{confirmOnUse}", this.confirmOnUse), R.r("removeOnUse", this.removeOnUse),
+                              R.r("{id}", this.id), R.r("{name}", this.getName()));
     }
 
     @Override
     public Map<String, Object> serialize()
     {
-        return SerializationBuilder.start(2).append("id", this.id).append("canDrop", this.canDrop).append("enabledEnchantedDurability", this.enabledEnchantedDurability).append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax()).append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath).append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse).append("removeOnUse", this.removeOnUse).append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
+        return SerializationBuilder.start(2).append("id", this.id).append("canDrop", this.canDrop)
+                                   .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
+                                   .append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax())
+                                   .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
+                                   .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
+                                   .append("removeOnUse", this.removeOnUse)
+                                   .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (! (object instanceof DarkRiseItemImpl))
+        {
+            return false;
+        }
+        DarkRiseItemImpl riseItem = (DarkRiseItemImpl) object;
+        return Objects.equals(this.getId(), riseItem.getId());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.id);
+    }
+
+    @Override
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                       .append("id", this.id)
+                       .append("item", this.item)
+                       .append("dropOnDeath", this.dropOnDeath)
+                       .append("removeOnDeath", this.removeOnDeath)
+                       .append("confirmOnUse", this.confirmOnUse)
+                       .append("removeOnUse", this.removeOnUse)
+                       .append("canDrop", this.canDrop)
+                       .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
+                       .append("chanceToLostDurability", this.chanceToLostDurability)
+                       .append("commands", this.commands)
+                       .append("name", this.getName())
+                       .toString();
     }
 }

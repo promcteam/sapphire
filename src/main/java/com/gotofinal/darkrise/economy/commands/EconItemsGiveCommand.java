@@ -1,6 +1,9 @@
 package com.gotofinal.darkrise.economy.commands;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 import com.gotofinal.darkrise.core.annotation.DarkRiseSubCommand;
 import com.gotofinal.darkrise.core.commands.Command;
@@ -21,14 +24,31 @@ public class EconItemsGiveCommand implements CommandExecutor
     private final DarkRiseEconomy  plugin;
     private final EconItemsCommand command;
 
-    public EconItemsGiveCommand(final DarkRiseEconomy plugin, final EconItemsCommand command)
+    public EconItemsGiveCommand(DarkRiseEconomy plugin, EconItemsCommand command)
     {
         this.plugin = plugin;
         this.command = command;
     }
 
     @Override
-    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
+    public List<String> onTabComplete(CommandSender sender, Command<CommandSender> command, String label, Matcher matchedPattern,
+                                      Arguments args)
+    {
+        String[] raw = args.getRawArgs();
+        if (raw.length == 2)
+        {
+            return Collections.emptyList();
+        }
+        if (raw.length == 0)
+        {
+            return this.plugin.getItems().getItems().stream().map(DarkRiseItem::getId).collect(Collectors.toList());
+        }
+        String str = raw[0].toLowerCase();
+        return this.plugin.getItems().getItems().stream().map(DarkRiseItem::getId).filter(id -> id.toLowerCase().startsWith(str)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void runCommand(CommandSender sender, Command<CommandSender> command, String label, Matcher matchedPattern, Arguments args)
     {
         if (args.length() == 0)
         {

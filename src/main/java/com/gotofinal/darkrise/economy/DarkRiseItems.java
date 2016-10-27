@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import com.gotofinal.darkrise.economy.item.DarkRiseItemImpl;
 import com.gotofinal.darkrise.spigot.core.DarkRiseCore;
@@ -76,6 +77,7 @@ public class DarkRiseItems
         return put;
     }
 
+    @SuppressWarnings("unchecked")
     public boolean removeItem(DarkRiseItem item, boolean save)
     {
         if (item == null)
@@ -87,7 +89,35 @@ public class DarkRiseItems
         {
             return false;
         }
-        this.itemFiles.remove(item.getId().toLowerCase());
+        File file = this.itemFiles.remove(item.getId().toLowerCase());
+        if (file != null)
+        {
+            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+            Collection<DarkRiseItemImpl> items =
+                    yaml.getMapList("items").stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).collect(Collectors.toSet());
+            items.remove(item);
+            if (items.isEmpty())
+            {
+                if (! file.delete())
+                {
+                    file.deleteOnExit();
+                }
+            }
+            else
+            {
+                Collection<Map<String, Object>> toSave = items.stream().map(DarkRiseItemImpl::serialize).collect(Collectors.toList());
+
+                yaml.set("items", toSave);
+                try
+                {
+                    yaml.save(file);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException("Can't remove item from file: " + file + ", error when saving file.");
+                }
+            }
+        }
         this.sortedItems.remove(item.getId());
         boolean result = this.itemsByName.remove(item.getName().toLowerCase()) != null;
         if (save)
