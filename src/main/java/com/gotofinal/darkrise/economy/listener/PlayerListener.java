@@ -89,6 +89,7 @@ public class PlayerListener implements Listener
         }
         if (riseItem.isConfirmOnUse())
         {
+            event.setCancelled(true);
             if (this.confirm.containsKey(p.getUniqueId()))
             {
                 if (riseItem.equals(this.confirm.get(p.getUniqueId())))
@@ -111,13 +112,14 @@ public class PlayerListener implements Listener
             this.plugin.sendMessage("economy.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
             this.confirm.put(p.getUniqueId(), riseItem);
             this.confirmTasks.put(p.getUniqueId(), DarkRiseEconomy.getInstance().runTaskLater(() ->
-            {
-                if (this.confirm.remove(p.getUniqueId()) != null)
-                {
-                    this.confirmTasks.remove(p.getUniqueId());
-                    this.plugin.sendMessage("economy.timeout", p, yes, no, config, playerMsg, itemMsg);
-                }
-            }, this.plugin.getCfg().getTimeout() * 20).getTaskId());
+                                                                                              {
+                                                                                                  if (this.confirm.remove(p.getUniqueId()) != null)
+                                                                                                  {
+                                                                                                      this.confirmTasks.remove(p.getUniqueId());
+                                                                                                      this.plugin.sendMessage("economy.timeout", p, yes, no,
+                                                                                                                              config, playerMsg, itemMsg);
+                                                                                                  }
+                                                                                              }, this.plugin.getCfg().getTimeout() * 20).getTaskId());
             return;
         }
         if (removeOnUse > 0)
@@ -211,18 +213,38 @@ public class PlayerListener implements Listener
                 }
                 event.setCancelled(true);
                 final DarkRiseItem powerItem = item;
-                DarkRiseEconomy.getInstance().runTask(() ->
-                { // sync with main thread
-                    if ((powerItem.isRemoveOnUse() == 0) || p.getInventory().removeItem(powerItem.getItem(powerItem.isRemoveOnUse())).isEmpty())
-                    {
-                        DarkRiseEconomy.getInstance().sendMessage("economy.used", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
-                        powerItem.invoke(p);
-                    }
-                    else
-                    {
-                        DarkRiseEconomy.getInstance().sendMessage("economy.canNotFindItem", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
-                    }
-                });
+                DarkRiseEconomy.getInstance().runTask(
+                        () ->
+                        { // sync with main thread
+                            boolean used = powerItem.isRemoveOnUse() == 0;
+                            if (! used)
+                            {
+                                ItemStack toRemove = powerItem.getItem(powerItem.isRemoveOnUse());
+                                int toRemoveAmount = toRemove.getAmount();
+                                HashMap<Integer, ItemStack> removeResult = p.getInventory().removeItem(toRemove);
+                                used = removeResult.isEmpty();
+                                if (! used)
+                                {
+                                    int notRemovedAmount = toRemove.getAmount();
+                                    int removedAmount = toRemoveAmount - notRemovedAmount;
+                                    if (removedAmount != 0)
+                                    {
+                                        toRemove.setAmount(removedAmount);
+                                        p.getInventory().addItem(toRemove);
+                                    }
+                                }
+                            }
+                            if (used)
+                            {
+                                DarkRiseEconomy.getInstance().sendMessage("economy.used", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                                powerItem.invoke(p);
+                            }
+                            else
+                            {
+                                DarkRiseEconomy.getInstance()
+                                               .sendMessage("economy.canNotFindItem", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                            }
+                        });
             }
             else if (event.getMessage().equalsIgnoreCase(no) && ((item = this.confirm.remove(p.getUniqueId())) != null))
             {

@@ -86,15 +86,6 @@ public final class PlayerData
             items.add(ItemBuilder.newItem(item));
 
         }
-        for (final ItemStack item : player.getInventory().getContents())
-        {
-            final DarkRiseItem powerItem = DarkRiseEconomy.getInstance().getItems().getItemByStack(item);
-            if ((powerItem == null) || ! powerItem.isDropOnDeath())
-            {
-                continue;
-            }
-            items.add(ItemBuilder.newItem(item));
-        }
         if (items.isEmpty())
         {
             return;
