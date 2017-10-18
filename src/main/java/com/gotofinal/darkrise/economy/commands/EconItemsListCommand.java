@@ -37,6 +37,10 @@ public class EconItemsListCommand implements CommandExecutor
     @Override
     public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
     {
+        if (! this.checkPermission(sender, "econ.items.list"))
+        {
+            return;
+        }
         SortedMap<String, DarkRiseItem> map = this.plugin.getItems().getSortedMap();
         int page = args.has(0) ? (args.asInt(0, 1) - 1) : 0;
         MessageData pageMsgData = new MessageData("page", page + 1);

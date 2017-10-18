@@ -34,6 +34,10 @@ public class EconItemsDeleteCommand implements CommandExecutor
             this.sendUsage(command.getUsage(), sender, command, args);
             return;
         }
+        if (! this.checkPermission(sender, "econ.items.delete"))
+        {
+            return;
+        }
         DarkRiseItem riseItem = this.plugin.getItems().getItemByIdOrName(args.asString(0));
         if (riseItem == null)
         {

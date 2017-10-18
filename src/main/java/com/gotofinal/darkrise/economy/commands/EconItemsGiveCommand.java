@@ -50,6 +50,10 @@ public class EconItemsGiveCommand implements CommandExecutor
     @Override
     public void runCommand(CommandSender sender, Command<CommandSender> command, String label, Matcher matchedPattern, Arguments args)
     {
+        if (! this.checkPermission(sender, "econ.items.give"))
+        {
+            return;
+        }
         if (args.length() == 0)
         {
             this.sendUsage(command.getUsage(), sender, command, args);

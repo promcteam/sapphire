@@ -46,6 +46,10 @@ public class EconItemsCreateCommand implements CommandExecutor
             this.sendMessage("senderIsNotPlayer", sender);
             return;
         }
+        if (! this.checkPermission(sender, "econ.items.create"))
+        {
+            return;
+        }
         ItemStack mainHand = ((Player) sender).getInventory().getItemInMainHand();
         if (mainHand == null)
         {
