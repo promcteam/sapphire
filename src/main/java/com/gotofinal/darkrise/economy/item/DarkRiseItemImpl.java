@@ -1,5 +1,7 @@
 package com.gotofinal.darkrise.economy.item;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import com.gotofinal.darkrise.spigot.core.utils.item.ItemBuilder;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,6 +36,8 @@ public class DarkRiseItemImpl implements DarkRiseItem
     private final boolean              enabledEnchantedDurability;
     private final DoubleRange          chanceToLostDurability;
     private final List<DelayedCommand> commands;
+    private final List<String>         permissionList = new ArrayList<>();
+    private final String               permissionMessage;
 
     @SuppressWarnings("unchecked")
     public DarkRiseItemImpl(Map<String, Object> map)
@@ -45,6 +50,35 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.confirmOnUse = w.getBoolean("confirmOnUse", false);
         this.removeOnUse = w.getInt("removeOnUse", 0);
         this.canDrop = w.getBoolean("canDrop", true);
+        if(id.equals("ironore")) {
+            System.out.println("ironir");
+        }
+
+        if (map.containsKey("permission"))
+        {
+            Map<String, Object> permMap = (Map<String, Object>) map.get("permission");
+
+            if(permMap.get("node") instanceof Collection) {
+                this.permissionList.addAll((Collection<? extends String>) permMap.get("node"));
+            }
+            else {
+                this.permissionList.add((String) permMap.get("node"));
+            }
+
+            if (permMap.containsKey("message"))
+            {
+                this.permissionMessage = ChatColor.translateAlternateColorCodes('&', (String) permMap.get("message"));
+            }
+            else
+            {
+                this.permissionMessage = "&4You don''t have permission to use this";
+            }
+        }
+        else
+        {
+            this.permissionMessage = null;
+        }
+
         this.enabledEnchantedDurability = w.getBoolean("enabledEnchantedDurability", false);
         this.chanceToLostDurability = DoubleRange.valueOf(w.getString("chanceToLostDurability", "0.0 - 0.0"));
         this.commands = ((List<Map<String, Object>>) map.get("commands")).stream().map(DelayedCommand::new).collect(Collectors.toList());
@@ -62,6 +96,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.enabledEnchantedDurability = false;
         this.chanceToLostDurability = DoubleRange.EMPTY;
         this.commands = Collections.emptyList();
+        this.permissionMessage = null;
     }
 
     public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop,
@@ -77,6 +112,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.enabledEnchantedDurability = enabledEnchantedDurability;
         this.chanceToLostDurability = chanceToLostDurability;
         this.commands = commands;
+        this.permissionMessage = null;
     }
 
     @Override
@@ -140,6 +176,16 @@ public class DarkRiseItemImpl implements DarkRiseItem
     }
 
     @Override
+    public List<String> getPermission() {
+        return permissionList;
+    }
+
+    @Override
+    public String getPermissionMessage() {
+        return permissionMessage;
+    }
+
+    @Override
     public ItemStack getItem(int amount)
     {
         ItemStack clone = this.item.clone();
@@ -170,6 +216,8 @@ public class DarkRiseItemImpl implements DarkRiseItem
                                    .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
                                    .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
                                    .append("removeOnUse", this.removeOnUse)
+                                   .append("permission.node", this.permissionList)
+                                   .append("permission.message", this.permissionMessage)
                                    .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
     }
 

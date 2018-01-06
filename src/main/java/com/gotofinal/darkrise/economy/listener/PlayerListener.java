@@ -61,6 +61,16 @@ public class PlayerListener implements Listener
         {
             return;
         }
+
+        if (riseItem.getPermission().isEmpty() && riseItem.getPermission().stream().anyMatch(s -> !p.hasPermission(s)))
+        {
+            if(riseItem.getPermissionMessage() != null && !riseItem.getPermissionMessage().isEmpty())
+            {
+                p.sendMessage(riseItem.getPermissionMessage());
+            }
+            return;
+        }
+
         if (riseItem.isEnabledEnchantedDurability())
         {
             double random = riseItem.chanceToLostDurability().getRandom();

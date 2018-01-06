@@ -33,6 +33,10 @@ public interface DarkRiseItem extends ConfigurationSerializable
 
     List<DelayedCommand> getCommands();
 
+    List<String> getPermission();
+
+    String getPermissionMessage();
+
     ItemStack getItem(int amount);
 
     default ItemStack getItem()
