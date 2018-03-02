@@ -38,6 +38,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     private final List<DelayedCommand> commands;
     private final List<String>         permissionList = new ArrayList<>();
     private final String               permissionMessage;
+    private final boolean              twoHand;
 
     @SuppressWarnings("unchecked")
     public DarkRiseItemImpl(Map<String, Object> map)
@@ -50,6 +51,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.confirmOnUse = w.getBoolean("confirmOnUse", false);
         this.removeOnUse = w.getInt("removeOnUse", 0);
         this.canDrop = w.getBoolean("canDrop", true);
+        this.twoHand = w.getBoolean("twoHand", false);
         if(id.equals("ironore")) {
             System.out.println("ironir");
         }
@@ -97,6 +99,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.chanceToLostDurability = DoubleRange.EMPTY;
         this.commands = Collections.emptyList();
         this.permissionMessage = null;
+        this.twoHand = false;
     }
 
     public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop,
@@ -113,6 +116,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.chanceToLostDurability = chanceToLostDurability;
         this.commands = commands;
         this.permissionMessage = null;
+        this.twoHand = false;
     }
 
     @Override
@@ -161,6 +165,12 @@ public class DarkRiseItemImpl implements DarkRiseItem
     public boolean isEnabledEnchantedDurability()
     {
         return this.enabledEnchantedDurability;
+    }
+
+    @Override
+    public boolean isTwoHand()
+    {
+        return this.twoHand;
     }
 
     @Override
@@ -216,6 +226,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
                                    .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
                                    .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
                                    .append("removeOnUse", this.removeOnUse)
+                                   .append("twoHand", this.twoHand)
                                    .append("permission.node", this.permissionList)
                                    .append("permission.message", this.permissionMessage)
                                    .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
@@ -248,6 +259,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                        .append("id", this.id)
                        .append("item", this.item)
+                       .append("twoHand", this.twoHand)
                        .append("dropOnDeath", this.dropOnDeath)
                        .append("removeOnDeath", this.removeOnDeath)
                        .append("confirmOnUse", this.confirmOnUse)

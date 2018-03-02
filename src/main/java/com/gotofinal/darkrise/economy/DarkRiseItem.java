@@ -29,6 +29,8 @@ public interface DarkRiseItem extends ConfigurationSerializable
 
     boolean isEnabledEnchantedDurability();
 
+    boolean isTwoHand();
+
     DoubleRange chanceToLostDurability();
 
     List<DelayedCommand> getCommands();
