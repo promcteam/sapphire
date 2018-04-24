@@ -1,13 +1,5 @@
 package com.gotofinal.darkrise.economy.item;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
 import com.gotofinal.darkrise.economy.DarkRiseItem;
 import com.gotofinal.darkrise.spigot.core.utils.DeserializationWorker;
@@ -15,14 +7,20 @@ import com.gotofinal.darkrise.spigot.core.utils.SerializationBuilder;
 import com.gotofinal.darkrise.spigot.core.utils.cmds.DelayedCommand;
 import com.gotofinal.darkrise.spigot.core.utils.cmds.R;
 import com.gotofinal.darkrise.spigot.core.utils.item.ItemBuilder;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
-
 import org.diorite.utils.math.DoubleRange;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DarkRiseItemImpl implements DarkRiseItem
 {
@@ -52,29 +50,17 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.removeOnUse = w.getInt("removeOnUse", 0);
         this.canDrop = w.getBoolean("canDrop", true);
         this.twoHand = w.getBoolean("twoHand", false);
-        if(id.equals("ironore")) {
-            System.out.println("ironir");
-        }
 
-        if (map.containsKey("permission"))
+        if (w.getMap().containsKey("permission"))
         {
-            Map<String, Object> permMap = (Map<String, Object>) map.get("permission");
-
-            if(permMap.get("node") instanceof Collection) {
-                this.permissionList.addAll((Collection<? extends String>) permMap.get("node"));
+            DeserializationWorker permSec = DeserializationWorker.start(w.getSection("permission", new HashMap<>()));
+            if(permSec.getObject("node") instanceof Collection) {
+                this.permissionList.addAll(permSec.getList("node", new ArrayList<>()));
             }
             else {
-                this.permissionList.add((String) permMap.get("node"));
+                this.permissionList.add(permSec.getString("node"));
             }
-
-            if (permMap.containsKey("message"))
-            {
-                this.permissionMessage = ChatColor.translateAlternateColorCodes('&', (String) permMap.get("message"));
-            }
-            else
-            {
-                this.permissionMessage = "&4You don''t have permission to use this";
-            }
+            this.permissionMessage = permSec.getString("message","&4You don't have permission to use this");
         }
         else
         {
@@ -220,16 +206,17 @@ public class DarkRiseItemImpl implements DarkRiseItem
     @Override
     public Map<String, Object> serialize()
     {
-        return SerializationBuilder.start(2).append("id", this.id).append("canDrop", this.canDrop)
-                                   .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
-                                   .append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax())
-                                   .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
-                                   .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
-                                   .append("removeOnUse", this.removeOnUse)
-                                   .append("twoHand", this.twoHand)
-                                   .append("permission.node", this.permissionList)
-                                   .append("permission.message", this.permissionMessage)
-                                   .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
+        return SerializationBuilder.start(10).append("id", this.id).append("canDrop", this.canDrop)
+            .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
+            .append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax())
+            .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
+            .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
+            .append("removeOnUse", this.removeOnUse)
+            .append("twoHand", this.twoHand)
+            .append("permission", SerializationBuilder.start(2)
+                .append("node", this.permissionList)
+                .append("message", this.permissionMessage))
+            .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
     }
 
     @Override
