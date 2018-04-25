@@ -12,10 +12,12 @@ import com.gotofinal.darkrise.spigot.core.command.Arguments;
 import com.gotofinal.darkrise.spigot.core.command.CommandExecutor;
 import com.gotofinal.messages.api.messages.Message.MessageData;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import org.bukkit.inventory.meta.ItemMeta;
 import org.diorite.utils.math.DioriteMathUtils;
 import org.diorite.utils.math.DoubleRange;
 
@@ -142,6 +144,13 @@ public class EconItemsCreateCommand implements CommandExecutor
                 prev = arg;
             }
         }
+
+        if(!mainHand.hasItemMeta()) {
+            ItemMeta meta = mainHand.getItemMeta();
+            meta.setDisplayName(StringUtils.capitalize(mainHand.getType().name().toLowerCase()));
+            mainHand.setItemMeta(meta);
+        }
+
         DarkRiseItemImpl riseItem = new DarkRiseItemImpl(id, mainHand, dropOnDeath, removeOnDeath, confirmOnUse, removeOnUse, canDrop, ! chanceToLostDurability.equals(DoubleRange.EMPTY), chanceToLostDurability, Collections.emptyList());
         this.plugin.getItems().addItem(fileName, riseItem, true);
         this.sendMessage("economy.commands.create.done", sender, new MessageData("riseItem", riseItem));
