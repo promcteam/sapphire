@@ -54,10 +54,12 @@ public class DarkRiseItemImpl implements DarkRiseItem
         if (w.getMap().containsKey("permission"))
         {
             DeserializationWorker permSec = DeserializationWorker.start(w.getSection("permission", new HashMap<>()));
-            if(permSec.getObject("node") instanceof Collection) {
+            if (permSec.getObject("node") instanceof Collection)
+            {
                 this.permissionList.addAll(permSec.getList("node", new ArrayList<>()));
             }
-            else {
+            else
+            {
                 this.permissionList.add(permSec.getString("node"));
             }
             this.permissionMessage = permSec.getString("message","&4You don't have permission to use this");
@@ -172,12 +174,14 @@ public class DarkRiseItemImpl implements DarkRiseItem
     }
 
     @Override
-    public List<String> getPermission() {
+    public List<String> getPermission()
+    {
         return permissionList;
     }
 
     @Override
-    public String getPermissionMessage() {
+    public String getPermissionMessage()
+    {
         return permissionMessage;
     }
 

@@ -72,7 +72,12 @@ public class EconItemsGiveCommand implements CommandExecutor
                 this.sendMessage("economy.commands.noItem", sender, new MessageData("name", args.asString(0)));
                 return;
             }
-            ((Player) sender).getInventory().addItem(riseItem.getItem());
+
+            plugin.addItems((Player) sender, riseItem, 1);
+            if (! plugin.getItemsToAdd().get(((Player) sender).getUniqueId()).isEmpty())
+            {
+                this.sendMessage("economy.commands.claim.pending", sender);
+            }
             return;
         }
         Player target = args.asPlayer(0);
@@ -98,6 +103,11 @@ public class EconItemsGiveCommand implements CommandExecutor
             }
             amount = i;
         }
-        target.getInventory().addItem(riseItem.getItem(amount));
+
+        plugin.addItems(target, riseItem, amount);
+        if (! plugin.getItemsToAdd().get(((Player) sender).getUniqueId()).isEmpty())
+        {
+            this.sendMessage("economy.commands.claim.pending", sender);
+        }
     }
 }

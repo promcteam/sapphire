@@ -64,7 +64,7 @@ public class PlayerListener implements Listener
 
         if (!riseItem.getPermission().isEmpty() && riseItem.getPermission().stream().anyMatch(s -> !p.hasPermission(s)))
         {
-            if(riseItem.getPermissionMessage() != null && !riseItem.getPermissionMessage().isEmpty())
+            if (riseItem.getPermissionMessage() != null && !riseItem.getPermissionMessage().isEmpty())
             {
                 p.sendMessage(riseItem.getPermissionMessage());
             }
@@ -203,6 +203,11 @@ public class PlayerListener implements Listener
         this.confirm.remove(event.getPlayer().getUniqueId());
         this.confirmTasks.remove(event.getPlayer().getUniqueId());
         PlayerData.loadPlayer(event.getPlayer());
+
+        if (! plugin.getItemsToAdd().get(event.getPlayer().getUniqueId()).isEmpty())
+        {
+            DarkRiseEconomy.getInstance().sendMessage("economy.commands.claim.pending", event.getPlayer());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

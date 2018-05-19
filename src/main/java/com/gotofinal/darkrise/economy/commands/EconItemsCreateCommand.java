@@ -145,7 +145,8 @@ public class EconItemsCreateCommand implements CommandExecutor
             }
         }
 
-        if(!mainHand.hasItemMeta()) {
+        if (! mainHand.hasItemMeta())
+        {
             ItemMeta meta = mainHand.getItemMeta();
             meta.setDisplayName(StringUtils.capitalize(mainHand.getType().name().toLowerCase()));
             mainHand.setItemMeta(meta);

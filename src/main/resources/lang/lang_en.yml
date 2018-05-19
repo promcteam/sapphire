@@ -10,6 +10,9 @@ economy:
   cancel: "&cYou canceled using item ($<riseItem.id>) by typing $<no> on chat."
   canNotFindItem: "&cWhere is your power item ($<riseItem.id>)? Did you try hide it before confirming?"
   commands:
+    claim:
+     pending: "You some some items to claim! /claim"
+     claimed: "You claimed $<amount> items"
     noItem: "&cCan't find item with id/name '&r$<name>&c'."
     delete: "&fDeleted '&r$<riseItem.id>&7' item."
     create:
