@@ -105,7 +105,8 @@ public class EconItemsGiveCommand implements CommandExecutor
         }
 
         plugin.addItems(target, riseItem, amount);
-        if (! plugin.getItemsToAdd().get(((Player) sender).getUniqueId()).isEmpty())
+        if (plugin.getItemsToAdd().containsKey(((Player) sender).getUniqueId())
+                && ! plugin.getItemsToAdd().get(((Player) sender).getUniqueId()).isEmpty())
         {
             this.sendMessage("economy.commands.claim.pending", sender);
         }

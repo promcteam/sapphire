@@ -204,7 +204,8 @@ public class PlayerListener implements Listener
         this.confirmTasks.remove(event.getPlayer().getUniqueId());
         PlayerData.loadPlayer(event.getPlayer());
 
-        if (! plugin.getItemsToAdd().get(event.getPlayer().getUniqueId()).isEmpty())
+        if (plugin.getItemsToAdd().containsKey(event.getPlayer().getUniqueId())
+                && ! plugin.getItemsToAdd().get(event.getPlayer().getUniqueId()).isEmpty())
         {
             DarkRiseEconomy.getInstance().sendMessage("economy.commands.claim.pending", event.getPlayer());
         }
