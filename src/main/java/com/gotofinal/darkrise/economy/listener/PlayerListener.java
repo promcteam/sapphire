@@ -148,7 +148,7 @@ public class PlayerListener implements Listener
         DarkRiseEconomy.getInstance().runTaskLater(() -> PlayerData.loadPlayer(event.getPlayer()), 1);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDeath(final PlayerDeathEvent event)
     {
         this.confirm.remove(event.getEntity().getUniqueId());
