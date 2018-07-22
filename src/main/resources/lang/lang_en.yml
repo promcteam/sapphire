@@ -5,6 +5,7 @@ economy:
   no: "no"
   useWithConfirm: "&cYou are trying to use $<riseItem.id> power item, type \"$<yes>\" on chat to confirm, or \"$<no>\" to cancel. (will be cancelled after $<economyConfig.timeout> secs)"
   canNotDrop: "&cYou can't drop this item!"
+  canNotTrade: "&cYou can't trade this item!"
   used: "&3Consumed your power item ($<riseItem.id>)!"
   timeout: "&cYou canceled using item ($<riseItem.id>) by not typing $<yes> on chat in $<<economyConfig.timeout> seconds"
   cancel: "&cYou canceled using item ($<riseItem.id>) by typing $<no> on chat."

@@ -162,7 +162,7 @@ public class DarkRiseItems
         {
             return true;
         }
-        return item.canDrop();
+        return item.canDrop() && item.isTradeable();
     }
 
     public DarkRiseItem getItemByStack(ItemStack itemStack)

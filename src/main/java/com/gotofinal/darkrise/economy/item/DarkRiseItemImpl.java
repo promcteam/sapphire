@@ -31,6 +31,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     private final boolean              confirmOnUse;
     private final int                  removeOnUse;
     private final boolean              canDrop;
+    private final boolean              tradeable;
     private final boolean              enabledEnchantedDurability;
     private final DoubleRange          chanceToLostDurability;
     private final List<DelayedCommand> commands;
@@ -49,6 +50,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.confirmOnUse = w.getBoolean("confirmOnUse", false);
         this.removeOnUse = w.getInt("removeOnUse", 0);
         this.canDrop = w.getBoolean("canDrop", true);
+        this.tradeable = w.getBoolean("tradeable", true);
         this.twoHand = w.getBoolean("twoHand", false);
 
         if (w.getMap().containsKey("permission"))
@@ -83,6 +85,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.confirmOnUse = false;
         this.removeOnUse = 0;
         this.canDrop = true;
+        this.tradeable = true;
         this.enabledEnchantedDurability = false;
         this.chanceToLostDurability = DoubleRange.EMPTY;
         this.commands = Collections.emptyList();
@@ -100,6 +103,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.confirmOnUse = confirmOnUse;
         this.removeOnUse = removeOnUse;
         this.canDrop = canDrop;
+        this.tradeable = true;
         this.enabledEnchantedDurability = enabledEnchantedDurability;
         this.chanceToLostDurability = chanceToLostDurability;
         this.commands = commands;
@@ -147,6 +151,12 @@ public class DarkRiseItemImpl implements DarkRiseItem
     public boolean canDrop()
     {
         return this.canDrop;
+    }
+
+    @Override
+    public boolean isTradeable()
+    {
+        return tradeable;
     }
 
     @Override
@@ -211,6 +221,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     public Map<String, Object> serialize()
     {
         return SerializationBuilder.start(10).append("id", this.id).append("canDrop", this.canDrop)
+            .append("tradeable", this.tradeable)
             .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
             .append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax())
             .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
@@ -256,6 +267,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
                        .append("confirmOnUse", this.confirmOnUse)
                        .append("removeOnUse", this.removeOnUse)
                        .append("canDrop", this.canDrop)
+                       .append("tradeable", this.tradeable)
                        .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
                        .append("chanceToLostDurability", this.chanceToLostDurability)
                        .append("commands", this.commands)

@@ -24,6 +24,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -282,6 +285,7 @@ public class PlayerListener implements Listener
     }
 
     private static final Set<InventoryAction> dropActions = Sets.newIdentityHashSet();
+    private static final Set<InventoryType> tradeableInventories = Sets.newIdentityHashSet();
 
     static
     {
@@ -289,19 +293,81 @@ public class PlayerListener implements Listener
         dropActions.add(InventoryAction.DROP_ALL_SLOT);
         dropActions.add(InventoryAction.DROP_ONE_CURSOR);
         dropActions.add(InventoryAction.DROP_ONE_SLOT);
+
+        tradeableInventories.add(InventoryType.ANVIL);
+        tradeableInventories.add(InventoryType.CRAFTING);
+        tradeableInventories.add(InventoryType.CREATIVE);
+        tradeableInventories.add(InventoryType.ENDER_CHEST);
+        tradeableInventories.add(InventoryType.ENCHANTING);
+        tradeableInventories.add(InventoryType.PLAYER);
+        tradeableInventories.add(InventoryType.WORKBENCH);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerDropItem(final InventoryClickEvent event)
+    public void onInventoryClick(final InventoryClickEvent event)
     {
         DarkRiseItems items = DarkRiseEconomy.getInstance().getItems();
-        boolean cursor = ! items.canDrop(event.getCursor());
-        boolean current = ! items.canDrop(event.getCurrentItem());
-        if (dropActions.contains(event.getAction()) && (cursor || current))
+
+        if (dropActions.contains(event.getAction())
+                && (! items.canDrop(event.getCursor()) || ! items.canDrop(event.getCurrentItem())))
         {
             event.setCancelled(true);
             DarkRiseEconomy.getInstance().sendMessage("economy.canNotDrop", event.getWhoClicked());
+            return;
         }
+
+        if (event.getClickedInventory() == null
+                || !event.getClickedInventory().equals(event.getView().getTopInventory())
+                || tradeableInventories.contains(event.getClickedInventory().getType()))
+        {
+            return;
+        }
+
+        DarkRiseItem item = null;
+
+        if (event.getCursor() != null)
+        {
+            item = items.getItemByStack(event.getCursor());
+        }
+        else if (event.getCurrentItem() != null)
+        {
+            item = items.getItemByStack(event.getCurrentItem());
+        }
+
+        if (item == null || item.isTradeable())
+        {
+            return;
+        }
+
+        if (event.getAction() == InventoryAction.PLACE_ALL
+                || event.getAction() == InventoryAction.PLACE_ONE
+                || event.getAction() == InventoryAction.PLACE_SOME)
+        {
+            event.setCancelled(true);
+            DarkRiseEconomy.getInstance().sendMessage("economy.canNotTrade", event.getWhoClicked());
+        }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event)
+    {
+        DarkRiseItems items = DarkRiseEconomy.getInstance().getItems();
+        if (event.getInventory() == null
+                || !event.getInventory().equals(event.getView().getTopInventory())
+                || tradeableInventories.contains(event.getInventory().getType()))
+        {
+            return;
+        }
+
+        DarkRiseItem item = items.getItemByStack(event.getOldCursor());
+
+        if (item == null || item.isTradeable())
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+        DarkRiseEconomy.getInstance().sendMessage("economy.canNotTrade", event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -314,5 +380,4 @@ public class PlayerListener implements Listener
             DarkRiseEconomy.getInstance().sendMessage("economy.canNotDrop", event.getPlayer());
         }
     }
-
 }

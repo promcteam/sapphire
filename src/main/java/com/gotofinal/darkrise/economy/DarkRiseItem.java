@@ -27,6 +27,15 @@ public interface DarkRiseItem extends ConfigurationSerializable
 
     boolean canDrop();
 
+    /**
+     * If the item is tradeable
+     * This extends 'canDrop'
+     * If not it can't be put in chests etc.
+     *
+     * @return true if tradeable
+     */
+    boolean isTradeable();
+
     boolean isEnabledEnchantedDurability();
 
     boolean isTwoHand();
