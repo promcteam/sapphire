@@ -36,7 +36,8 @@ public class EconItemsCreateCommand implements CommandExecutor
     }
 
     @Override
-    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
+    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label,
+                           final Matcher matchedPattern, final Arguments args)
     {
         if (args.length() == 0)
         {
@@ -76,7 +77,9 @@ public class EconItemsCreateCommand implements CommandExecutor
             {
                 dropOnDeath = true;
             }
-            else if (arg.equalsIgnoreCase("-dontDropOnDeath") || arg.equalsIgnoreCase("-don'tDropOnDeath") || arg.equalsIgnoreCase("-doNotDropOnDeath"))
+            else if (arg.equalsIgnoreCase("-dontDropOnDeath")
+                    || arg.equalsIgnoreCase("-don'tDropOnDeath")
+                    || arg.equalsIgnoreCase("-doNotDropOnDeath"))
             {
                 dropOnDeath = false;
             }
@@ -84,7 +87,9 @@ public class EconItemsCreateCommand implements CommandExecutor
             {
                 confirmOnUse = true;
             }
-            else if (arg.equalsIgnoreCase("-dontConfirmOnUse") || arg.equalsIgnoreCase("-don'tConfirmOnUse") || arg.equalsIgnoreCase("-doNotConfirmOnUse"))
+            else if (arg.equalsIgnoreCase("-dontConfirmOnUse")
+                    || arg.equalsIgnoreCase("-don'tConfirmOnUse")
+                    || arg.equalsIgnoreCase("-doNotConfirmOnUse"))
             {
                 confirmOnUse = false;
             }
@@ -92,11 +97,18 @@ public class EconItemsCreateCommand implements CommandExecutor
             {
                 canDrop = true;
             }
-            else if (arg.equalsIgnoreCase("-dontCanDrop") || arg.equalsIgnoreCase("-doNotCanDrop") || arg.equalsIgnoreCase("-CantDrop") || arg.equalsIgnoreCase("-Can'tDrop") || arg.equalsIgnoreCase("-CanNotDrop"))
+            else if (arg.equalsIgnoreCase("-dontCanDrop")
+                    || arg.equalsIgnoreCase("-doNotCanDrop")
+                    || arg.equalsIgnoreCase("-CantDrop")
+                    || arg.equalsIgnoreCase("-Can'tDrop")
+                    || arg.equalsIgnoreCase("-CanNotDrop"))
             {
                 canDrop = false;
             }
-            else if (prev.equalsIgnoreCase("-removeOnDeath") || prev.equalsIgnoreCase("-remOnDeath") || prev.equalsIgnoreCase("-delOnDeath") || prev.equalsIgnoreCase("-deleteOnDeath"))
+            else if (prev.equalsIgnoreCase("-removeOnDeath")
+                    || prev.equalsIgnoreCase("-remOnDeath")
+                    || prev.equalsIgnoreCase("-delOnDeath")
+                    || prev.equalsIgnoreCase("-deleteOnDeath"))
             {
                 prev = "";
                 Integer i = DioriteMathUtils.asInt(arg);
@@ -107,7 +119,10 @@ public class EconItemsCreateCommand implements CommandExecutor
                 }
                 removeOnDeath = i;
             }
-            else if (prev.equalsIgnoreCase("-removeOnUse") || prev.equalsIgnoreCase("-remOnUse") || prev.equalsIgnoreCase("-delOnUse") || prev.equalsIgnoreCase("-deleteOnUse"))
+            else if (prev.equalsIgnoreCase("-removeOnUse")
+                    || prev.equalsIgnoreCase("-remOnUse")
+                    || prev.equalsIgnoreCase("-delOnUse")
+                    || prev.equalsIgnoreCase("-deleteOnUse"))
             {
                 prev = "";
                 Integer i = DioriteMathUtils.asInt(arg);
@@ -152,7 +167,9 @@ public class EconItemsCreateCommand implements CommandExecutor
             mainHand.setItemMeta(meta);
         }
 
-        DarkRiseItemImpl riseItem = new DarkRiseItemImpl(id, mainHand, dropOnDeath, removeOnDeath, confirmOnUse, removeOnUse, canDrop, ! chanceToLostDurability.equals(DoubleRange.EMPTY), chanceToLostDurability, Collections.emptyList());
+        DarkRiseItemImpl riseItem = new DarkRiseItemImpl(id, mainHand, dropOnDeath, removeOnDeath, confirmOnUse,
+                removeOnUse, canDrop, ! chanceToLostDurability.equals(DoubleRange.EMPTY),
+                chanceToLostDurability, Collections.emptyList());
         this.plugin.getItems().addItem(fileName, riseItem, true);
         this.sendMessage("economy.commands.create.done", sender, new MessageData("riseItem", riseItem));
     }

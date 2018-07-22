@@ -62,7 +62,11 @@ public class EconItemsListCommand implements CommandExecutor
             TextComponent textComponent = new TextComponent("");
             textComponent.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/econ items give " + sender.getName() + " \"" + entry.getKey() + "\" 1"));
             textComponent.setHoverEvent(NMSPlayerUtils.convert(entry.getValue().getItem()));
-            textComponent.setExtra(new ArrayList<>(Arrays.asList(this.getMessageAsComponent("economy.commands.items.list-entry", new MessageData("index", index), new MessageData("riseItem", entry.getValue())))));
+            textComponent.setExtra(Arrays.asList(this.getMessageAsComponent(
+                    "economy.commands.items.list-entry",
+                    new MessageData("index", index),
+                    new MessageData("riseItem", entry.getValue())
+            )));
             list.addExtra(textComponent);
             if (iterator.hasNext())
             {

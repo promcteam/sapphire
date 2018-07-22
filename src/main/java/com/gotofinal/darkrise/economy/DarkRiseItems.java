@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -93,8 +92,9 @@ public class DarkRiseItems
         if (file != null)
         {
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-            Collection<DarkRiseItemImpl> items =
-                    yaml.getMapList("items").stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).collect(Collectors.toSet());
+            Collection<DarkRiseItemImpl> items = yaml.getMapList("items")
+                    .stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).collect(Collectors.toSet());
+            //noinspection SuspiciousMethodCalls
             items.remove(item);
             if (items.isEmpty())
             {
@@ -105,7 +105,8 @@ public class DarkRiseItems
             }
             else
             {
-                Collection<Map<String, Object>> toSave = items.stream().map(DarkRiseItemImpl::serialize).collect(Collectors.toList());
+                Collection<Map<String, Object>> toSave = items.stream()
+                        .map(DarkRiseItemImpl::serialize).collect(Collectors.toList());
 
                 yaml.set("items", toSave);
                 try
@@ -185,12 +186,7 @@ public class DarkRiseItems
         for (final DarkRiseItem darkRiseItem : this.itemsById.values())
         {
             File file = this.itemFiles.get(darkRiseItem.getId().toLowerCase());
-            Collection<Map<String, Object>> items = data.get(file);
-            if (items == null)
-            {
-                items = new ArrayList<>(20);
-                data.put(file, items);
-            }
+            Collection<Map<String, Object>> items = data.computeIfAbsent(file, k -> new ArrayList<>(20));
             items.add(darkRiseItem.serialize());
         }
         for (final Entry<File, Collection<Map<String, Object>>> entry : data.entrySet())
@@ -240,7 +236,10 @@ public class DarkRiseItems
                 continue;
             }
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-            yaml.getMapList("items").stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).forEach(i -> this.addItem(file, i, false));
+            yaml.getMapList("items")
+                    .stream()
+                    .map(m -> new DarkRiseItemImpl((Map<String, Object>) m))
+                    .forEach(i -> this.addItem(file, i, false));
         }
         this.saveItems();
     }
@@ -249,6 +248,7 @@ public class DarkRiseItems
     public void loadItems()
     {
         this.loadItems(this.dataFile);
-        DarkRiseEconomy.getInstance().info("Loaded " + this.sortedItems.size() + " items from " + new HashSet<>(this.itemFiles.values()).size() + " files.");
+        DarkRiseEconomy.getInstance().info("Loaded " + sortedItems.size()
+                + " items from " + itemFiles.size() + " files.");
     }
 }

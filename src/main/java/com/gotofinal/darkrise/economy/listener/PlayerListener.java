@@ -65,7 +65,8 @@ public class PlayerListener implements Listener
             return;
         }
 
-        if (!riseItem.getPermission().isEmpty() && riseItem.getPermission().stream().anyMatch(s -> !p.hasPermission(s)))
+        if (! riseItem.getPermission().isEmpty()
+                && riseItem.getPermission().stream().anyMatch(s -> !p.hasPermission(s)))
         {
             if (riseItem.getPermissionMessage() != null && !riseItem.getPermissionMessage().isEmpty())
             {
@@ -125,14 +126,14 @@ public class PlayerListener implements Listener
             this.plugin.sendMessage("economy.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
             this.confirm.put(p.getUniqueId(), riseItem);
             this.confirmTasks.put(p.getUniqueId(), DarkRiseEconomy.getInstance().runTaskLater(() ->
-                                                                                              {
-                                                                                                  if (this.confirm.remove(p.getUniqueId()) != null)
-                                                                                                  {
-                                                                                                      this.confirmTasks.remove(p.getUniqueId());
-                                                                                                      this.plugin.sendMessage("economy.timeout", p, yes, no,
-                                                                                                                              config, playerMsg, itemMsg);
-                                                                                                  }
-                                                                                              }, this.plugin.getCfg().getTimeout() * 20).getTaskId());
+            {
+                if (this.confirm.remove(p.getUniqueId()) != null)
+                {
+                    this.confirmTasks.remove(p.getUniqueId());
+                    this.plugin.sendMessage("economy.timeout", p, yes, no,
+                                            config, playerMsg, itemMsg);
+                }
+            }, this.plugin.getCfg().getTimeout() * 20).getTaskId());
             return;
         }
         if (removeOnUse > 0)
@@ -255,13 +256,22 @@ public class PlayerListener implements Listener
                             }
                             if (used)
                             {
-                                DarkRiseEconomy.getInstance().sendMessage("economy.used", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                                DarkRiseEconomy.getInstance().sendMessage(
+                                        "economy.used",
+                                        p,
+                                        new MessageData("no", no),
+                                        new MessageData("riseItem", powerItem)
+                                );
                                 powerItem.invoke(p);
                             }
                             else
                             {
-                                DarkRiseEconomy.getInstance()
-                                               .sendMessage("economy.canNotFindItem", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                                DarkRiseEconomy.getInstance().sendMessage(
+                                        "economy.canNotFindItem",
+                                        p,
+                                        new MessageData("no", no),
+                                        new MessageData("riseItem", powerItem)
+                                );
                             }
                         });
             }
@@ -273,7 +283,12 @@ public class PlayerListener implements Listener
                     Bukkit.getScheduler().cancelTask(i);
                 }
                 event.setCancelled(true);
-                DarkRiseEconomy.getInstance().sendMessage("economy.cancel", p, new MessageData("no", no), new MessageData("riseItem", item));
+                DarkRiseEconomy.getInstance().sendMessage(
+                        "economy.cancel",
+                        p,
+                        new MessageData("no", no),
+                        new MessageData("riseItem", item)
+                );
             }
         }
     }

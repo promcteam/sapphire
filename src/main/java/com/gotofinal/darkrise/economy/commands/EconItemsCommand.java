@@ -23,7 +23,8 @@ public class EconItemsCommand extends SubCommandImpl implements CommandExecutor
     }
 
     @Override
-    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
+    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label,
+                           final Matcher matchedPattern, final Arguments args)
     {
         this.sendUsage(command.getUsage(), sender, command, args);
     }

@@ -44,11 +44,17 @@ public class EconItemsGiveCommand implements CommandExecutor
             return this.plugin.getItems().getItems().stream().map(DarkRiseItem::getId).collect(Collectors.toList());
         }
         String str = raw[0].toLowerCase();
-        return this.plugin.getItems().getItems().stream().map(DarkRiseItem::getId).filter(id -> id.toLowerCase().startsWith(str)).collect(Collectors.toList());
+        return this.plugin.getItems()
+                .getItems()
+                .stream()
+                .map(DarkRiseItem::getId)
+                .filter(id -> id.toLowerCase().startsWith(str))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void runCommand(CommandSender sender, Command<CommandSender> command, String label, Matcher matchedPattern, Arguments args)
+    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label,
+                           final Matcher matchedPattern, final Arguments args)
     {
         if (! this.checkPermission(sender, "econ.items.give"))
         {

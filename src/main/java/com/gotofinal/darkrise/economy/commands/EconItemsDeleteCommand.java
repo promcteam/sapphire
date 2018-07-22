@@ -27,7 +27,8 @@ public class EconItemsDeleteCommand implements CommandExecutor
     }
 
     @Override
-    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
+    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label,
+                           final Matcher matchedPattern, final Arguments args)
     {
         if (args.length() == 0)
         {

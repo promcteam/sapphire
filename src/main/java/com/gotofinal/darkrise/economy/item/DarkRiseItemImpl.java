@@ -73,7 +73,10 @@ public class DarkRiseItemImpl implements DarkRiseItem
 
         this.enabledEnchantedDurability = w.getBoolean("enabledEnchantedDurability", false);
         this.chanceToLostDurability = DoubleRange.valueOf(w.getString("chanceToLostDurability", "0.0 - 0.0"));
-        this.commands = ((List<Map<String, Object>>) map.get("commands")).stream().map(DelayedCommand::new).collect(Collectors.toList());
+        this.commands = ((List<Map<String, Object>>) map.get("commands"))
+                .stream()
+                .map(DelayedCommand::new)
+                .collect(Collectors.toList());
     }
 
     public DarkRiseItemImpl(String id, ItemStack item)
@@ -93,8 +96,10 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.twoHand = false;
     }
 
-    public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop,
-                            boolean enabledEnchantedDurability, DoubleRange chanceToLostDurability, List<DelayedCommand> commands)
+    public DarkRiseItemImpl(final String id, final ItemStack item, final boolean dropOnDeath, final int removeOnDeath,
+                            final boolean confirmOnUse, final int removeOnUse, final boolean canDrop,
+                            final boolean enabledEnchantedDurability, final DoubleRange chanceToLostDurability,
+                            final List<DelayedCommand> commands)
     {
         this.id = id;
         this.item = item.clone();
@@ -210,28 +215,38 @@ public class DarkRiseItemImpl implements DarkRiseItem
         {
             return;
         }
-        DelayedCommand.invoke(DarkRiseEconomy.getInstance(), sender, this.commands, R.r("{canDrop}", this.canDrop),
+        DelayedCommand.invoke(DarkRiseEconomy.getInstance(), sender, this.commands,
+                              R.r("{canDrop}", this.canDrop),
                               R.r("{enabledEnchantedDurability}", this.enabledEnchantedDurability),
-                              R.r("{chanceToLostDurability}", this.chanceToLostDurability.toString()), R.r("{dropOnDeath}", this.dropOnDeath),
-                              R.r("{removeOnDeath}", this.removeOnDeath), R.r("{confirmOnUse}", this.confirmOnUse), R.r("removeOnUse", this.removeOnUse),
-                              R.r("{id}", this.id), R.r("{name}", this.getName()));
+                              R.r("{chanceToLostDurability}", this.chanceToLostDurability.toString()),
+                              R.r("{dropOnDeath}", this.dropOnDeath),
+                              R.r("{removeOnDeath}", this.removeOnDeath),
+                              R.r("{confirmOnUse}", this.confirmOnUse),
+                              R.r("removeOnUse", this.removeOnUse),
+                              R.r("{id}", this.id),
+                              R.r("{name}", this.getName()));
     }
 
     @Override
     public Map<String, Object> serialize()
     {
-        return SerializationBuilder.start(10).append("id", this.id).append("canDrop", this.canDrop)
+        return SerializationBuilder.start(10)
+            .append("id", this.id)
+            .append("canDrop", this.canDrop)
             .append("tradeable", this.tradeable)
             .append("enabledEnchantedDurability", this.enabledEnchantedDurability)
             .append("chanceToLostDurability", this.chanceToLostDurability.getMin() + "-" + this.chanceToLostDurability.getMax())
-            .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", this.dropOnDeath)
-            .append("removeOnDeath", this.removeOnDeath).append("confirmOnUse", this.confirmOnUse)
+            .append("item", ItemBuilder.newItem(this.item))
+            .append("dropOnDeath", this.dropOnDeath)
+            .append("removeOnDeath", this.removeOnDeath)
+            .append("confirmOnUse", this.confirmOnUse)
             .append("removeOnUse", this.removeOnUse)
             .append("twoHand", this.twoHand)
             .append("permission", SerializationBuilder.start(2)
                 .append("node", this.permissionList)
                 .append("message", this.permissionMessage))
-            .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList())).build();
+            .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList()))
+            .build();
     }
 
     @Override

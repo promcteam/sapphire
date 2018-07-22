@@ -33,7 +33,8 @@ public class EconClaimCommand extends PluginCommandImpl implements CommandExecut
     }
 
     @Override
-    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label, final Matcher matchedPattern, final Arguments args)
+    public void runCommand(final CommandSender sender, final Command<CommandSender> command, final String label,
+                           final Matcher matchedPattern, final Arguments args)
     {
         if (! (sender instanceof Player))
         {

@@ -17,7 +17,12 @@ public enum CurrencyType
                 @Override
                 public void sendNoMoney(final Player player, final double money)
                 {
-                    DarkRiseCore.getInstance().sendMessage("economy.no-money", player, new MessageData("player", player), new MessageData("needed", money), new MessageData("missing", money - this.get(player)));
+                    DarkRiseCore.getInstance().sendMessage(
+                            "economy.no-money",
+                            player,
+                            new MessageData("player", player),
+                            new MessageData("needed", money),
+                            new MessageData("missing", money - this.get(player)));
                 }
 
                 @Override
@@ -57,7 +62,12 @@ public enum CurrencyType
                 @Override
                 public void sendNoMoney(final Player player, final double money)
                 {
-                    DarkRiseCore.getInstance().sendMessage("economy.no-points", player, new MessageData("player", player), new MessageData("needed", money), new MessageData("missing", money - this.get(player)));
+                    DarkRiseCore.getInstance().sendMessage(
+                            "economy.no-points",
+                            player,
+                            new MessageData("player", player),
+                            new MessageData("needed", money),
+                            new MessageData("missing", money - this.get(player)));
                 }
 
                 @Override

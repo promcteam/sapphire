@@ -53,7 +53,10 @@ public class TwoHandListener implements Listener {
         }
 
         DarkRiseItem darkRiseItem = DarkRiseEconomy.getInstance().getItems().getItemByStack(item);
-        Optional<DarkRiseItem> offHandItem = Optional.ofNullable(DarkRiseEconomy.getInstance().getItems().getItemByStack(event.getWhoClicked().getInventory().getItemInOffHand()));
+        Optional<DarkRiseItem> offHandItem = Optional.ofNullable(DarkRiseEconomy
+                .getInstance()
+                .getItems()
+                .getItemByStack(event.getWhoClicked().getInventory().getItemInOffHand()));
 
         if (darkRiseItem == null || !darkRiseItem.isTwoHand())
         {
