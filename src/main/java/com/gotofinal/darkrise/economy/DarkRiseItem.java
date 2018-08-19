@@ -80,5 +80,7 @@ public interface DarkRiseItem extends ConfigurationSerializable
         return (item == this) || this.getName().equals(meta.getDisplayName());
     }
 
+    boolean isVanilla();
+
     void invoke(CommandSender sender);
 }

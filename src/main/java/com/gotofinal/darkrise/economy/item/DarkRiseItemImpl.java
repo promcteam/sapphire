@@ -125,7 +125,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     @Override
     public String getName()
     {
-        return this.item.getItemMeta().getDisplayName();
+        return isVanilla() ? this.item.getType().name() : this.item.getItemMeta().getDisplayName();
     }
 
     @Override
@@ -206,6 +206,11 @@ public class DarkRiseItemImpl implements DarkRiseItem
         ItemStack clone = this.item.clone();
         clone.setAmount(amount);
         return clone;
+    }
+
+    @Override
+    public boolean isVanilla() {
+        return getId().startsWith("vanilla_");
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.gotofinal.darkrise.economy.item.DarkRiseItemImpl;
 import com.gotofinal.darkrise.spigot.core.DarkRiseCore;
 
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -63,9 +64,13 @@ public class DarkRiseItems
     public DarkRiseItem addItem(File file, DarkRiseItem item, boolean save)
     {
         Validate.notNull(item, "Item can't be null");
-        Validate.notNull(file, "File can't be null");
         String lowerId = item.getId().toLowerCase().intern();
-        this.itemFiles.put(lowerId, file);
+
+        if (file != null)
+        {
+            this.itemFiles.put(lowerId, file);
+        }
+
         this.itemsByName.put(item.getName().toLowerCase().intern(), item);
         DarkRiseItem put = this.itemsById.put(lowerId, item);
         this.sortedItems.put(item.getId(), item);
@@ -159,25 +164,26 @@ public class DarkRiseItems
     public boolean canDrop(ItemStack itemStack)
     {
         DarkRiseItem item = this.getItemByStack(itemStack);
-        if (item == null)
-        {
-            return true;
-        }
-        return item.canDrop() && item.isTradeable();
+        return item == null || (item.canDrop() && item.isTradeable());
     }
 
     public DarkRiseItem getItemByStack(ItemStack itemStack)
     {
         if ((itemStack == null) || ! itemStack.hasItemMeta())
         {
-            return null;
+            return getVanillaItemByStack(itemStack);
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (! itemMeta.hasDisplayName())
         {
-            return null;
+            return getVanillaItemByStack(itemStack);
         }
         return this.getItemByName(itemMeta.getDisplayName());
+    }
+
+    public DarkRiseItem getVanillaItemByStack(ItemStack itemStack)
+    {
+        return itemStack == null ? null : this.getItemById("vanilla_" + itemStack.getType().name());
     }
 
     public synchronized void saveItems()
@@ -185,6 +191,11 @@ public class DarkRiseItems
         Map<File, Collection<Map<String, Object>>> data = new HashMap<>(20);
         for (final DarkRiseItem darkRiseItem : this.itemsById.values())
         {
+            if (darkRiseItem.isVanilla())
+            {
+                continue;
+            }
+
             File file = this.itemFiles.get(darkRiseItem.getId().toLowerCase());
             Collection<Map<String, Object>> items = data.computeIfAbsent(file, k -> new ArrayList<>(20));
             items.add(darkRiseItem.serialize());
@@ -241,6 +252,7 @@ public class DarkRiseItems
                     .map(m -> new DarkRiseItemImpl((Map<String, Object>) m))
                     .forEach(i -> this.addItem(file, i, false));
         }
+
         this.saveItems();
     }
 
@@ -250,5 +262,20 @@ public class DarkRiseItems
         this.loadItems(this.dataFile);
         DarkRiseEconomy.getInstance().info("Loaded " + sortedItems.size()
                 + " items from " + itemFiles.size() + " files.");
+        this.addVanillaItems();
+    }
+
+    private void addVanillaItems()
+    {
+        for(Material material : Material.values())
+        {
+            if (getItemById("vanilla_" + material.name()) != null)
+            {
+                continue;
+            }
+
+            DarkRiseItemImpl riseItem = new DarkRiseItemImpl("vanilla_" + material.name().toLowerCase(), new ItemStack(material));
+            this.addItem((File) null, riseItem, false);
+        }
     }
 }
