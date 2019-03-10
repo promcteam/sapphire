@@ -3,3 +3,4 @@ main: com.gotofinal.darkrise.economy.DarkRiseEconomy
 author: GotoFinal
 version: ${rise.version}
 depend: [SpigotCore]
+softdepend: [DivineItemsRPG]

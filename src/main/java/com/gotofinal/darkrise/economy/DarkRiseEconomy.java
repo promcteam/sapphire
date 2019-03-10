@@ -114,6 +114,9 @@ public class DarkRiseEconomy extends DarkRisePlugin
         PlayerData.init();
         this.reloadConfigs();
         this.loadItemsToAdd();
+
+        DivineItemsHook.setEnabled(getServer().getPluginManager().getPlugin("DivineItemsRPG") != null);
+        getLogger().info("DivineItemsRPG Hook is now " + (DivineItemsHook.isEnabled() ? "enabled" : "disabled"));
     }
 
     @Override

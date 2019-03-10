@@ -2,6 +2,7 @@ package com.gotofinal.darkrise.economy.item;
 
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
 import com.gotofinal.darkrise.economy.DarkRiseItem;
+import com.gotofinal.darkrise.economy.DivineItemsHook;
 import com.gotofinal.darkrise.spigot.core.utils.DeserializationWorker;
 import com.gotofinal.darkrise.spigot.core.utils.SerializationBuilder;
 import com.gotofinal.darkrise.spigot.core.utils.cmds.DelayedCommand;
@@ -10,7 +11,9 @@ import com.gotofinal.darkrise.spigot.core.utils.item.ItemBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.diorite.utils.math.DoubleRange;
 
 import java.util.ArrayList;
@@ -38,6 +41,39 @@ public class DarkRiseItemImpl implements DarkRiseItem
     private final List<String>         permissionList = new ArrayList<>();
     private final String               permissionMessage;
     private final boolean              twoHand;
+    private final DivineItemsMeta      divineItemsMeta;
+
+    public static class DivineItemsMeta implements ConfigurationSerializable
+    {
+        public boolean enabled;
+        public String tierName;
+        public Double tierLevel;
+
+        public DivineItemsMeta(Map<String, Object> map)
+        {
+            DeserializationWorker w = DeserializationWorker.start(map);
+            this.enabled = w.getBoolean("enabled", false);
+            this.tierName = w.getString("tierName");
+            this.tierLevel = w.getDouble("tierLevel");
+        }
+
+        public DivineItemsMeta()
+        {
+            this.enabled = false;
+            this.tierName = "";
+            this.tierLevel = 0.0d;
+        }
+
+        @Override
+        public Map<String, Object> serialize()
+        {
+            return SerializationBuilder.start(3)
+                    .append("enabled", enabled)
+                    .append("tierName", this.tierName)
+                    .append("tierLevel", this.tierLevel)
+                    .build();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public DarkRiseItemImpl(Map<String, Object> map)
@@ -52,6 +88,16 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.canDrop = w.getBoolean("canDrop", true);
         this.tradeable = w.getBoolean("tradeable", true);
         this.twoHand = w.getBoolean("twoHand", false);
+
+        //Apply DivineItemsRPG meta
+        if(map.containsKey("divineItemsMeta"))
+        {
+            this.divineItemsMeta = w.deserialize("divineItemsMeta", DivineItemsMeta.class);
+        }
+        else
+        {
+            this.divineItemsMeta = new DivineItemsMeta();
+        }
 
         if (w.getMap().containsKey("permission"))
         {
@@ -94,6 +140,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.commands = Collections.emptyList();
         this.permissionMessage = null;
         this.twoHand = false;
+        this.divineItemsMeta = null;
     }
 
     public DarkRiseItemImpl(final String id, final ItemStack item, final boolean dropOnDeath, final int removeOnDeath,
@@ -114,6 +161,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
         this.commands = commands;
         this.permissionMessage = null;
         this.twoHand = false;
+        this.divineItemsMeta = null;
     }
 
     @Override
@@ -205,6 +253,15 @@ public class DarkRiseItemImpl implements DarkRiseItem
     {
         ItemStack clone = this.item.clone();
         clone.setAmount(amount);
+
+        if(this.divineItemsMeta.enabled)
+        {
+            ItemStack divineItemStack = DivineItemsHook.create(clone, this.divineItemsMeta);
+            ItemMeta divineMeta = divineItemStack.getItemMeta();
+            divineMeta.setDisplayName(clone.getItemMeta().getDisplayName());
+            clone.setItemMeta(divineMeta);
+        }
+
         return clone;
     }
 
@@ -235,7 +292,7 @@ public class DarkRiseItemImpl implements DarkRiseItem
     @Override
     public Map<String, Object> serialize()
     {
-        return SerializationBuilder.start(10)
+        SerializationBuilder sb = SerializationBuilder.start(10)
             .append("id", this.id)
             .append("canDrop", this.canDrop)
             .append("tradeable", this.tradeable)
@@ -250,8 +307,14 @@ public class DarkRiseItemImpl implements DarkRiseItem
             .append("permission", SerializationBuilder.start(2)
                 .append("node", this.permissionList)
                 .append("message", this.permissionMessage))
-            .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList()))
-            .build();
+            .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList()));
+
+        if (this.divineItemsMeta != null)
+        {
+            sb.append("divineItemsMeta", this.divineItemsMeta);
+        }
+
+        return sb.build();
     }
 
     @Override
