@@ -2,6 +2,7 @@ package com.gotofinal.darkrise.economy;
 
 import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
 import com.gotofinal.darkrise.economy.cfg.PlayerData;
+import com.gotofinal.darkrise.economy.cfg.VoucherManager;
 import com.gotofinal.darkrise.spigot.core.DarkRisePlugin;
 import com.gotofinal.diggler.core.nms.NMSPlayerUtils;
 import com.gotofinal.messages.Init;
@@ -117,6 +118,12 @@ public class DarkRiseEconomy extends DarkRisePlugin
 
         DivineItemsHook.setEnabled(getServer().getPluginManager().getPlugin("DivineItemsRPG") != null);
         getLogger().info("DivineItemsRPG Hook is now " + (DivineItemsHook.isEnabled() ? "enabled" : "disabled"));
+	    try {
+		    VoucherManager.getInstance().load();
+	    }
+	    catch(IOException e) {
+		    e.printStackTrace();
+	    }
     }
 
     @Override
@@ -127,6 +134,7 @@ public class DarkRiseEconomy extends DarkRisePlugin
         try
         {
             this.saveItemsToAdd();
+	        VoucherManager.getInstance().save();
         }
         catch (IOException e)
         {

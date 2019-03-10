@@ -3,6 +3,7 @@ package com.gotofinal.darkrise.economy.listener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +14,7 @@ import com.gotofinal.darkrise.economy.DarkRiseEconomy;
 import com.gotofinal.darkrise.economy.DarkRiseItem;
 import com.gotofinal.darkrise.economy.DarkRiseItems;
 import com.gotofinal.darkrise.economy.cfg.PlayerData;
+import com.gotofinal.darkrise.economy.cfg.VoucherManager;
 import com.gotofinal.messages.api.messages.Message.MessageData;
 
 import org.bukkit.Bukkit;
@@ -100,6 +102,14 @@ public class PlayerListener implements Listener
                 return;
             }
         }
+        boolean isVoucher = VoucherManager.getInstance().isVoucher(item);
+        Optional<VoucherManager.VoucherData> data = VoucherManager.getInstance().getData(item);
+        if (isVoucher && data.isPresent())
+        {
+            this.plugin.sendMessage("economy.commands.voucher.already-used", event.getPlayer(),
+                                    new MessageData("voucher_id", data.get().id));
+            return;
+        }
         if (riseItem.isConfirmOnUse())
         {
             event.setCancelled(true);
@@ -135,9 +145,15 @@ public class PlayerListener implements Listener
             }, this.plugin.getCfg().getTimeout() * 20).getTaskId());
             return;
         }
+        if (isVoucher)
+        {
+            VoucherManager.getInstance().use(event.getPlayer(), item);
+        }
         if (removeOnUse > 0)
         {
-            if (! p.getInventory().removeItem(riseItem.getItem(removeOnUse)).isEmpty())
+            ItemStack removeItem = item.clone();
+            removeItem.setAmount(removeOnUse);
+            if (! p.getInventory().removeItem(removeItem).isEmpty())
             {
                 return;
             }

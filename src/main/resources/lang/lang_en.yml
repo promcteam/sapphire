@@ -19,6 +19,10 @@ economy:
     create:
       no-item: "&7You must have some item in hand."
       done: "&7Saved new item."
+    voucher:
+      already-used: "&cThe voucher ID #$<voucher_id> has already been used! Contact staff if you need further help."
+      info: "Voucher #$<voucher_id> has been used by $<player.name> on $<date>"
+      info-unused: "Voucher #$<voucher_id> has not been used yet."
     items:
       list-entry: "&3$<index>. &f$<riseItem.id> &7- $<riseItem.name>&r"
       list: |2-
