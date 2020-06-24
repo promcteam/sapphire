@@ -23,6 +23,10 @@ public class Register {
         new EconReloadCommand(plugin, econ);
         new EconSaveCommand(plugin, econ);
         new EconVoucherCommand(plugin, econ);
+
+        //FOR TESTING PURPOSES ONLY
+//        new EconTestItemCommand(plugin, econ);
+//        new EconTestItemEqualityCommand(plugin, econ);
     }
 
 }

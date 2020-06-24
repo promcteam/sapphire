@@ -81,7 +81,10 @@ public class DarkRiseItemImpl implements DarkRiseItem {
     public DarkRiseItemImpl(Map<String, Object> map) {
         DeserializationWorker w = DeserializationWorker.start(map);
         this.id = w.getString("id").intern();
-        this.item = w.getTypedObject("item", ItemBuilder.class).build();
+        if (w.getTypedObject("item") instanceof ItemStack)
+            this.item = w.getTypedObject("item", ItemStack.class);//.build();
+        else
+            this.item = w.getTypedObject("item", ItemBuilder.class).build();
         this.dropOnDeath = w.getBoolean("dropOnDeath", true);
         this.removeOnDeath = w.getInt("removeOnDeath", 0);
         this.confirmOnUse = w.getBoolean("confirmOnUse", false);
@@ -232,7 +235,7 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         SerializationBuilder sb = SerializationBuilder.start(10).append("id", this.id).append("canDrop", Boolean.valueOf(this.canDrop))
                 .append("tradeable", Boolean.valueOf(this.tradeable)).append("enabledEnchantedDurability", Boolean.valueOf(this.enabledEnchantedDurability))
                 .append("chanceToLostDurability", this.chanceToLostDurability.getMinimumDouble() + "-" + this.chanceToLostDurability.getMaximumDouble())
-                .append("item", ItemBuilder.newItem(this.item)).append("dropOnDeath", Boolean.valueOf(this.dropOnDeath))
+                .append("item", /*ItemBuilder.newItem(*/this.item/*)*/).append("dropOnDeath", Boolean.valueOf(this.dropOnDeath))
                 .append("removeOnDeath", Integer.valueOf(this.removeOnDeath)).append("confirmOnUse", Boolean.valueOf(this.confirmOnUse))
                 .append("removeOnUse", Integer.valueOf(this.removeOnUse))//.append("twoHand", Boolean.valueOf(this.twoHand))
                 .append("permission", SerializationBuilder.start(2).append("node", this.permissionList).append("message", this.permissionMessage))
