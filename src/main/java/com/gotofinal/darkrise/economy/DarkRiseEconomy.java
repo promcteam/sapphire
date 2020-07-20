@@ -3,7 +3,7 @@ package com.gotofinal.darkrise.economy;
 import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
 import com.gotofinal.darkrise.economy.cfg.PlayerData;
 import com.gotofinal.darkrise.economy.cfg.VoucherManager;
-import com.gotofinal.darkrise.economy.item.DarkRiseItemImpl;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.ConfigManager;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.killme.chat.placeholder.PlaceholderType;

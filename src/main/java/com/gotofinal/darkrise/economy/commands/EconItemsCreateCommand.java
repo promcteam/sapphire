@@ -1,9 +1,8 @@
 package com.gotofinal.darkrise.economy.commands;
 
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import com.gotofinal.darkrise.economy.item.DarkRiseItemImpl;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.command.RiseCommand;
-import me.travja.darkrise.core.legacy.cmds.DelayedCommand;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
 import org.apache.commons.lang.StringUtils;

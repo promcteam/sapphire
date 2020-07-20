@@ -1,6 +1,6 @@
 package com.gotofinal.darkrise.economy;
 
-import com.gotofinal.darkrise.economy.item.DarkRiseItemImpl;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
