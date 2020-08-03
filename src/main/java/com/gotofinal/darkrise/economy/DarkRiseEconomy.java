@@ -89,8 +89,6 @@ public class DarkRiseEconomy extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        ConfigurationSerialization.registerClass(DarkRiseItemImpl.class);
-        ConfigurationSerialization.registerClass(DarkRiseItemImpl.DivineItemsMeta.class);
         Init.PLAYER.registerItem("points", CurrencyType.POINTS::get);
         RISE_ITEM.registerItem("name", item -> {
             TextComponent textComponent = new TextComponent(item.getName());
@@ -118,6 +116,7 @@ public class DarkRiseEconomy extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
+        ConfigurationSerialization.registerClass(Price.class);
         PlayerData.init();
         reloadConfigs();
         loadItemsToAdd();
