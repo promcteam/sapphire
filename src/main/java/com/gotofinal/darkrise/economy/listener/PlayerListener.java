@@ -2,11 +2,11 @@ package com.gotofinal.darkrise.economy.listener;
 
 import com.google.common.collect.Sets;
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
-import me.travja.darkrise.core.item.DarkRiseItem;
 import com.gotofinal.darkrise.economy.DarkRiseItems;
+import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
 import com.gotofinal.darkrise.economy.cfg.PlayerData;
 import com.gotofinal.darkrise.economy.cfg.VoucherManager;
+import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.RangeUtil;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
@@ -133,10 +133,9 @@ public class PlayerListener implements Listener {
 
         for (ItemStack itemStack : event.getDrops()) {
             DarkRiseItem riseItem = items.getItemByStack(itemStack);
-            if (riseItem != null) {
-                if (!riseItem.isDropOnDeath() || !riseItem.canDrop()) {
-                    keeps.add(riseItem.getItem());
-                }
+            if (riseItem != null
+                    && (!riseItem.isDropOnDeath() || !riseItem.canDrop())) {
+                keeps.add(itemStack);
             }
         }
 

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.*;
 
 public final class PlayerData {
-    private static final Map<UUID, List<ItemBuilder>> items = new HashMap<>(20, .4f);
+    private static final Map<UUID, List<ItemStack>> items = new HashMap<>(20, .4f);
     private static File dataFile;
     private static FileConfiguration cfg; // if server crashes/stops when player die, to have sure that he don't lose items
 
@@ -33,7 +33,7 @@ public final class PlayerData {
         cfg = YamlConfiguration.loadConfiguration(dataFile);
 
         for (final String sUuid : cfg.getKeys(false)) {
-            final List<ItemBuilder> its = (List<ItemBuilder>) cfg.getList(sUuid);
+            final List<ItemStack> its = (List<ItemStack>) cfg.getList(sUuid);
             if ((its == null) || its.isEmpty()) {
                 continue;
             }
@@ -42,17 +42,17 @@ public final class PlayerData {
     }
 
     public static void dumpPlayer(final Player player, ArrayList<ItemStack> keeps) {
-        final List<ItemBuilder> items = new ArrayList<>(5);
+//        final List<ItemBuilder> items = new ArrayList<>(5);
         Map<String, Integer> removes = new HashMap<>(20);
         if (keeps.isEmpty()) return;
-        for (ItemStack itemStack : keeps) {
-            items.add(ItemBuilder.newItem(itemStack));
-        }
+//        for (ItemStack itemStack : keeps) {
+//            items.add(ItemBuilder.newItem(itemStack));
+//        }
 
-        if (items.isEmpty()) return;
+//        if (items.isEmpty()) return;
 
-        PlayerData.items.put(player.getUniqueId(), items);
-        cfg.set(player.getUniqueId().toString(), items);
+        PlayerData.items.put(player.getUniqueId(), keeps);
+        cfg.set(player.getUniqueId().toString(), keeps);
         try {
             cfg.save(dataFile);
         } catch (final IOException e) {
@@ -61,7 +61,7 @@ public final class PlayerData {
     }
 
     public static void loadPlayer(final Player player) {
-        final List<ItemBuilder> items = PlayerData.items.remove(player.getUniqueId());
+        final List<ItemStack> items = PlayerData.items.remove(player.getUniqueId());
         if ((items == null) || items.isEmpty()) {
             return;
         }
@@ -71,6 +71,6 @@ public final class PlayerData {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        player.getInventory().addItem(items.stream().map(ItemBuilder::build).toArray(ItemStack[]::new));
+        player.getInventory().addItem(items.toArray(new ItemStack[0]));
     }
 }
