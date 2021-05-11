@@ -1,6 +1,6 @@
-name: Economy
+name: ProMCUtilities
 main: com.gotofinal.darkrise.economy.DarkRiseEconomy
-author: GotoFinal
+authors: [Travja, goflish]
 version: 1.3-Trav
 api-version: 1.13
 depend: [RiseCore, PlayerPoints]

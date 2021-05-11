@@ -2,7 +2,6 @@ package com.gotofinal.darkrise.economy;
 
 import com.gotofinal.darkrise.economy.commands.*;
 import com.gotofinal.darkrise.economy.listener.PlayerListener;
-import com.gotofinal.darkrise.economy.listener.TwoHandListener;
 import org.bukkit.plugin.PluginManager;
 
 public class Register {
@@ -19,7 +18,9 @@ public class Register {
         new EconItemsCreateCommand(plugin, items);
         new EconItemsDeleteCommand(plugin, items);
         new EconItemsGiveCommand(plugin, items);
+        new EconItemsDropCommand(plugin, items);
         new EconItemsListCommand(plugin, items);
+        new EconItemsVoucherCommand(plugin, items);
         new EconReloadCommand(plugin, econ);
         new EconSaveCommand(plugin, econ);
         new EconVoucherCommand(plugin, econ);

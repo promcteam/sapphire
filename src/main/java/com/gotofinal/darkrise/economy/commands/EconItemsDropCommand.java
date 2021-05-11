@@ -1,34 +1,35 @@
 package com.gotofinal.darkrise.economy.commands;
 
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import me.travja.darkrise.core.item.DarkRiseItem;
-import com.gotofinal.darkrise.economy.cfg.VoucherManager;
 import me.travja.darkrise.core.command.RiseCommand;
+import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
-import me.travja.darkrise.core.util.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@DarkRiseSubCommand(value = EconItemsCommand.class, name = "voucher")
-public class EconItemsVoucherCommand extends RiseCommand {
-    private final DarkRiseEconomy eco;
+//@DarkRiseSubCommand(value = EconItemsCommand.class, name = "drop")
+public class EconItemsDropCommand extends RiseCommand {
+    private static final int PAGE_SIZE = 15;
 
-    public EconItemsVoucherCommand(DarkRiseEconomy plugin, EconItemsCommand command) {
-        super("voucher", ArrayUtils.toArray("voucter"), command);
+    private final DarkRiseEconomy eco;
+    private final EconItemsCommand command;
+
+    public EconItemsDropCommand(DarkRiseEconomy plugin, EconItemsCommand command) {
+        super("drop", Collections.singletonList("drops"), command);
         this.eco = plugin;
+        this.command = command;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label,
+                                      String[] args) {
         if (args.length == 2) {
             return Collections.emptyList();
         }
@@ -46,12 +47,26 @@ public class EconItemsVoucherCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.items.voucher")) {
+
+        if (!this.checkPermission(sender, "econ.items.drop")) {
             return;
         }
-
-        if (args.length != 2 && args.length != 3) {
+        if (args.length == 0) {
             this.sendUsage(command.getUsage(), sender, command, args);
+            return;
+        }
+        if (args.length == 1) {
+            if (!(sender instanceof Player)) {
+                MessageUtil.sendMessage("senderIsNotPlayer", sender);
+                return;
+            }
+            DarkRiseItem riseItem = this.eco.getItems().getItemByIdOrName(args[0]);
+            if (riseItem == null) {
+                MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[0]));
+                return;
+            }
+
+            eco.dropItems(((Player) sender).getLocation(), riseItem, 1);
             return;
         }
 
@@ -60,35 +75,23 @@ public class EconItemsVoucherCommand extends RiseCommand {
             MessageUtil.sendMessage("notAPlayer", sender, new MessageData("name", args[0]));
             return;
         }
-
-        DarkRiseItem riseItem = this.eco.getItems().getItemById(args[1]);
+        DarkRiseItem riseItem = this.eco.getItems().getItemByIdOrName(args[1]);
         if (riseItem == null) {
             MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[1]));
             return;
         }
-
         int amount = 1;
         if (args.length >= 3) {
-            Integer i;
             try {
-                i = Integer.parseInt(args[2]);
+                Integer i = Integer.parseInt(args[2]);
+                amount = i;
             } catch (NumberFormatException e) {
                 MessageUtil.sendMessage("notANumber", sender, new MessageData("text", args[2]));
                 return;
             }
-            amount = i;
         }
 
-        ItemStack item = VoucherManager.getInstance().addNextId(riseItem.getItem(amount));
-        Player player = target != null ? target : (Player) sender;
-        HashMap<Integer, ItemStack> notAdded = player.getInventory().addItem(item);
-
-        if (!notAdded.isEmpty()) {
-            notAdded.forEach((a, i) -> {
-                i = i.clone();
-                i.setAmount(a);
-                player.getLocation().getWorld().dropItemNaturally(player.getLocation(), i);
-            });
-        }
+        eco.dropItems(target.getLocation(), riseItem, amount);
+        MessageUtil.sendMessage("economy.commands.drop.success", sender, new MessageData("player", target.getName()), new MessageData("riseItem", riseItem));
     }
 }

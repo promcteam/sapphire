@@ -3,7 +3,6 @@ package com.gotofinal.darkrise.economy;
 import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
 import com.gotofinal.darkrise.economy.cfg.PlayerData;
 import com.gotofinal.darkrise.economy.cfg.VoucherManager;
-import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.ConfigManager;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.killme.chat.placeholder.PlaceholderType;
@@ -13,10 +12,12 @@ import me.travja.darkrise.core.legacy.util.message.NMSPlayerUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -32,16 +33,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DarkRiseEconomy extends JavaPlugin {
+    public static final PlaceholderType<DarkRiseItem> RISE_ITEM = PlaceholderType.create("riseItem", DarkRiseItem.class);
+    public static final PlaceholderType<EconomyConfig> ECONOMY_CONFIG = PlaceholderType.create("economyConfig", EconomyConfig.class);
     private static DarkRiseEconomy instance;
-
-    private DarkRiseItems items;
-
-    private FileConfiguration config;
     //private EconomyConfig config;
-
     private final File itemsToAddFile;
 
     private final Map<UUID, Map<DarkRiseItem, Integer>> itemsToAdd;
+    private DarkRiseItems items;
+    private FileConfiguration config;
 
     public DarkRiseEconomy() {
         this.itemsToAddFile = new File(getDataFolder(), "itemstoadd.yml");
@@ -51,6 +51,10 @@ public class DarkRiseEconomy extends JavaPlugin {
 
     public static DarkRiseEconomy getInstance() {
         return instance;
+    }
+
+    public static DarkRiseItems getItemsRegistry() {
+        return instance.items;
     }
 
     public FileConfiguration/*EconomyConfig*/ getCfg() {
@@ -63,10 +67,6 @@ public class DarkRiseEconomy extends JavaPlugin {
 
     public DarkRiseItems getItems() {
         return this.items;
-    }
-
-    public static DarkRiseItems getItemsRegistry() {
-        return instance.items;
     }
 
     public void reloadConfigs() {
@@ -82,10 +82,6 @@ public class DarkRiseEconomy extends JavaPlugin {
     public void saveConfigs() {
         this.items.saveItems();
     }
-
-    public static final PlaceholderType<DarkRiseItem> RISE_ITEM = PlaceholderType.create("riseItem", DarkRiseItem.class);
-
-    public static final PlaceholderType<EconomyConfig> ECONOMY_CONFIG = PlaceholderType.create("economyConfig", EconomyConfig.class);
 
     @Override
     public void onLoad() {
@@ -180,8 +176,21 @@ public class DarkRiseEconomy extends JavaPlugin {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    public void dropItems(Location loc, Map<DarkRiseItem, Integer> map) {
+        map.keySet().forEach(item -> {
+            Item it = loc.getWorld().dropItem(loc, item.getItem(map.get(item)));
+            it.setPickupDelay(1);
+        });
+    }
+
     public Map<DarkRiseItem, Integer> addItems(Player player, final DarkRiseItem item, final Integer amount) {
         return addItems(player, new HashMap<DarkRiseItem, Integer>() {{
+            put(item, amount);
+        }});
+    }
+
+    public void dropItems(Location loc, final DarkRiseItem item, final Integer amount) {
+        dropItems(loc, new HashMap<DarkRiseItem, Integer>() {{
             put(item, amount);
         }});
     }

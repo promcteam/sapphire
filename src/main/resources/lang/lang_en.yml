@@ -16,6 +16,8 @@ economy:
       claimed: "You claimed $<amount> items"
     give:
       success: "&3Successfully given $<player> &a$<riseItem.name>"
+    drop:
+      success: "&3Successfully dropped item &a$<riseItem.name> &3at $<player>'s feet"
     noItem: "&cCan't find item with id/name '&r$<name>&c'."
     delete: "&fDeleted '&r$<riseItem.id>&7' item."
     create:
@@ -37,6 +39,8 @@ economy:
          &8/&7econ &ritems list &8[&7page&8]
          &8/&7econ &ritems give &8<&7id&8>
          &8/&7econ &ritems give &8<&7player&8> &8<&7id&8> [&7amount&8]
+         &8/&7econ &ritems drop &8<&7id&8>
+         &8/&7econ &ritems drop &8<&7player&8> &8<&7id&8> [&7amount&8]
          &8/&7econ &ritems create &8<&7id&8> [&7-file&8 <&7fileName&8>] [&7-dropOnDeath&8] [&7-confirmOnUse&8] [&7-CantDrop&8] [&7-removeOnDeath&8 <&7amount&8>] [&7-removeOnUse&8 <&7amount&8>] [&7-durability&8 <&7from&8>&f-&8<&7to&8>]
          &8/&7econ &ritems delete &8<&7id&8>
          &8/&7econ &rclaim
