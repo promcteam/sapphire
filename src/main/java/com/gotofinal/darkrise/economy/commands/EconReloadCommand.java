@@ -17,7 +17,7 @@ public class EconReloadCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.reload")) {
+        if (!this.checkPermission(sender, "pmcu.reload")) {
             return;
         }
         this.eco.reloadConfigs();

@@ -36,13 +36,13 @@ economy:
     help: |2-
       You typed: &7$<text>&r
        Valid syntax:
-         &8/&7econ &ritems list &8[&7page&8]
-         &8/&7econ &ritems give &8<&7id&8>
-         &8/&7econ &ritems give &8<&7player&8> &8<&7id&8> [&7amount&8]
-         &8/&7econ &ritems drop &8<&7id&8>
-         &8/&7econ &ritems drop &8<&7player&8> &8<&7id&8> [&7amount&8]
-         &8/&7econ &ritems create &8<&7id&8> [&7-file&8 <&7fileName&8>] [&7-dropOnDeath&8] [&7-confirmOnUse&8] [&7-CantDrop&8] [&7-removeOnDeath&8 <&7amount&8>] [&7-removeOnUse&8 <&7amount&8>] [&7-durability&8 <&7from&8>&f-&8<&7to&8>]
-         &8/&7econ &ritems delete &8<&7id&8>
-         &8/&7econ &rclaim
-         &8/&7econ &rreload
-         &8/&7econ &rsave
+         &8/&7pmcu &ritems list &8[&7page&8]
+         &8/&7pmcu &ritems give &8<&7id&8>
+         &8/&7pmcu &ritems give &8<&7player&8> &8<&7id&8> [&7amount&8]
+         &8/&7pmcu &ritems drop &8<&7id&8>
+         &8/&7pmcu &ritems drop &8<&7player&8> &8<&7id&8> [&7amount&8]
+         &8/&7pmcu &ritems create &8<&7id&8> [&7-file&8 <&7fileName&8>] [&7-dropOnDeath&8] [&7-confirmOnUse&8] [&7-CantDrop&8] [&7-removeOnDeath&8 <&7amount&8>] [&7-removeOnUse&8 <&7amount&8>] [&7-durability&8 <&7from&8>&f-&8<&7to&8>]
+         &8/&7pmcu &ritems delete &8<&7id&8>
+         &8/&7pmcu &rclaim
+         &8/&7pmcu &rreload
+         &8/&7pmcu &rsave

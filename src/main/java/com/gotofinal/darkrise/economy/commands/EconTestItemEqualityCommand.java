@@ -28,7 +28,7 @@ public class EconTestItemEqualityCommand extends RiseCommand {
             MessageUtil.sendMessage("senderIsNotPlayer", sender);
             return;
         }
-        if (!this.checkPermission(sender, "econ.items.create")) {
+        if (!this.checkPermission(sender, "pmcu.items.create")) {
             return;
         }
         ItemStack mainHand = ((Player) sender).getInventory().getItemInMainHand();

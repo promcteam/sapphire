@@ -46,7 +46,7 @@ public class EconItemsVoucherCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.items.voucher")) {
+        if (!this.checkPermission(sender, "pmcu.items.voucher")) {
             return;
         }
 

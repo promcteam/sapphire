@@ -26,7 +26,7 @@ public class EconItemsDeleteCommand extends RiseCommand {
             this.sendUsage(command.getUsage(), sender, command, args);
             return;
         }
-        if (!this.checkPermission(sender, "econ.items.delete")) {
+        if (!this.checkPermission(sender, "pmcu.items.delete")) {
             return;
         }
         DarkRiseItem riseItem = this.plugin.getItems().getItemByIdOrName(args[0]);

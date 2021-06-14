@@ -22,7 +22,7 @@ public class EconVoucherCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.voucher")) {
+        if (!this.checkPermission(sender, "pmcu.voucher")) {
             return;
         }
 

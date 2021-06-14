@@ -48,7 +48,7 @@ public class EconItemsGiveCommand extends RiseCommand {
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
 
-        if (!this.checkPermission(sender, "econ.items.give")) {
+        if (!this.checkPermission(sender, "pmcu.items.give")) {
             return;
         }
         if (args.length == 0) {

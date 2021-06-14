@@ -48,7 +48,7 @@ public class EconItemsDropCommand extends RiseCommand {
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
 
-        if (!this.checkPermission(sender, "econ.items.drop")) {
+        if (!this.checkPermission(sender, "pmcu.items.drop")) {
             return;
         }
         if (args.length == 0) {

@@ -30,7 +30,7 @@ public class EconItemsListCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.items.list")) {
+        if (!this.checkPermission(sender, "pmcu.items.list")) {
             return;
         }
         SortedMap<String, DarkRiseItem> map = this.eco.getItems().getSortedMap();

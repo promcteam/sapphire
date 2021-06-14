@@ -7,3 +7,4 @@ depend: [RiseCore, PlayerPoints]
 commands:
   econ:
     description: The base command for Econ.
+    aliases: [pmcu, promcutilities]

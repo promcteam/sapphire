@@ -17,7 +17,7 @@ public class EconSaveCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "econ.save")) {
+        if (!this.checkPermission(sender, "pmcu.save")) {
             return;
         }
         this.plugin.getItems().saveItems();
