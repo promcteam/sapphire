@@ -3,7 +3,9 @@ package com.gotofinal.darkrise.economy.commands;
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
 import me.travja.darkrise.core.command.RiseCommand;
 import org.bukkit.command.CommandSender;
+import scala.collection.View;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class EconCommand extends RiseCommand {
@@ -11,7 +13,7 @@ public class EconCommand extends RiseCommand {
     private DarkRiseEconomy eco;
 
     public EconCommand(DarkRiseEconomy economy) {
-        super("econ", Collections.singletonList("econ"), economy);
+        super("econ", Arrays.asList("econ", "pmcu", "promcutilities"), economy);
         this.setUsage("economy.commands.help");
 //        this.setCommandExecutor(this);
 //        SubCommandAnnotation.register(this);

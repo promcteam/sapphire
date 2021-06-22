@@ -1,7 +1,7 @@
 package com.gotofinal.darkrise.economy;
 
-import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.item.DarkRiseItem;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -171,7 +171,12 @@ public class DarkRiseItems {
                 continue;
             }
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-            yaml.getList("items").forEach(i -> addItem(file, (DarkRiseItem) i, false));
+            try {
+                yaml.getList("items").forEach(i -> addItem(file, (DarkRiseItem) i, false));
+            } catch (IllegalArgumentException e) {
+                DarkRiseEconomy.getInstance().getLogger().warning("Could not load some items.");
+                e.printStackTrace();
+            }
             continue;
         }
 

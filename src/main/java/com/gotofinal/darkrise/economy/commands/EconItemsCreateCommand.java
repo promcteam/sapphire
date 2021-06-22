@@ -1,8 +1,8 @@
 package com.gotofinal.darkrise.economy.commands;
 
 import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.command.RiseCommand;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
 import org.apache.commons.lang.StringUtils;
@@ -136,7 +136,12 @@ public class EconItemsCreateCommand extends RiseCommand {
         DarkRiseItemImpl riseItem = new DarkRiseItemImpl(id, mainHand, dropOnDeath, removeOnDeath, confirmOnUse,
                 removeOnUse, canDrop, !chanceToLostDurability.equals(new DoubleRange(0d)),
                 chanceToLostDurability, new ArrayList<>());
-        this.eco.getItems().addItem(fileName, riseItem, true);
+        try {
+            this.eco.getItems().addItem(fileName, riseItem, true);
+        } catch (IllegalArgumentException e) {
+            this.eco.getLogger().warning("Could not load item '" + fileName + "'");
+            e.printStackTrace();
+        }
         MessageUtil.sendMessage("economy.commands.create.done", sender, new MessageData("riseItem", riseItem));
     }
 }
