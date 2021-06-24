@@ -85,7 +85,8 @@ public class DarkRiseEconomy extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        Init.PLAYER.registerItem("points", CurrencyType.POINTS::get);
+        if (getServer().getPluginManager().isPluginEnabled("PlayerPoints"))
+            Init.PLAYER.registerItem("points", CurrencyType.POINTS::get);
         RISE_ITEM.registerItem("name", item -> {
             TextComponent textComponent = new TextComponent(item.getName());
             textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
