@@ -28,11 +28,9 @@ economy:
       info: "Voucher #$<voucher_id> has been used by $<player.name> on $<date>"
       info-unused: "Voucher #$<voucher_id> has not been used yet."
     items:
+      list-header: "&7============= &3Items &7============="
       list-entry: "&3$<index>. &f$<riseItem.id> &7- $<riseItem.name>&r"
-      list: |2-
-        &7============= &3Items &7=============
-        $<items>
-        &7============ &3Page: &8$<page> &7============
+      list-footer: "&7============ &3Page: &8$<page> &7============"
     help: |2-
       You typed: &7$<text>&r
        Valid syntax:

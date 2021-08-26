@@ -33,8 +33,8 @@ public class EconItemsListCommand extends RiseCommand {
         if (!this.checkPermission(sender, "pmcu.items.list")) {
             return;
         }
-        SortedMap<String, DarkRiseItem> map = this.eco.getItems().getSortedMap();
-        int page = 0;
+        SortedMap<String, DarkRiseItem> map  = this.eco.getItems().getSortedMap();
+        int                             page = 0;
         if (args.length >= 1) {
             try {
                 page = Integer.parseInt(args[0]) - 1;
@@ -42,9 +42,10 @@ public class EconItemsListCommand extends RiseCommand {
             }
         }
         MessageData pageMsgData = new MessageData("page", page + 1);
-        int index = 0;
+        int         index       = 0;
 
-        TextComponent list = new TextComponent("");
+//        TextComponent list = new TextComponent("");
+        MessageUtil.sendMessage("economy.commands.items.list-header", sender, pageMsgData, new MessageData("sender", sender));
         for (Iterator<Entry<String, DarkRiseItem>> iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
             Entry<String, DarkRiseItem> entry = iterator.next();
             index++;
@@ -62,11 +63,12 @@ public class EconItemsListCommand extends RiseCommand {
                     new MessageData("index", index),
                     new MessageData("riseItem", entry.getValue())
             )));
-            list.addExtra(textComponent);
-            if (index % PAGE_SIZE != 0 && iterator.hasNext()) {
-                list.addExtra(new TextComponent("\n"));
-            }
+            MessageUtil.sendMessage(sender, textComponent);
+//            list.addExtra(textComponent);
+//            if (index % PAGE_SIZE != 0 && iterator.hasNext()) {
+//                list.addExtra(new TextComponent("\n"));
+//            }
         }
-        MessageUtil.sendMessage("economy.commands.items.list", sender, pageMsgData, new MessageData("sender", sender), new MessageData("items", list));
+        MessageUtil.sendMessage("economy.commands.items.list-footer", sender, pageMsgData, new MessageData("sender", sender));
     }
 }
