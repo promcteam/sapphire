@@ -1,8 +1,8 @@
 economy:
   no-money: "&cYou don't have enough money! You need $<needed> but you have $<player.money>, missing: $<missing>"
   no-points: "&cYou don't have enough points! You need $<needed> but you have $<player.points>, missing: $<missing>"
-  yes: "yes"
-  no: "no"
+  'yes': "yes"
+  'no': "no"
   useWithConfirm: "&cYou are trying to use $<riseItem.id> power item, type \"$<yes>\" on chat to confirm, or \"$<no>\" to cancel. (will be cancelled after $<economyConfig.timeout> secs)"
   canNotDrop: "&cYou can't drop this item!"
   canNotTrade: "&cYou can't trade this item!"

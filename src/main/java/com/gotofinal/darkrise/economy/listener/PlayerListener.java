@@ -30,10 +30,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //@EventListener(DarkRiseEconomy.class)
 public class PlayerListener implements Listener {
+    private static final Set<InventoryAction> dropActions = Sets.newIdentityHashSet();
+    private static final Set<InventoryType> tradeableInventories = Sets.newIdentityHashSet();
+
+    static {
+        dropActions.add(InventoryAction.DROP_ALL_CURSOR);
+        dropActions.add(InventoryAction.DROP_ALL_SLOT);
+        dropActions.add(InventoryAction.DROP_ONE_CURSOR);
+        dropActions.add(InventoryAction.DROP_ONE_SLOT);
+        tradeableInventories.add(InventoryType.ANVIL);
+        tradeableInventories.add(InventoryType.CRAFTING);
+        tradeableInventories.add(InventoryType.CREATIVE);
+        tradeableInventories.add(InventoryType.ENDER_CHEST);
+        tradeableInventories.add(InventoryType.ENCHANTING);
+        tradeableInventories.add(InventoryType.PLAYER);
+        tradeableInventories.add(InventoryType.WORKBENCH);
+    }
+
     private final Map<UUID, DarkRiseItem> confirm = new ConcurrentHashMap<>(10, 0.4F, 2);
-
     private final Map<UUID, Integer> confirmTasks = new ConcurrentHashMap<>(10, 0.4F, 2);
-
     private final DarkRiseEconomy plugin;
 
     public PlayerListener(DarkRiseEconomy plugin) {
@@ -44,9 +59,9 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR)
             return;
-        ItemStack item = event.getItem();
+        ItemStack    item     = event.getItem();
         DarkRiseItem riseItem = this.plugin.getItems().getItemByStack(item);
-        Player p = event.getPlayer();
+        Player       p        = event.getPlayer();
         if (riseItem == null)
             return;
         if (!riseItem.getPermission().isEmpty() && riseItem
@@ -56,8 +71,8 @@ public class PlayerListener implements Listener {
             return;
         }
         if (riseItem.isEnabledEnchantedDurability()) {
-            double random = RangeUtil.getRandomDouble(riseItem.chanceToLostDurability());
-            int forceLost = 0;
+            double random    = RangeUtil.getRandomDouble(riseItem.chanceToLostDurability());
+            int    forceLost = 0;
             if (random > 1.0D) {
                 forceLost = (int) random;
                 random -= forceLost;
@@ -71,8 +86,8 @@ public class PlayerListener implements Listener {
         if (removeOnUse > item.getAmount())
             if (!p.getInventory().containsAtLeast(riseItem.getItem(), removeOnUse))
                 return;
-        boolean isVoucher = VoucherManager.getInstance().isVoucher(item);
-        Optional<VoucherManager.VoucherData> data = VoucherManager.getInstance().getData(item);
+        boolean                              isVoucher = VoucherManager.getInstance().isVoucher(item);
+        Optional<VoucherManager.VoucherData> data      = VoucherManager.getInstance().getData(item);
         if (isVoucher && data.isPresent()) {
             MessageUtil.sendMessage("economy.commands.voucher.already-used", event.getPlayer(), new MessageData("voucher_id",
                     Integer.valueOf(data.get().id)));
@@ -88,11 +103,11 @@ public class PlayerListener implements Listener {
                 if (i != null)
                     Bukkit.getScheduler().cancelTask(i.intValue());
             }
-            MessageData yes = new MessageData("yes", MessageUtil.getMessageAsString("economy.yes", "yes"));
-            MessageData no = new MessageData("no", MessageUtil.getMessageAsString("economy.no", "no"));
-            MessageData config = new MessageData("economyConfig", new EconomyConfig());
+            MessageData yes       = new MessageData("yes", MessageUtil.getMessageAsString("economy.yes", "yes"));
+            MessageData no        = new MessageData("no", MessageUtil.getMessageAsString("economy.no", "no"));
+            MessageData config    = new MessageData("economyConfig", new EconomyConfig());
             MessageData playerMsg = new MessageData("player", p);
-            MessageData itemMsg = new MessageData("riseItem", riseItem);
+            MessageData itemMsg   = new MessageData("riseItem", riseItem);
             MessageUtil.sendMessage("economy.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
             this.confirm.put(p.getUniqueId(), riseItem);
             this.confirmTasks.put(p.getUniqueId(), Integer.valueOf(DarkRiseEconomy.getInstance().runTaskLater(() -> {
@@ -127,8 +142,8 @@ public class PlayerListener implements Listener {
         if (event.getKeepInventory()) return;
         if (event.getDrops().isEmpty()) return;
 
-        DarkRiseItems items = this.plugin.getItems();
-        ArrayList<ItemStack> keeps = new ArrayList();
+        DarkRiseItems        items   = this.plugin.getItems();
+        ArrayList<ItemStack> keeps   = new ArrayList();
         ArrayList<ItemStack> removes = new ArrayList();
 
         for (ItemStack itemStack : event.getDrops()) {
@@ -191,8 +206,8 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
         if (this.confirm.containsKey(p.getUniqueId())) {
-            String yes = MessageUtil.getMessageAsString("economy.yes", "yes");
-            String no = MessageUtil.getMessageAsString("economy.no", "no");
+            String       yes = MessageUtil.getMessageAsString("economy.yes", "yes", true);
+            String       no  = MessageUtil.getMessageAsString("economy.no", "no", true);
             DarkRiseItem item;
             if (event.getMessage().equalsIgnoreCase(yes) && (item = this.confirm.remove(p.getUniqueId())) != null) {
                 Integer i = this.confirmTasks.remove(p.getUniqueId());
@@ -203,13 +218,13 @@ public class PlayerListener implements Listener {
                 DarkRiseEconomy.getInstance().runTask(() -> {
                     boolean used = (powerItem.isRemoveOnUse() == 0);
                     if (!used) {
-                        ItemStack toRemove = powerItem.getItem(powerItem.isRemoveOnUse());
-                        int toRemoveAmount = toRemove.getAmount();
-                        HashMap<Integer, ItemStack> removeResult = p.getInventory().removeItem(toRemove);
+                        ItemStack                   toRemove       = powerItem.getItem(powerItem.isRemoveOnUse());
+                        int                         toRemoveAmount = toRemove.getAmount();
+                        HashMap<Integer, ItemStack> removeResult   = p.getInventory().removeItem(toRemove);
                         used = removeResult.isEmpty();
                         if (!used) {
                             int notRemovedAmount = toRemove.getAmount();
-                            int removedAmount = toRemoveAmount - notRemovedAmount;
+                            int removedAmount    = toRemoveAmount - notRemovedAmount;
                             if (removedAmount != 0) {
                                 toRemove.setAmount(removedAmount);
                                 p.getInventory().addItem(toRemove);
@@ -236,24 +251,6 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         this.confirm.remove(event.getPlayer().getUniqueId());
-    }
-
-    private static final Set<InventoryAction> dropActions = Sets.newIdentityHashSet();
-
-    private static final Set<InventoryType> tradeableInventories = Sets.newIdentityHashSet();
-
-    static {
-        dropActions.add(InventoryAction.DROP_ALL_CURSOR);
-        dropActions.add(InventoryAction.DROP_ALL_SLOT);
-        dropActions.add(InventoryAction.DROP_ONE_CURSOR);
-        dropActions.add(InventoryAction.DROP_ONE_SLOT);
-        tradeableInventories.add(InventoryType.ANVIL);
-        tradeableInventories.add(InventoryType.CRAFTING);
-        tradeableInventories.add(InventoryType.CREATIVE);
-        tradeableInventories.add(InventoryType.ENDER_CHEST);
-        tradeableInventories.add(InventoryType.ENCHANTING);
-        tradeableInventories.add(InventoryType.PLAYER);
-        tradeableInventories.add(InventoryType.WORKBENCH);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
