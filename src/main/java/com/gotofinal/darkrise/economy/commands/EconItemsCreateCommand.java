@@ -47,10 +47,10 @@ public class EconItemsCreateCommand extends RiseCommand {
             return;
         }
         String id = args[0];
-        boolean dropOnDeath = false;
+        boolean dropOnDeath = true;
         boolean confirmOnUse = false;
         boolean canDrop = true;
-        int removeOnDeath = 0;
+        int removeOnDeath = 1;
         int removeOnUse = 0;
         String fileName = id + ".yml";
         DoubleRange chanceToLostDurability = new DoubleRange(0d, 0d);
