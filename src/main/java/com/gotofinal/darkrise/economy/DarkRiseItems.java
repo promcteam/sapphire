@@ -69,7 +69,7 @@ public class DarkRiseItems {
             return false;
         File file = this.itemFiles.remove(item.getId().toLowerCase());
         if (file != null) {
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+            YamlConfiguration            yaml  = YamlConfiguration.loadConfiguration(file);
             Collection<DarkRiseItemImpl> items = yaml.getMapList("items").stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).collect(Collectors.toSet());
             items.remove(item);
             if (items.isEmpty()) {
@@ -134,7 +134,7 @@ public class DarkRiseItems {
         for (DarkRiseItem darkRiseItem : this.itemsById.values()) {
             if (darkRiseItem.isVanilla())
                 continue;
-            File file = this.itemFiles.get(darkRiseItem.getId().toLowerCase());
+            File                     file  = this.itemFiles.get(darkRiseItem.getId().toLowerCase());
             Collection<DarkRiseItem> items = data.computeIfAbsent(file, k -> new ArrayList(20));
             items.add(darkRiseItem/*.serialize()*/);
         }
@@ -170,11 +170,11 @@ public class DarkRiseItems {
             } else if (!file.getName().endsWith(".yml")) {
                 continue;
             }
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
             try {
+                YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
                 yaml.getList("items").forEach(i -> addItem(file, (DarkRiseItem) i, false));
-            } catch (IllegalArgumentException e) {
-                DarkRiseEconomy.getInstance().getLogger().warning("Could not load some items.");
+            } catch (Exception e) {
+                DarkRiseEconomy.getInstance().getLogger().warning("Could not load " + file.getName() + ": " + e.getMessage());
                 e.printStackTrace();
             }
             continue;
