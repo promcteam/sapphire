@@ -122,6 +122,10 @@ public class DarkRiseEconomy extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(Bukkit.getPluginManager().isPluginEnabled("ProMCCore")) {
+            ProMCUtilitiesProvider.register();
+        }
         Register.register(this); //Register our events and our commands.
     }
 

@@ -4,7 +4,7 @@ authors: [Travja, goflish]
 version: 1.3-Trav
 api-version: 1.13
 depend: [RiseCore]
-softdepend: [PlayerPoints]
+softdepend: [PlayerPoints, ProMCCore]
 commands:
   econ:
     description: The base command for Econ.
