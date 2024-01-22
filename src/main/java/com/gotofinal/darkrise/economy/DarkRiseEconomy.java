@@ -139,6 +139,7 @@ public class DarkRiseEconomy extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ProMCUtilitiesProvider.unregister();
     }
 
     public void info(String msg) {

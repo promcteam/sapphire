@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.promcteam</groupId>
             <artifactId>promccore</artifactId>
-            <version>1.2.0-R0.1-SNAPSHOT</version>
+            <version>1.2.0-R0.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
