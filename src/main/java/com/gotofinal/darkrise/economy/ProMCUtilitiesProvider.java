@@ -25,6 +25,11 @@ public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesPr
     }
 
     @Override
+    public String getNamespace() {
+        return NAMESPACE;
+    }
+
+    @Override
     public Category getCategory() {
         return Category.PRO;
     }
