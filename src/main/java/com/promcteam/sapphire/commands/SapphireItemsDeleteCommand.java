@@ -1,20 +1,20 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import me.travja.darkrise.core.item.DarkRiseItem;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
+import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
 import me.travja.darkrise.core.util.ArrayUtils;
 import org.bukkit.command.CommandSender;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "delete", aliases = {"delete", "del"})
-public class EconItemsDeleteCommand extends RiseCommand {
+public class SapphireItemsDeleteCommand extends RiseCommand {
     private static final int PAGE_SIZE = 15;
 
-    private final DarkRiseEconomy plugin;
+    private final Sapphire plugin;
 
-    public EconItemsDeleteCommand(final DarkRiseEconomy plugin, final EconItemsCommand command) {
+    public SapphireItemsDeleteCommand(final Sapphire plugin, final SapphireItemsCommand command) {
         super("delete", ArrayUtils.toArray("delete", "del"), command
         );
         this.plugin = plugin;
@@ -26,15 +26,15 @@ public class EconItemsDeleteCommand extends RiseCommand {
             this.sendUsage(command.getUsage(), sender, command, args);
             return;
         }
-        if (!this.checkPermission(sender, "pmcu.items.delete")) {
+        if (!this.checkPermission(sender, "sapphire.items.delete")) {
             return;
         }
         DarkRiseItem riseItem = this.plugin.getItems().getItemByIdOrName(args[0]);
         if (riseItem == null) {
-            MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[0]));
+            MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[0]));
             return;
         }
         this.plugin.getItems().removeItem(riseItem, true);
-        MessageUtil.sendMessage("economy.commands.delete", sender, new MessageData("riseItem", riseItem));
+        MessageUtil.sendMessage("sapphire.commands.delete", sender, new MessageData("riseItem", riseItem));
     }
 }

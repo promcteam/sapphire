@@ -1,20 +1,18 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
 import org.bukkit.command.CommandSender;
-import scala.collection.View;
 
 import java.util.Arrays;
-import java.util.Collections;
 
-public class EconCommand extends RiseCommand {
+public class SapphireCommand extends RiseCommand {
 
-    private DarkRiseEconomy eco;
+    private Sapphire eco;
 
-    public EconCommand(DarkRiseEconomy economy) {
-        super("econ", Arrays.asList("econ", "pmcu", "promcutilities"), economy);
-        this.setUsage("economy.commands.help");
+    public SapphireCommand(Sapphire economy) {
+        super("sapphire", Arrays.asList("sapphire", "econ", "pmcu", "promcutilities"), economy);
+        this.setUsage("sapphire.commands.help");
 //        this.setCommandExecutor(this);
 //        SubCommandAnnotation.register(this);
     }

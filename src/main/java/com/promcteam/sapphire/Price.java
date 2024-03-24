@@ -1,4 +1,4 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
 import me.travja.darkrise.core.legacy.util.DeserializationWorker;
 import me.travja.darkrise.core.legacy.util.SerializationBuilder;
@@ -39,7 +39,10 @@ public class Price implements ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        return SerializationBuilder.start(2).append("currency", this.currency).append("amount", Double.valueOf(this.amount)).build();
+        return SerializationBuilder.start(2)
+                .append("currency", this.currency)
+                .append("amount", Double.valueOf(this.amount))
+                .build();
     }
 
     public static Price of(String currency, double amount) {

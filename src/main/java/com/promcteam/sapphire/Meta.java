@@ -1,4 +1,4 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -7,19 +7,22 @@ import org.bukkit.metadata.Metadatable;
 
 public class Meta {
     public static void setMetadata(Metadatable obj, String key, Object value) {
-        obj.setMetadata(key, new FixedMetadataValue(DarkRiseEconomy.getInstance(), value));
+        obj.setMetadata(key, new FixedMetadataValue(Sapphire.getInstance(), value));
     }
 
     public static MetadataValue getMetadata(Metadatable obj, String key) {
         for (MetadataValue value : obj.getMetadata(key)) {
-            if (value.getOwningPlugin().getDescription().getName().equals(DarkRiseEconomy.getInstance().getDescription().getName()))
+            if (value.getOwningPlugin()
+                    .getDescription()
+                    .getName()
+                    .equals(Sapphire.getInstance().getDescription().getName()))
                 return value;
         }
         return null;
     }
 
     public static void removeMetadata(Metadatable obj, String key) {
-        obj.removeMetadata(key, DarkRiseEconomy.getInstance());
+        obj.removeMetadata(key, Sapphire.getInstance());
     }
 
     public static void protect(Block block) {

@@ -1,6 +1,6 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.Map;
 
-public class EconClaimCommand extends RiseCommand {
+public class SapphireClaimCommand extends RiseCommand {
 
-    private DarkRiseEconomy eco;
+    private final Sapphire eco;
 
-    public EconClaimCommand(DarkRiseEconomy plugin, EconCommand command) {
+    public SapphireClaimCommand(Sapphire plugin, SapphireCommand command) {
         super("claim", Collections.singletonList("claim"), command);
         eco = plugin;
     }
@@ -29,6 +29,6 @@ public class EconClaimCommand extends RiseCommand {
         }
 
         Map<DarkRiseItem, Integer> added = eco.checkItemsToAdd((Player) sender);
-        MessageUtil.sendMessage("economy.commands.claim.claimed", sender, new MessageData("amount", added.size()));
+        MessageUtil.sendMessage("sapphire.commands.claim.claimed", sender, new MessageData("amount", added.size()));
     }
 }

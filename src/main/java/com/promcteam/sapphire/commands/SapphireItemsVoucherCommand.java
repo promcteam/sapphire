@@ -1,8 +1,8 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
+import com.promcteam.sapphire.cfg.VoucherManager;
 import me.travja.darkrise.core.item.DarkRiseItem;
-import com.gotofinal.darkrise.economy.cfg.VoucherManager;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "voucher")
-public class EconItemsVoucherCommand extends RiseCommand {
-    private final DarkRiseEconomy eco;
+public class SapphireItemsVoucherCommand extends RiseCommand {
+    private final Sapphire eco;
 
-    public EconItemsVoucherCommand(DarkRiseEconomy plugin, EconItemsCommand command) {
+    public SapphireItemsVoucherCommand(Sapphire plugin, SapphireItemsCommand command) {
         super("voucher", ArrayUtils.toArray("voucter"), command);
         this.eco = plugin;
     }
@@ -46,7 +46,7 @@ public class EconItemsVoucherCommand extends RiseCommand {
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "pmcu.items.voucher")) {
+        if (!this.checkPermission(sender, "sapphire.items.voucher")) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class EconItemsVoucherCommand extends RiseCommand {
 
         DarkRiseItem riseItem = this.eco.getItems().getItemById(args[1]);
         if (riseItem == null) {
-            MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[1]));
+            MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[1]));
             return;
         }
 
@@ -79,8 +79,8 @@ public class EconItemsVoucherCommand extends RiseCommand {
             amount = i;
         }
 
-        ItemStack item = VoucherManager.getInstance().addNextId(riseItem.getItem(amount));
-        Player player = target != null ? target : (Player) sender;
+        ItemStack                   item     = VoucherManager.getInstance().addNextId(riseItem.getItem(amount));
+        Player                      player   = target != null ? target : (Player) sender;
         HashMap<Integer, ItemStack> notAdded = player.getInventory().addItem(item);
 
         if (!notAdded.isEmpty()) {

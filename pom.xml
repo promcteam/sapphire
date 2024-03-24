@@ -10,9 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>promcutilities</artifactId>
-    <name>ProMCUtilities</name>
-    <version>1.1.0-R0.1-SNAPSHOT</version>
+    <artifactId>sapphire</artifactId>
+    <name>Sapphire</name>
+    <version>1.0.0-R0.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -35,8 +35,8 @@
         </dependency>
         <dependency>
             <groupId>com.promcteam</groupId>
-            <artifactId>promccore</artifactId>
-            <version>1.2.0-R0.7-SNAPSHOT</version>
+            <artifactId>codex</artifactId>
+            <version>1.0.0-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

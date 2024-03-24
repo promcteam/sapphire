@@ -1,6 +1,6 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.legacy.util.message.MessageUtil;
 import org.bukkit.Material;
@@ -10,13 +10,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "create", aliases = {"create", "c"})
-public class EconTestItemCommand extends RiseCommand {
-    private final DarkRiseEconomy eco;
+public class SapphireTestItemCommand extends RiseCommand {
+    private final Sapphire eco;
 
-    public EconTestItemCommand(final DarkRiseEconomy plugin, final EconCommand command) {
-        super("testItem", new ArrayList<>(Arrays.asList("ti")), command);
+    public SapphireTestItemCommand(final Sapphire plugin, final SapphireCommand command) {
+        super("testItem", new ArrayList<>(Collections.singletonList("ti")), command);
         setUsage("Insufficient Arguments");
         this.eco = plugin;
     }
@@ -27,19 +28,19 @@ public class EconTestItemCommand extends RiseCommand {
             MessageUtil.sendMessage("senderIsNotPlayer", sender);
             return;
         }
-        if (!this.checkPermission(sender, "pmcu.items.create")) {
+        if (!this.checkPermission(sender, "sapphire.items.create")) {
             return;
         }
         ItemStack mainHand = ((Player) sender).getInventory().getItemInMainHand();
         if (mainHand == null || mainHand.getType() == Material.AIR) {
-            MessageUtil.sendMessage("economy.commands.create.no-item", sender);
+            MessageUtil.sendMessage("sapphire.commands.create.no-item", sender);
             return;
         }
 
-        DarkRiseEconomy.getInstance().getConfig().set("item", mainHand);
-        DarkRiseEconomy.getInstance().getConfig().set("itemMeta", mainHand.getItemMeta());
-        DarkRiseEconomy.getInstance().saveConfig();
+        Sapphire.getInstance().getConfig().set("item", mainHand);
+        Sapphire.getInstance().getConfig().set("itemMeta", mainHand.getItemMeta());
+        Sapphire.getInstance().saveConfig();
 
-        MessageUtil.sendMessage("economy.commands.create.done", sender);
+        MessageUtil.sendMessage("sapphire.commands.create.done", sender);
     }
 }

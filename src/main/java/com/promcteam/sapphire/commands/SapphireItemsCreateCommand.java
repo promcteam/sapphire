@@ -1,6 +1,6 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "create", aliases = {"create", "c"})
-public class EconItemsCreateCommand extends RiseCommand {
+public class SapphireItemsCreateCommand extends RiseCommand {
     private static final int PAGE_SIZE = 15;
 
-    private final DarkRiseEconomy eco;
+    private final Sapphire eco;
 
-    public EconItemsCreateCommand(final DarkRiseEconomy plugin, final EconItemsCommand command) {
+    public SapphireItemsCreateCommand(final Sapphire plugin, final SapphireItemsCommand command) {
         super("create", new ArrayList<>(Arrays.asList("create", "c")), command);
         setUsage("Insufficient Arguments");
         this.eco = plugin;
@@ -38,23 +38,23 @@ public class EconItemsCreateCommand extends RiseCommand {
             MessageUtil.sendMessage("senderIsNotPlayer", sender);
             return;
         }
-        if (!this.checkPermission(sender, "pmcu.items.create")) {
+        if (!this.checkPermission(sender, "sapphire.items.create")) {
             return;
         }
         ItemStack mainHand = ((Player) sender).getInventory().getItemInMainHand();
         if (mainHand == null || mainHand.getType() == Material.AIR) {
-            MessageUtil.sendMessage("economy.commands.create.no-item", sender);
+            MessageUtil.sendMessage("sapphire.commands.create.no-item", sender);
             return;
         }
-        String id = args[0];
-        boolean dropOnDeath = true;
-        boolean confirmOnUse = false;
-        boolean canDrop = true;
-        int removeOnDeath = 1;
-        int removeOnUse = 0;
-        String fileName = id + ".yml";
+        String      id                     = args[0];
+        boolean     dropOnDeath            = true;
+        boolean     confirmOnUse           = false;
+        boolean     canDrop                = true;
+        int         removeOnDeath          = 1;
+        int         removeOnUse            = 0;
+        String      fileName               = id + ".yml";
         DoubleRange chanceToLostDurability = new DoubleRange(0d, 0d);
-        String prev = "";
+        String      prev                   = "";
 //        Iterator<String> iterator = args.iterator();
 //        iterator.next();
 
@@ -108,7 +108,8 @@ public class EconItemsCreateCommand extends RiseCommand {
                     return;
                 }
                 removeOnUse = i;
-            } else if (prev.equalsIgnoreCase("-file") || prev.equalsIgnoreCase("-f") || prev.equalsIgnoreCase("-catalog")) {
+            } else if (prev.equalsIgnoreCase("-file") || prev.equalsIgnoreCase("-f")
+                    || prev.equalsIgnoreCase("-catalog")) {
                 prev = "";
                 fileName = arg;
             } else if (prev.equalsIgnoreCase("-dura") || prev.equalsIgnoreCase("-durability")) {
@@ -142,6 +143,6 @@ public class EconItemsCreateCommand extends RiseCommand {
             this.eco.getLogger().warning("Could not load item '" + fileName + "'");
             e.printStackTrace();
         }
-        MessageUtil.sendMessage("economy.commands.create.done", sender, new MessageData("riseItem", riseItem));
+        MessageUtil.sendMessage("sapphire.commands.create.done", sender, new MessageData("riseItem", riseItem));
     }
 }

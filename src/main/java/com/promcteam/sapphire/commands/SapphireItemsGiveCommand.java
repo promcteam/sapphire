@@ -1,6 +1,6 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "give")
-public class EconItemsGiveCommand extends RiseCommand {
+public class SapphireItemsGiveCommand extends RiseCommand {
     private static final int PAGE_SIZE = 15;
 
-    private final DarkRiseEconomy eco;
-    private final EconItemsCommand command;
+    private final Sapphire             eco;
+    private final SapphireItemsCommand command;
 
-    public EconItemsGiveCommand(DarkRiseEconomy plugin, EconItemsCommand command) {
+    public SapphireItemsGiveCommand(Sapphire plugin, SapphireItemsCommand command) {
         super("give", Collections.singletonList("gives"), command);
         this.eco = plugin;
         this.command = command;
@@ -48,7 +48,7 @@ public class EconItemsGiveCommand extends RiseCommand {
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
 
-        if (!this.checkPermission(sender, "pmcu.items.give")) {
+        if (!this.checkPermission(sender, "sapphire.items.give")) {
             return;
         }
         if (args.length == 0) {
@@ -62,14 +62,14 @@ public class EconItemsGiveCommand extends RiseCommand {
             }
             DarkRiseItem riseItem = this.eco.getItems().getItemByIdOrName(args[0]);
             if (riseItem == null) {
-                MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[0]));
+                MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[0]));
                 return;
             }
 
             eco.addItems((Player) sender, riseItem, 1);
             if (eco.getItemsToAdd().containsKey(((Player) sender).getUniqueId())
                     && !eco.getItemsToAdd().get(((Player) sender).getUniqueId()).isEmpty()) {
-                MessageUtil.sendMessage("economy.commands.claim.pending", sender);
+                MessageUtil.sendMessage("sapphire.commands.claim.pending", sender);
             }
             return;
         }
@@ -81,7 +81,7 @@ public class EconItemsGiveCommand extends RiseCommand {
         }
         DarkRiseItem riseItem = this.eco.getItems().getItemByIdOrName(args[1]);
         if (riseItem == null) {
-            MessageUtil.sendMessage("economy.commands.noItem", sender, new MessageData("name", args[1]));
+            MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[1]));
             return;
         }
         int amount = 1;
@@ -96,10 +96,13 @@ public class EconItemsGiveCommand extends RiseCommand {
         }
 
         eco.addItems(target, riseItem, amount);
-        MessageUtil.sendMessage("economy.commands.give.success", sender, new MessageData("player", target.getName()), new MessageData("riseItem", riseItem));
+        MessageUtil.sendMessage("sapphire.commands.give.success",
+                sender,
+                new MessageData("player", target.getName()),
+                new MessageData("riseItem", riseItem));
         if (eco.getItemsToAdd().containsKey(target.getUniqueId())
                 && !eco.getItemsToAdd().get(target.getUniqueId()).isEmpty()) {
-            MessageUtil.sendMessage("economy.commands.claim.pending", target);
+            MessageUtil.sendMessage("sapphire.commands.claim.pending", target);
         }
     }
 }

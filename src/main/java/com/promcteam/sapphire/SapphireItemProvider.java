@@ -1,27 +1,27 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
-import mc.promcteam.engine.NexEngine;
-import mc.promcteam.engine.items.ItemType;
-import mc.promcteam.engine.items.ProItemManager;
-import mc.promcteam.engine.items.providers.IProItemProvider;
+import com.promcteam.codex.CodexEngine;
+import com.promcteam.codex.items.ItemType;
+import com.promcteam.codex.items.ProItemManager;
+import com.promcteam.codex.items.providers.IProItemProvider;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesProvider.ProMCUtilitiesItemType> {
+public class SapphireItemProvider implements IProItemProvider<SapphireItemProvider.SapphireItemType> {
     public static String NAMESPACE = "PROMCU";
 
     public static void register() {
-        NexEngine.getEngine().getItemManager().registerProvider(NAMESPACE, new ProMCUtilitiesProvider());
+        CodexEngine.getEngine().getItemManager().registerProvider(NAMESPACE, new SapphireItemProvider());
     }
 
     public static void unregister() {
-        NexEngine.getEngine().getItemManager().unregisterProvider(ProMCUtilitiesProvider.class);
+        CodexEngine.getEngine().getItemManager().unregisterProvider(SapphireItemProvider.class);
     }
 
     @Override
     public String pluginName() {
-        return "ProMCUtilities";
+        return "Sapphire";
     }
 
     @Override
@@ -35,31 +35,31 @@ public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesPr
     }
 
     @Override
-    public ProMCUtilitiesItemType getItem(String id) {
+    public SapphireItemType getItem(String id) {
         id = ProItemManager.stripPrefix(NAMESPACE, id);
 
-        DarkRiseItem riseItem = DarkRiseEconomy.getItemsRegistry().getItemById(id);
+        DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemById(id);
         if (riseItem == null) {
             return null;
         }
 
-        return new ProMCUtilitiesItemType(riseItem);
+        return new SapphireItemType(riseItem);
     }
 
     @Override
     @Nullable
-    public ProMCUtilitiesItemType getItem(ItemStack item) {
-        DarkRiseItem riseItem = DarkRiseEconomy.getItemsRegistry().getItemByStack(item);
+    public SapphireItemProvider.SapphireItemType getItem(ItemStack item) {
+        DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
         if (riseItem == null || riseItem.getId().startsWith("vanilla_")) {
             return null;
         }
 
-        return new ProMCUtilitiesItemType(riseItem);
+        return new SapphireItemType(riseItem);
     }
 
     @Override
     public boolean isCustomItem(ItemStack item) {
-        DarkRiseItem riseItem = DarkRiseEconomy.getItemsRegistry().getItemByStack(item);
+        DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
         return riseItem != null && !riseItem.getId().startsWith("vanilla_");
     }
 
@@ -67,7 +67,7 @@ public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesPr
     public boolean isCustomItemOfId(ItemStack item, String id) {
         id = ProItemManager.stripPrefix(NAMESPACE, id);
 
-        DarkRiseItem riseItem = DarkRiseEconomy.getItemsRegistry().getItemByStack(item);
+        DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
         if (riseItem == null || riseItem.getId().startsWith("vanilla_")) {
             return false;
         }
@@ -75,10 +75,10 @@ public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesPr
         return riseItem.getId().equals(id);
     }
 
-    public static class ProMCUtilitiesItemType extends ItemType {
+    public static class SapphireItemType extends ItemType {
         private final DarkRiseItem riseItem;
 
-        public ProMCUtilitiesItemType(DarkRiseItem riseItem) {
+        public SapphireItemType(DarkRiseItem riseItem) {
             this.riseItem = riseItem;
         }
 
@@ -104,7 +104,7 @@ public class ProMCUtilitiesProvider implements IProItemProvider<ProMCUtilitiesPr
 
         @Override
         public boolean isInstance(ItemStack item) {
-            DarkRiseItem riseItem = DarkRiseEconomy.getItemsRegistry().getItemByStack(item);
+            DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
             if (riseItem == null || riseItem.getId().startsWith("vanilla_")) {
                 return false;
             }

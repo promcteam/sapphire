@@ -1,11 +1,11 @@
-name: ProMCUtilities
-main: com.gotofinal.darkrise.economy.DarkRiseEconomy
-authors: [Travja, goflish]
-version: 1.3-Trav
+name: ${project.name}
+main: com.promcteam.sapphire.Sapphire
+authors: [ Travja, goflish ]
+version: ${project.version}
 api-version: 1.13
-depend: [RiseCore]
-softdepend: [PlayerPoints, ProMCCore]
+depend: [ RiseCore ]
+softdepend: [ PlayerPoints, Codex ]
 commands:
-  econ:
-    description: The base command for Econ.
-    aliases: [pmcu, promcutilities]
+  sapphire:
+    description: The base command for Sapphire.
+    aliases: [ econ, pmcu, promcutilities ]

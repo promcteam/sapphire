@@ -1,6 +1,6 @@
-package com.gotofinal.darkrise.economy.commands;
+package com.promcteam.sapphire.commands;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 import me.travja.darkrise.core.command.RiseCommand;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -18,19 +18,19 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 
 //@DarkRiseSubCommand(value = EconItemsCommand.class, name = "list", aliases = {"list", "ls"})
-public class EconItemsListCommand extends RiseCommand {
+public class SapphireItemsListCommand extends RiseCommand {
     private static final int PAGE_SIZE = 15;
 
-    private final DarkRiseEconomy eco;
+    private final Sapphire eco;
 
-    public EconItemsListCommand(final DarkRiseEconomy plugin, EconItemsCommand command) {
+    public SapphireItemsListCommand(final Sapphire plugin, SapphireItemsCommand command) {
         super("list", ArrayUtils.toArray("list", "ls"), command);
         this.eco = plugin;
     }
 
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
-        if (!this.checkPermission(sender, "pmcu.items.list")) {
+        if (!this.checkPermission(sender, "sapphire.items.list")) {
             return;
         }
         SortedMap<String, DarkRiseItem> map  = this.eco.getItems().getSortedMap();
@@ -45,7 +45,10 @@ public class EconItemsListCommand extends RiseCommand {
         int         index       = 0;
 
 //        TextComponent list = new TextComponent("");
-        MessageUtil.sendMessage("economy.commands.items.list-header", sender, pageMsgData, new MessageData("sender", sender));
+        MessageUtil.sendMessage("sapphire.commands.items.list-header",
+                sender,
+                pageMsgData,
+                new MessageData("sender", sender));
         for (Iterator<Entry<String, DarkRiseItem>> iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
             Entry<String, DarkRiseItem> entry = iterator.next();
             index++;
@@ -56,10 +59,11 @@ public class EconItemsListCommand extends RiseCommand {
                 break;
             }
             TextComponent textComponent = new TextComponent("");
-            textComponent.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/econ items give " + sender.getName() + " " + entry.getKey() + " 1"));
+            textComponent.setClickEvent(new ClickEvent(Action.RUN_COMMAND,
+                    "/econ items give " + sender.getName() + " " + entry.getKey() + " 1"));
             textComponent.setHoverEvent(NMSPlayerUtils.convert(entry.getValue().getItem()));
             textComponent.setExtra(Arrays.asList(MessageUtil.getMessageAsComponent(
-                    "economy.commands.items.list-entry",
+                    "sapphire.commands.items.list-entry",
                     new MessageData("index", index),
                     new MessageData("riseItem", entry.getValue())
             )));
@@ -69,6 +73,9 @@ public class EconItemsListCommand extends RiseCommand {
 //                list.addExtra(new TextComponent("\n"));
 //            }
         }
-        MessageUtil.sendMessage("economy.commands.items.list-footer", sender, pageMsgData, new MessageData("sender", sender));
+        MessageUtil.sendMessage("sapphire.commands.items.list-footer",
+                sender,
+                pageMsgData,
+                new MessageData("sender", sender));
     }
 }

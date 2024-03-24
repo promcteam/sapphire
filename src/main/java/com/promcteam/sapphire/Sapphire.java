@@ -1,8 +1,9 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
-import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
-import com.gotofinal.darkrise.economy.cfg.PlayerData;
-import com.gotofinal.darkrise.economy.cfg.VoucherManager;
+import com.promcteam.sapphire.cfg.PlayerData;
+import com.promcteam.sapphire.cfg.SapphireConfig;
+import com.promcteam.sapphire.cfg.VoucherManager;
+import lombok.Getter;
 import me.travja.darkrise.core.ConfigManager;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.killme.chat.placeholder.PlaceholderType;
@@ -32,25 +33,26 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class DarkRiseEconomy extends JavaPlugin {
-    public static final PlaceholderType<DarkRiseItem> RISE_ITEM = PlaceholderType.create("riseItem", DarkRiseItem.class);
-    public static final PlaceholderType<EconomyConfig> ECONOMY_CONFIG = PlaceholderType.create("economyConfig", EconomyConfig.class);
-    private static DarkRiseEconomy instance;
+public class Sapphire extends JavaPlugin {
+    public static final PlaceholderType<DarkRiseItem>   RISE_ITEM       =
+            PlaceholderType.create("riseItem", DarkRiseItem.class);
+    public static final PlaceholderType<SapphireConfig> SAPPHIRE_CONFIG =
+            PlaceholderType.create("sapphireConfig", SapphireConfig.class);
+    @Getter
+    private static      Sapphire                        instance;
     //private EconomyConfig config;
-    private final File itemsToAddFile;
+    private final       File                            itemsToAddFile;
 
+    @Getter
     private final Map<UUID, Map<DarkRiseItem, Integer>> itemsToAdd;
-    private DarkRiseItems items;
-    private FileConfiguration config;
+    @Getter
+    private       DarkRiseItems                         items;
+    private       FileConfiguration                     config;
 
-    public DarkRiseEconomy() {
+    public Sapphire() {
         this.itemsToAddFile = new File(getDataFolder(), "itemstoadd.yml");
         this.itemsToAdd = new HashMap<>();
         instance = this;
-    }
-
-    public static DarkRiseEconomy getInstance() {
-        return instance;
     }
 
     public static DarkRiseItems getItemsRegistry() {
@@ -65,16 +67,14 @@ public class DarkRiseEconomy extends JavaPlugin {
         return config.getInt("timeout");
     }
 
-    public DarkRiseItems getItems() {
-        return this.items;
-    }
-
     public void reloadConfigs() {
         reloadConfig();
         this.items = new DarkRiseItems();
         this.items.loadItems();
         this.config = ConfigManager.loadConfigFile(new File(getDataFolder(), "config.yml"), getResource("config.yml"));
-        FileConfiguration lang = ConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"), getResource("lang/lang_en.yml"));
+        FileConfiguration lang =
+                ConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
+                        getResource("lang/lang_en.yml"));
         MessageUtil.reload(lang, this);
         //this.config = (EconomyConfig) loadConfigFile(new File(getDataFolder(), "config.yml"), EconomyConfig.class);
     }
@@ -105,7 +105,7 @@ public class DarkRiseEconomy extends JavaPlugin {
         });
         RISE_ITEM.registerItem("lore", c -> StringUtils.join(c.getItem().getItemMeta().getLore(), '\n'));
         RISE_ITEM.registerItem("enchantments", c -> StringUtils.join(c.getItem().getEnchantments().keySet(), ", "));
-        ECONOMY_CONFIG.registerItem("timeout", EconomyConfig::getTimeout);
+        SAPPHIRE_CONFIG.registerItem("timeout", SapphireConfig::getTimeout);
         RISE_ITEM.registerChild("item", Init.ITEM, DarkRiseItem::getItem);
         super.onLoad();
     }
@@ -123,8 +123,8 @@ public class DarkRiseEconomy extends JavaPlugin {
             e.printStackTrace();
         }
 
-        if(Bukkit.getPluginManager().isPluginEnabled("ProMCCore")) {
-            ProMCUtilitiesProvider.register();
+        if (Bukkit.getPluginManager().isPluginEnabled("Codex")) {
+            SapphireItemProvider.register();
         }
         Register.register(this); //Register our events and our commands.
     }
@@ -139,7 +139,7 @@ public class DarkRiseEconomy extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ProMCUtilitiesProvider.unregister();
+        SapphireItemProvider.unregister();
     }
 
     public void info(String msg) {
@@ -159,7 +159,7 @@ public class DarkRiseEconomy extends JavaPlugin {
     }
 
     public Map<DarkRiseItem, Integer> addItems(Player player, Map<DarkRiseItem, Integer> map) {
-        PlayerInventory inv = player.getInventory();
+        PlayerInventory            inv       = player.getInventory();
         Map<DarkRiseItem, Integer> playerMap = new HashMap<>();
         if (this.itemsToAdd.containsKey(player.getUniqueId()))
             playerMap.putAll(this.itemsToAdd.get(player.getUniqueId()));
@@ -171,14 +171,21 @@ public class DarkRiseEconomy extends JavaPlugin {
             });
         if (playerMap.isEmpty())
             return new HashMap<>();
-        ItemStack[] itemsArray = playerMap.entrySet().stream().map(e -> e.getKey().getItem(e.getValue().intValue())).toArray(x$0 -> new ItemStack[x$0]);
+        ItemStack[] itemsArray = playerMap.entrySet()
+                .stream()
+                .map(e -> e.getKey().getItem(e.getValue().intValue()))
+                .toArray(x$0 -> new ItemStack[x$0]);
         Map<Integer, ItemStack> notAdded = inv.addItem(itemsArray);
-        Map<DarkRiseItem, Integer> notAddedRise = notAdded.entrySet().stream().collect(Collectors.toMap(e -> getItems().getItemByStack(e.getValue()), e -> Integer.valueOf(e.getValue().getAmount())));
+        Map<DarkRiseItem, Integer> notAddedRise = notAdded.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> getItems().getItemByStack(e.getValue()),
+                        e -> Integer.valueOf(e.getValue().getAmount())));
         this.itemsToAdd.put(player.getUniqueId(), notAddedRise);
         if (this.itemsToAdd.containsKey(player.getUniqueId()) && this.itemsToAdd.get(player.getUniqueId()).isEmpty())
             this.itemsToAdd.remove(player.getUniqueId());
         return playerMap.entrySet().stream()
-                .filter(e -> (!notAddedRise.containsKey(e.getKey()) || !Objects.equals(notAddedRise.get(e.getKey()), e.getValue())))
+                .filter(e -> (!notAddedRise.containsKey(e.getKey()) || !Objects.equals(notAddedRise.get(e.getKey()),
+                        e.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -206,7 +213,10 @@ public class DarkRiseEconomy extends JavaPlugin {
     }
 
     public void checkItemsToAdd() {
-        Bukkit.getOnlinePlayers().stream().filter(o -> this.itemsToAdd.containsKey(o.getUniqueId())).forEach(this::checkItemsToAdd);
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(o -> this.itemsToAdd.containsKey(o.getUniqueId()))
+                .forEach(this::checkItemsToAdd);
     }
 
     public void saveItemsToAdd() throws IOException {
@@ -227,9 +237,5 @@ public class DarkRiseEconomy extends JavaPlugin {
                     itemMap.put(getItems().getItemById(itemName), (Integer) amount));
             this.itemsToAdd.put(UUID.fromString(uuid), itemMap);
         });
-    }
-
-    public Map<UUID, Map<DarkRiseItem, Integer>> getItemsToAdd() {
-        return this.itemsToAdd;
     }
 }

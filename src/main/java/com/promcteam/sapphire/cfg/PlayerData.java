@@ -1,7 +1,6 @@
-package com.gotofinal.darkrise.economy.cfg;
+package com.promcteam.sapphire.cfg;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import me.travja.darkrise.core.legacy.util.item.ItemBuilder;
+import com.promcteam.sapphire.Sapphire;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -13,15 +12,16 @@ import java.util.*;
 
 public final class PlayerData {
     private static final Map<UUID, List<ItemStack>> items = new HashMap<>(20, .4f);
-    private static File dataFile;
-    private static FileConfiguration cfg; // if server crashes/stops when player die, to have sure that he don't lose items
+    private static       File                       dataFile;
+    private static       FileConfiguration          cfg;
+            // if server crashes/stops when player die, to have sure that he don't lose items
 
     private PlayerData() {
     }
 
     @SuppressWarnings("unchecked")
     public static void init() {
-        dataFile = new File(DarkRiseEconomy.getInstance().getDataFolder(), "players.yml");
+        dataFile = new File(Sapphire.getInstance().getDataFolder(), "players.yml");
         if (!dataFile.exists()) {
             dataFile.getAbsoluteFile().getParentFile().mkdirs();
             try {

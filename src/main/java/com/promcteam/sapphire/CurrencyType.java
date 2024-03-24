@@ -1,4 +1,4 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
 import me.travja.darkrise.core.legacy.util.Vault;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -10,10 +10,14 @@ import org.bukkit.entity.Player;
 public enum CurrencyType {
     MONEY {
         public void sendNoMoney(Player player, double money) {
-            MessageUtil.sendMessage("economy.no-money", player, new MessageData("player", player), new MessageData("needed",
+            MessageUtil.sendMessage("sapphire.no-money",
+                    player,
+                    new MessageData("player", player),
+                    new MessageData("needed",
 
-                    Double.valueOf(money)), new MessageData("missing",
-                    Double.valueOf(money - get(player))));
+                            Double.valueOf(money)),
+                    new MessageData("missing",
+                            Double.valueOf(money - get(player))));
         }
 
         public boolean canPay(Player player, double money) {
@@ -40,10 +44,14 @@ public enum CurrencyType {
         private final PlayerPointsAPI plugin = PlayerPoints.getPlugin(PlayerPoints.class).getAPI();
 
         public void sendNoMoney(Player player, double money) {
-            MessageUtil.sendMessage("economy.no-points", player, new MessageData("player", player), new MessageData("needed",
+            MessageUtil.sendMessage("sapphire.no-points",
+                    player,
+                    new MessageData("player", player),
+                    new MessageData("needed",
 
-                    Double.valueOf(money)), new MessageData("missing",
-                    Double.valueOf(money - get(player))));
+                            Double.valueOf(money)),
+                    new MessageData("missing",
+                            Double.valueOf(money - get(player))));
         }
 
         public boolean canPay(Player player, double money) {

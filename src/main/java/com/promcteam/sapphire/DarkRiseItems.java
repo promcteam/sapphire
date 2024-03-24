@@ -1,4 +1,4 @@
-package com.gotofinal.darkrise.economy;
+package com.promcteam.sapphire;
 
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.item.DarkRiseItemImpl;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DarkRiseItems {
     private static final String ALLOWED_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM -_.";
 
-    private final File dataFile = new File(DarkRiseEconomy.getInstance().getDataFolder(), "items");
+    private final File dataFile = new File(Sapphire.getInstance().getDataFolder(), "items");
 
     private final Map<String, DarkRiseItem> itemsById = new ConcurrentHashMap<>(200);
 
@@ -57,7 +57,10 @@ public class DarkRiseItems {
         this.itemsById.put(lowerId, item);
         this.sortedItems.put(item.getId(), item);
         if (save)
-            DarkRiseEconomy.getInstance().getServer().getScheduler().runTaskAsynchronously(DarkRiseEconomy.getInstance(), this::saveItems);
+            Sapphire.getInstance()
+                    .getServer()
+                    .getScheduler()
+                    .runTaskAsynchronously(Sapphire.getInstance(), this::saveItems);
         return item;
     }
 
@@ -70,13 +73,17 @@ public class DarkRiseItems {
         File file = this.itemFiles.remove(item.getId().toLowerCase());
         if (file != null) {
             YamlConfiguration            yaml  = YamlConfiguration.loadConfiguration(file);
-            Collection<DarkRiseItemImpl> items = yaml.getMapList("items").stream().map(m -> new DarkRiseItemImpl((Map<String, Object>) m)).collect(Collectors.toSet());
+            Collection<DarkRiseItemImpl> items = yaml.getMapList("items")
+                    .stream()
+                    .map(m -> new DarkRiseItemImpl((Map<String, Object>) m))
+                    .collect(Collectors.toSet());
             items.remove(item);
             if (items.isEmpty()) {
                 if (!file.delete())
                     file.deleteOnExit();
             } else {
-                Collection<Map<String, Object>> toSave = items.stream().map(DarkRiseItemImpl::serialize).collect(Collectors.toList());
+                Collection<Map<String, Object>> toSave =
+                        items.stream().map(DarkRiseItemImpl::serialize).collect(Collectors.toList());
                 yaml.set("items", toSave);
                 try {
                     yaml.save(file);
@@ -88,7 +95,10 @@ public class DarkRiseItems {
         this.sortedItems.remove(item.getId());
         boolean result = (this.itemsByName.remove(item.getName().toLowerCase()) != null);
         if (save)
-            DarkRiseEconomy.getInstance().getServer().getScheduler().runTaskAsynchronously(DarkRiseEconomy.getInstance(), this::saveItems);
+            Sapphire.getInstance()
+                    .getServer()
+                    .getScheduler()
+                    .runTaskAsynchronously(Sapphire.getInstance(), this::saveItems);
         return result;
     }
 
@@ -149,7 +159,7 @@ public class DarkRiseItems {
                 yml.set("items", entry.getValue());
                 yml.save(saveFile);
             } catch (IOException e) {
-                DarkRiseEconomy.getInstance().error("Can't save items to file: " + entry);
+                Sapphire.getInstance().error("Can't save items to file: " + entry);
                 e.printStackTrace();
             }
         }
@@ -174,7 +184,7 @@ public class DarkRiseItems {
                 YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
                 yaml.getList("items").forEach(i -> addItem(file, (DarkRiseItem) i, false));
             } catch (Exception e) {
-                DarkRiseEconomy.getInstance().getLogger().warning("Could not load " + file.getName() + ": " + e.getMessage());
+                Sapphire.getInstance().getLogger().warning("Could not load " + file.getName() + ": " + e.getMessage());
                 e.printStackTrace();
             }
             continue;
@@ -185,7 +195,7 @@ public class DarkRiseItems {
 
     public void loadItems() {
         loadItems(this.dataFile);
-        DarkRiseEconomy.getInstance().info("Loaded " + this.sortedItems.size() + " items from " + this.itemFiles
+        Sapphire.getInstance().info("Loaded " + this.sortedItems.size() + " items from " + this.itemFiles
                 .size() + " files.");
         addVanillaItems();
     }
@@ -193,7 +203,8 @@ public class DarkRiseItems {
     private void addVanillaItems() {
         for (Material material : Material.values()) {
             if (getItemById("vanilla_" + material.name()) == null) {
-                DarkRiseItemImpl riseItem = new DarkRiseItemImpl("vanilla_" + material.name().toLowerCase(), new ItemStack(material));
+                DarkRiseItemImpl riseItem =
+                        new DarkRiseItemImpl("vanilla_" + material.name().toLowerCase(), new ItemStack(material));
                 addItem((File) null, riseItem, false);
             }
         }

@@ -1,11 +1,11 @@
-package com.gotofinal.darkrise.economy.listener;
+package com.promcteam.sapphire.listener;
 
 import com.google.common.collect.Sets;
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
-import com.gotofinal.darkrise.economy.DarkRiseItems;
-import com.gotofinal.darkrise.economy.cfg.EconomyConfig;
-import com.gotofinal.darkrise.economy.cfg.PlayerData;
-import com.gotofinal.darkrise.economy.cfg.VoucherManager;
+import com.promcteam.sapphire.Sapphire;
+import com.promcteam.sapphire.cfg.VoucherManager;
+import com.promcteam.sapphire.DarkRiseItems;
+import com.promcteam.sapphire.cfg.SapphireConfig;
+import com.promcteam.sapphire.cfg.PlayerData;
 import me.travja.darkrise.core.item.DarkRiseItem;
 import me.travja.darkrise.core.legacy.util.RangeUtil;
 import me.travja.darkrise.core.legacy.util.message.MessageData;
@@ -30,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //@EventListener(DarkRiseEconomy.class)
 public class PlayerListener implements Listener {
-    private static final Set<InventoryAction> dropActions = Sets.newIdentityHashSet();
-    private static final Set<InventoryType> tradeableInventories = Sets.newIdentityHashSet();
+    private static final Set<InventoryAction> dropActions          = Sets.newIdentityHashSet();
+    private static final Set<InventoryType>   tradeableInventories = Sets.newIdentityHashSet();
 
     static {
         dropActions.add(InventoryAction.DROP_ALL_CURSOR);
@@ -47,11 +47,11 @@ public class PlayerListener implements Listener {
         tradeableInventories.add(InventoryType.WORKBENCH);
     }
 
-    private final Map<UUID, DarkRiseItem> confirm = new ConcurrentHashMap<>(10, 0.4F, 2);
-    private final Map<UUID, Integer> confirmTasks = new ConcurrentHashMap<>(10, 0.4F, 2);
-    private final DarkRiseEconomy plugin;
+    private final Map<UUID, DarkRiseItem> confirm      = new ConcurrentHashMap<>(10, 0.4F, 2);
+    private final Map<UUID, Integer>      confirmTasks = new ConcurrentHashMap<>(10, 0.4F, 2);
+    private final Sapphire                plugin;
 
-    public PlayerListener(DarkRiseEconomy plugin) {
+    public PlayerListener(Sapphire plugin) {
         this.plugin = plugin;
     }
 
@@ -89,8 +89,10 @@ public class PlayerListener implements Listener {
         boolean                              isVoucher = VoucherManager.getInstance().isVoucher(item);
         Optional<VoucherManager.VoucherData> data      = VoucherManager.getInstance().getData(item);
         if (isVoucher && data.isPresent()) {
-            MessageUtil.sendMessage("economy.commands.voucher.already-used", event.getPlayer(), new MessageData("voucher_id",
-                    Integer.valueOf(data.get().id)));
+            MessageUtil.sendMessage("sapphire.commands.voucher.already-used",
+                    event.getPlayer(),
+                    new MessageData("voucher_id",
+                            Integer.valueOf(data.get().id)));
             return;
         }
         if (riseItem.isConfirmOnUse()) {
@@ -103,19 +105,19 @@ public class PlayerListener implements Listener {
                 if (i != null)
                     Bukkit.getScheduler().cancelTask(i.intValue());
             }
-            MessageData yes       = new MessageData("yes", MessageUtil.getMessageAsString("economy.yes", "yes"));
-            MessageData no        = new MessageData("no", MessageUtil.getMessageAsString("economy.no", "no"));
-            MessageData config    = new MessageData("economyConfig", new EconomyConfig());
+            MessageData yes       = new MessageData("yes", MessageUtil.getMessageAsString("sapphire.yes", "yes"));
+            MessageData no        = new MessageData("no", MessageUtil.getMessageAsString("sapphire.no", "no"));
+            MessageData config    = new MessageData("sapphireConfig", new SapphireConfig());
             MessageData playerMsg = new MessageData("player", p);
             MessageData itemMsg   = new MessageData("riseItem", riseItem);
-            MessageUtil.sendMessage("economy.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
+            MessageUtil.sendMessage("sapphire.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
             this.confirm.put(p.getUniqueId(), riseItem);
-            this.confirmTasks.put(p.getUniqueId(), Integer.valueOf(DarkRiseEconomy.getInstance().runTaskLater(() -> {
+            this.confirmTasks.put(p.getUniqueId(), Integer.valueOf(Sapphire.getInstance().runTaskLater(() -> {
                 if (this.confirm.remove(p.getUniqueId()) != null) {
                     this.confirmTasks.remove(p.getUniqueId());
-                    MessageUtil.sendMessage("economy.timeout", p, yes, no, config, playerMsg, itemMsg);
+                    MessageUtil.sendMessage("sapphire.timeout", p, yes, no, config, playerMsg, itemMsg);
                 }
-            }, this.plugin.getTimeout() * 20).getTaskId()));
+            }, this.plugin.getTimeout() * 20L).getTaskId()));
             return;
         }
 
@@ -131,7 +133,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        DarkRiseEconomy.getInstance().runTaskLater(() -> PlayerData.loadPlayer(event.getPlayer()), 1L);
+        Sapphire.getInstance().runTaskLater(() -> PlayerData.loadPlayer(event.getPlayer()), 1L);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -199,15 +201,15 @@ public class PlayerListener implements Listener {
         PlayerData.loadPlayer(event.getPlayer());
         if (this.plugin.getItemsToAdd().containsKey(event.getPlayer().getUniqueId()) &&
                 !this.plugin.getItemsToAdd().get(event.getPlayer().getUniqueId()).isEmpty())
-            MessageUtil.sendMessage("economy.commands.claim.pending", event.getPlayer());
+            MessageUtil.sendMessage("sapphire.commands.claim.pending", event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
         if (this.confirm.containsKey(p.getUniqueId())) {
-            String       yes = MessageUtil.getMessageAsString("economy.yes", "yes", true);
-            String       no  = MessageUtil.getMessageAsString("economy.no", "no", true);
+            String       yes = MessageUtil.getMessageAsString("sapphire.yes", "yes", true);
+            String       no  = MessageUtil.getMessageAsString("sapphire.no", "no", true);
             DarkRiseItem item;
             if (event.getMessage().equalsIgnoreCase(yes) && (item = this.confirm.remove(p.getUniqueId())) != null) {
                 Integer i = this.confirmTasks.remove(p.getUniqueId());
@@ -215,7 +217,7 @@ public class PlayerListener implements Listener {
                     Bukkit.getScheduler().cancelTask(i.intValue());
                 event.setCancelled(true);
                 DarkRiseItem powerItem = item;
-                DarkRiseEconomy.getInstance().runTask(() -> {
+                Sapphire.getInstance().runTask(() -> {
                     boolean used = (powerItem.isRemoveOnUse() == 0);
                     if (!used) {
                         ItemStack                   toRemove       = powerItem.getItem(powerItem.isRemoveOnUse());
@@ -232,18 +234,28 @@ public class PlayerListener implements Listener {
                         }
                     }
                     if (used) {
-                        MessageUtil.sendMessage("economy.used", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                        MessageUtil.sendMessage("sapphire.used",
+                                p,
+                                new MessageData("no", no),
+                                new MessageData("riseItem", powerItem));
                         powerItem.invoke(p);
                     } else {
-                        MessageUtil.sendMessage("economy.canNotFindItem", p, new MessageData("no", no), new MessageData("riseItem", powerItem));
+                        MessageUtil.sendMessage("sapphire.canNotFindItem",
+                                p,
+                                new MessageData("no", no),
+                                new MessageData("riseItem", powerItem));
                     }
                 });
-            } else if (event.getMessage().equalsIgnoreCase(no) && (item = this.confirm.remove(p.getUniqueId())) != null) {
+            } else if (event.getMessage().equalsIgnoreCase(no)
+                    && (item = this.confirm.remove(p.getUniqueId())) != null) {
                 Integer i = this.confirmTasks.remove(p.getUniqueId());
                 if (i != null)
                     Bukkit.getScheduler().cancelTask(i.intValue());
                 event.setCancelled(true);
-                MessageUtil.sendMessage("economy.cancel", p, new MessageData("no", no), new MessageData("riseItem", item));
+                MessageUtil.sendMessage("sapphire.cancel",
+                        p,
+                        new MessageData("no", no),
+                        new MessageData("riseItem", item));
             }
         }
     }
@@ -255,11 +267,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        DarkRiseItems items = DarkRiseEconomy.getInstance().getItems();
+        DarkRiseItems items = Sapphire.getInstance().getItems();
         if (dropActions.contains(event.getAction()) && (
                 !items.canDrop(event.getCursor()) || !items.canDrop(event.getCurrentItem()))) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("economy.canNotDrop", event.getWhoClicked());
+            MessageUtil.sendMessage("sapphire.canNotDrop", event.getWhoClicked());
             return;
         }
         if (event.getClickedInventory() == null ||
@@ -278,13 +290,13 @@ public class PlayerListener implements Listener {
                 .getAction() == InventoryAction.PLACE_ONE || event
                 .getAction() == InventoryAction.PLACE_SOME) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("economy.canNotTrade", event.getWhoClicked());
+            MessageUtil.sendMessage("sapphire.canNotTrade", event.getWhoClicked());
         }
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        DarkRiseItems items = DarkRiseEconomy.getInstance().getItems();
+        DarkRiseItems items = Sapphire.getInstance().getItems();
         if (event.getInventory() == null ||
                 !event.getInventory().equals(event.getView().getTopInventory()) || tradeableInventories
                 .contains(event.getInventory().getType()))
@@ -293,16 +305,16 @@ public class PlayerListener implements Listener {
         if (item == null || item.isTradeable())
             return;
         event.setCancelled(true);
-        MessageUtil.sendMessage("economy.canNotTrade", event.getWhoClicked());
+        MessageUtil.sendMessage("sapphire.canNotTrade", event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        DarkRiseItems items = DarkRiseEconomy.getInstance().getItems();
+        DarkRiseItems items = Sapphire.getInstance().getItems();
 
         if (!items.canDrop(event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("economy.canNotDrop", (CommandSender) event.getPlayer());
+            MessageUtil.sendMessage("sapphire.canNotDrop", event.getPlayer());
         }
     }
 }

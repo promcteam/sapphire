@@ -1,20 +1,20 @@
-package com.gotofinal.darkrise.economy.cfg;
+package com.promcteam.sapphire.cfg;
 
-import com.gotofinal.darkrise.economy.DarkRiseEconomy;
+import com.promcteam.sapphire.Sapphire;
 
 /**
  * This class is being replaced... We're going to migrate to normal Spigot API things.
  */
 @Deprecated
-public class EconomyConfig {
+public class SapphireConfig {
     private int timeout;
 
     {
-        timeout = DarkRiseEconomy.getInstance().getTimeout();
+        timeout = Sapphire.getInstance().getTimeout();
     }
 
     public int getTimeout() {
-        return DarkRiseEconomy.getInstance().getTimeout();
+        return Sapphire.getInstance().getTimeout();
     }
 
     public void setTimeout(int timeout) {
