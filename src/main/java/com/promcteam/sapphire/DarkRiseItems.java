@@ -1,8 +1,8 @@
 package com.promcteam.sapphire;
 
-import me.travja.darkrise.core.item.DarkRiseItem;
-import me.travja.darkrise.core.item.DarkRiseItemImpl;
-import org.apache.commons.lang.Validate;
+import com.promcteam.risecore.item.DarkRiseItem;
+import com.promcteam.risecore.item.DarkRiseItemImpl;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -72,7 +72,7 @@ public class DarkRiseItems {
             return false;
         File file = this.itemFiles.remove(item.getId().toLowerCase());
         if (file != null) {
-            YamlConfiguration            yaml  = YamlConfiguration.loadConfiguration(file);
+            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
             Collection<DarkRiseItemImpl> items = yaml.getMapList("items")
                     .stream()
                     .map(m -> new DarkRiseItemImpl((Map<String, Object>) m))

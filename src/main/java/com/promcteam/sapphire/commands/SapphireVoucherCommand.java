@@ -2,9 +2,9 @@ package com.promcteam.sapphire.commands;
 
 import com.promcteam.sapphire.Sapphire;
 import com.promcteam.sapphire.cfg.VoucherManager;
-import me.travja.darkrise.core.command.RiseCommand;
-import me.travja.darkrise.core.legacy.util.message.MessageData;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
+import com.promcteam.risecore.command.RiseCommand;
+import com.promcteam.risecore.legacy.util.message.MessageData;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

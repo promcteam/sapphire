@@ -1,7 +1,7 @@
 package com.promcteam.sapphire.commands;
 
 import com.promcteam.sapphire.Sapphire;
-import me.travja.darkrise.core.command.RiseCommand;
+import com.promcteam.risecore.command.RiseCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;

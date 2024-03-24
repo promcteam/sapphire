@@ -4,9 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.promcteam</groupId>
-        <artifactId>risecore-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
-        <relativePath/>
+        <artifactId>promc-parent</artifactId>
+        <version>1.20.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -29,15 +28,11 @@
         </dependency>
         <dependency>
             <groupId>com.promcteam</groupId>
-            <artifactId>risecore</artifactId>
-            <version>${rc.version}</version>
-            <scope>provided</scope>
+            <artifactId>codex</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.promcteam</groupId>
-            <artifactId>codex</artifactId>
-            <version>1.0.0-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 

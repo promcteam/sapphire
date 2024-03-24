@@ -4,12 +4,12 @@ import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.items.ItemType;
 import com.promcteam.codex.items.ProItemManager;
 import com.promcteam.codex.items.providers.IProItemProvider;
-import me.travja.darkrise.core.item.DarkRiseItem;
+import com.promcteam.risecore.item.DarkRiseItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class SapphireItemProvider implements IProItemProvider<SapphireItemProvider.SapphireItemType> {
-    public static String NAMESPACE = "PROMCU";
+    public static String NAMESPACE = "SAPPHIRE";
 
     public static void register() {
         CodexEngine.getEngine().getItemManager().registerProvider(NAMESPACE, new SapphireItemProvider());

@@ -1,12 +1,12 @@
 package com.promcteam.sapphire.commands;
 
+import com.promcteam.risecore.command.RiseCommand;
+import com.promcteam.risecore.item.DarkRiseItemImpl;
+import com.promcteam.risecore.legacy.util.message.MessageData;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
 import com.promcteam.sapphire.Sapphire;
-import me.travja.darkrise.core.command.RiseCommand;
-import me.travja.darkrise.core.item.DarkRiseItemImpl;
-import me.travja.darkrise.core.legacy.util.message.MessageData;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.DoubleRange;
+import org.apache.commons.lang3.DoubleRange;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,7 +53,7 @@ public class SapphireItemsCreateCommand extends RiseCommand {
         int         removeOnDeath          = 1;
         int         removeOnUse            = 0;
         String      fileName               = id + ".yml";
-        DoubleRange chanceToLostDurability = new DoubleRange(0d, 0d);
+        DoubleRange chanceToLostDurability = DoubleRange.of(0d, 0d);
         String      prev                   = "";
 //        Iterator<String> iterator = args.iterator();
 //        iterator.next();
@@ -114,7 +114,7 @@ public class SapphireItemsCreateCommand extends RiseCommand {
                 fileName = arg;
             } else if (prev.equalsIgnoreCase("-dura") || prev.equalsIgnoreCase("-durability")) {
                 prev = "";
-                DoubleRange doubleRange = new DoubleRange(0d, Double.parseDouble(arg));
+                DoubleRange doubleRange = DoubleRange.of(0d, Double.parseDouble(arg));
                 if (doubleRange == null) {
                     this.sendUsage(command.getUsage(), sender, command, args);
                     return;
@@ -135,7 +135,7 @@ public class SapphireItemsCreateCommand extends RiseCommand {
         }
 
         DarkRiseItemImpl riseItem = new DarkRiseItemImpl(id, mainHand, dropOnDeath, removeOnDeath, confirmOnUse,
-                removeOnUse, canDrop, !chanceToLostDurability.equals(new DoubleRange(0d)),
+                removeOnUse, canDrop, !chanceToLostDurability.equals(DoubleRange.of(0d, 0d)),
                 chanceToLostDurability, new ArrayList<>());
         try {
             this.eco.getItems().addItem(fileName, riseItem, true);

@@ -1,9 +1,9 @@
 package com.promcteam.sapphire.commands;
 
 import com.promcteam.sapphire.Sapphire;
-import me.travja.darkrise.core.command.RiseCommand;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
-import me.travja.darkrise.core.util.ArrayUtils;
+import com.promcteam.risecore.command.RiseCommand;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
+import com.promcteam.risecore.util.ArrayUtils;
 import org.bukkit.command.CommandSender;
 
 //@DarkRiseSubCommand(value = EconCommand.class, name = "reload")

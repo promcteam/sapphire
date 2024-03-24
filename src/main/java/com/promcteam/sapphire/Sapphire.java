@@ -1,17 +1,17 @@
 package com.promcteam.sapphire;
 
+import com.promcteam.risecore.ConfigManager;
+import com.promcteam.risecore.item.DarkRiseItem;
+import com.promcteam.risecore.legacy.chat.placeholder.PlaceholderType;
+import com.promcteam.risecore.legacy.util.Init;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
+import com.promcteam.risecore.legacy.util.message.NMSPlayerUtils;
 import com.promcteam.sapphire.cfg.PlayerData;
 import com.promcteam.sapphire.cfg.SapphireConfig;
 import com.promcteam.sapphire.cfg.VoucherManager;
 import lombok.Getter;
-import me.travja.darkrise.core.ConfigManager;
-import me.travja.darkrise.core.item.DarkRiseItem;
-import me.travja.darkrise.core.legacy.killme.chat.placeholder.PlaceholderType;
-import me.travja.darkrise.core.legacy.util.Init;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
-import me.travja.darkrise.core.legacy.util.message.NMSPlayerUtils;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

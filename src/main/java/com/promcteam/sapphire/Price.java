@@ -1,7 +1,7 @@
 package com.promcteam.sapphire;
 
-import me.travja.darkrise.core.legacy.util.DeserializationWorker;
-import me.travja.darkrise.core.legacy.util.SerializationBuilder;
+import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import com.promcteam.risecore.legacy.util.SerializationBuilder;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.Map;

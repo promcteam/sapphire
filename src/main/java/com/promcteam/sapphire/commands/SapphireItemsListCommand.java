@@ -1,12 +1,12 @@
 package com.promcteam.sapphire.commands;
 
 import com.promcteam.sapphire.Sapphire;
-import me.travja.darkrise.core.command.RiseCommand;
-import me.travja.darkrise.core.item.DarkRiseItem;
-import me.travja.darkrise.core.legacy.util.message.MessageData;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
-import me.travja.darkrise.core.legacy.util.message.NMSPlayerUtils;
-import me.travja.darkrise.core.util.ArrayUtils;
+import com.promcteam.risecore.command.RiseCommand;
+import com.promcteam.risecore.item.DarkRiseItem;
+import com.promcteam.risecore.legacy.util.message.MessageData;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
+import com.promcteam.risecore.legacy.util.message.NMSPlayerUtils;
+import com.promcteam.risecore.util.ArrayUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;

@@ -1,8 +1,8 @@
 package com.promcteam.sapphire;
 
-import me.travja.darkrise.core.legacy.util.Vault;
-import me.travja.darkrise.core.legacy.util.message.MessageData;
-import me.travja.darkrise.core.legacy.util.message.MessageUtil;
+import com.promcteam.codex.CodexEngine;
+import com.promcteam.risecore.legacy.util.message.MessageData;
+import com.promcteam.risecore.legacy.util.message.MessageUtil;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.entity.Player;
@@ -21,23 +21,23 @@ public enum CurrencyType {
         }
 
         public boolean canPay(Player player, double money) {
-            return Vault.canPay(player, money);
+            return CodexEngine.getEngine().getVault().canPay(player, money);
         }
 
         public boolean pay0(Player player, double money) {
-            return Vault.pay(player, money);
+            return CodexEngine.getEngine().getVault().take(player, money);
         }
 
         public double get(Player player) {
-            return Vault.getMoney(player);
+            return CodexEngine.getEngine().getVault().getBalance(player);
         }
 
         public boolean add(Player player, double money) {
-            return Vault.addMoney(player, money);
+            return CodexEngine.getEngine().getVault().give(player, money);
         }
 
         public void reset(Player player) {
-            Vault.reset(player);
+            CodexEngine.getEngine().getVault().reset(player);
         }
     },
     POINTS {
