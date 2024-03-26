@@ -1,7 +1,7 @@
 package com.promcteam.sapphire;
 
-import com.promcteam.risecore.item.DarkRiseItem;
-import com.promcteam.risecore.item.DarkRiseItemImpl;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItemImpl;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -88,7 +88,8 @@ public class DarkRiseItems {
                 try {
                     yaml.save(file);
                 } catch (IOException e) {
-                    throw new RuntimeException("Can't remove item from file: " + file + ", error when saving file.");
+                    throw new RuntimeException(
+                            "Can't remove item from file: " + file + ", error when saving file.");
                 }
             }
         }

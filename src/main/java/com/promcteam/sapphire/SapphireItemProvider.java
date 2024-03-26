@@ -1,14 +1,14 @@
 package com.promcteam.sapphire;
 
 import com.promcteam.codex.CodexEngine;
+import com.promcteam.codex.items.CodexItemManager;
 import com.promcteam.codex.items.ItemType;
-import com.promcteam.codex.items.ProItemManager;
-import com.promcteam.codex.items.providers.IProItemProvider;
-import com.promcteam.risecore.item.DarkRiseItem;
+import com.promcteam.codex.items.providers.ICodexItemProvider;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class SapphireItemProvider implements IProItemProvider<SapphireItemProvider.SapphireItemType> {
+public class SapphireItemProvider implements ICodexItemProvider<SapphireItemProvider.SapphireItemType> {
     public static String NAMESPACE = "SAPPHIRE";
 
     public static void register() {
@@ -36,7 +36,7 @@ public class SapphireItemProvider implements IProItemProvider<SapphireItemProvid
 
     @Override
     public SapphireItemType getItem(String id) {
-        id = ProItemManager.stripPrefix(NAMESPACE, id);
+        id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
         DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemById(id);
         if (riseItem == null) {
@@ -65,7 +65,7 @@ public class SapphireItemProvider implements IProItemProvider<SapphireItemProvid
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = ProItemManager.stripPrefix(NAMESPACE, id);
+        id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
         DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
         if (riseItem == null || riseItem.getId().startsWith("vanilla_")) {

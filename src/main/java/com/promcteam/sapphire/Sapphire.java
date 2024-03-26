@@ -1,11 +1,11 @@
 package com.promcteam.sapphire;
 
-import com.promcteam.risecore.ConfigManager;
-import com.promcteam.risecore.item.DarkRiseItem;
-import com.promcteam.risecore.legacy.chat.placeholder.PlaceholderType;
-import com.promcteam.risecore.legacy.util.Init;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
-import com.promcteam.risecore.legacy.util.message.NMSPlayerUtils;
+import com.promcteam.codex.config.legacy.LegacyConfigManager;
+import com.promcteam.codex.legacy.placeholder.PlaceholderRegistry;
+import com.promcteam.codex.legacy.placeholder.PlaceholderType;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
+import com.promcteam.codex.util.messages.MessageUtil;
+import com.promcteam.codex.util.messages.NMSPlayerUtils;
 import com.promcteam.sapphire.cfg.PlayerData;
 import com.promcteam.sapphire.cfg.SapphireConfig;
 import com.promcteam.sapphire.cfg.VoucherManager;
@@ -71,9 +71,10 @@ public class Sapphire extends JavaPlugin {
         reloadConfig();
         this.items = new DarkRiseItems();
         this.items.loadItems();
-        this.config = ConfigManager.loadConfigFile(new File(getDataFolder(), "config.yml"), getResource("config.yml"));
+        this.config =
+                LegacyConfigManager.loadConfigFile(new File(getDataFolder(), "config.yml"), getResource("config.yml"));
         FileConfiguration lang =
-                ConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
+                LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
                         getResource("lang/lang_en.yml"));
         MessageUtil.reload(lang, this);
         //this.config = (EconomyConfig) loadConfigFile(new File(getDataFolder(), "config.yml"), EconomyConfig.class);
@@ -86,7 +87,7 @@ public class Sapphire extends JavaPlugin {
     @Override
     public void onLoad() {
         if (getServer().getPluginManager().isPluginEnabled("PlayerPoints"))
-            Init.PLAYER.registerItem("points", CurrencyType.POINTS::get);
+            PlaceholderRegistry.PLAYER.registerItem("points", CurrencyType.POINTS::get);
         RISE_ITEM.registerItem("name", item -> {
             TextComponent textComponent = new TextComponent(item.getName());
             textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
@@ -106,7 +107,7 @@ public class Sapphire extends JavaPlugin {
         RISE_ITEM.registerItem("lore", c -> StringUtils.join(c.getItem().getItemMeta().getLore(), '\n'));
         RISE_ITEM.registerItem("enchantments", c -> StringUtils.join(c.getItem().getEnchantments().keySet(), ", "));
         SAPPHIRE_CONFIG.registerItem("timeout", SapphireConfig::getTimeout);
-        RISE_ITEM.registerChild("item", Init.ITEM, DarkRiseItem::getItem);
+        RISE_ITEM.registerChild("item", PlaceholderRegistry.ITEM, DarkRiseItem::getItem);
         super.onLoad();
     }
 

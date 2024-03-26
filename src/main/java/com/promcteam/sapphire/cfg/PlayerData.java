@@ -14,7 +14,7 @@ public final class PlayerData {
     private static final Map<UUID, List<ItemStack>> items = new HashMap<>(20, .4f);
     private static       File                       dataFile;
     private static       FileConfiguration          cfg;
-            // if server crashes/stops when player die, to have sure that he don't lose items
+    // if server crashes/stops when player die, to have sure that he don't lose items
 
     private PlayerData() {
     }

@@ -1,10 +1,10 @@
 package com.promcteam.sapphire.commands;
 
+import com.promcteam.codex.legacy.command.RiseCommand;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
+import com.promcteam.codex.util.messages.MessageData;
+import com.promcteam.codex.util.messages.MessageUtil;
 import com.promcteam.sapphire.Sapphire;
-import com.promcteam.risecore.item.DarkRiseItem;
-import com.promcteam.risecore.command.RiseCommand;
-import com.promcteam.risecore.legacy.util.message.MessageData;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

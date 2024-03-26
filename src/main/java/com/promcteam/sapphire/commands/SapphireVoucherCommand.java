@@ -1,10 +1,10 @@
 package com.promcteam.sapphire.commands;
 
+import com.promcteam.codex.legacy.command.RiseCommand;
+import com.promcteam.codex.util.messages.MessageData;
+import com.promcteam.codex.util.messages.MessageUtil;
 import com.promcteam.sapphire.Sapphire;
 import com.promcteam.sapphire.cfg.VoucherManager;
-import com.promcteam.risecore.command.RiseCommand;
-import com.promcteam.risecore.legacy.util.message.MessageData;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

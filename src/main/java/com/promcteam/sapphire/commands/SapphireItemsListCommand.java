@@ -1,12 +1,11 @@
 package com.promcteam.sapphire.commands;
 
+import com.promcteam.codex.legacy.command.RiseCommand;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
+import com.promcteam.codex.util.messages.MessageData;
+import com.promcteam.codex.util.messages.MessageUtil;
+import com.promcteam.codex.util.messages.NMSPlayerUtils;
 import com.promcteam.sapphire.Sapphire;
-import com.promcteam.risecore.command.RiseCommand;
-import com.promcteam.risecore.item.DarkRiseItem;
-import com.promcteam.risecore.legacy.util.message.MessageData;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
-import com.promcteam.risecore.legacy.util.message.NMSPlayerUtils;
-import com.promcteam.risecore.util.ArrayUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -14,6 +13,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
@@ -24,7 +24,7 @@ public class SapphireItemsListCommand extends RiseCommand {
     private final Sapphire eco;
 
     public SapphireItemsListCommand(final Sapphire plugin, SapphireItemsCommand command) {
-        super("list", ArrayUtils.toArray("list", "ls"), command);
+        super("list", List.of("list", "ls"), command);
         this.eco = plugin;
     }
 

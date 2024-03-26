@@ -1,7 +1,7 @@
 package com.promcteam.sapphire;
 
+import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
-import com.promcteam.risecore.legacy.util.SerializationBuilder;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.Map;

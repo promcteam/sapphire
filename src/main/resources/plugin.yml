@@ -3,7 +3,7 @@ main: com.promcteam.sapphire.Sapphire
 authors: [ Travja, goflish ]
 version: ${project.version}
 api-version: 1.13
-depend: [ RiseCore ]
+depend: [ Codex ]
 softdepend: [ PlayerPoints, Codex ]
 commands:
   sapphire:

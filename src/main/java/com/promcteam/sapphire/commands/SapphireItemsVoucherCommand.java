@@ -1,12 +1,11 @@
 package com.promcteam.sapphire.commands;
 
+import com.promcteam.codex.legacy.command.RiseCommand;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItem;
+import com.promcteam.codex.util.messages.MessageData;
+import com.promcteam.codex.util.messages.MessageUtil;
 import com.promcteam.sapphire.Sapphire;
 import com.promcteam.sapphire.cfg.VoucherManager;
-import com.promcteam.risecore.item.DarkRiseItem;
-import com.promcteam.risecore.command.RiseCommand;
-import com.promcteam.risecore.legacy.util.message.MessageData;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
-import com.promcteam.risecore.util.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class SapphireItemsVoucherCommand extends RiseCommand {
     private final Sapphire eco;
 
     public SapphireItemsVoucherCommand(Sapphire plugin, SapphireItemsCommand command) {
-        super("voucher", ArrayUtils.toArray("voucter"), command);
+        super("voucher", List.of("voucter"), command);
         this.eco = plugin;
     }
 

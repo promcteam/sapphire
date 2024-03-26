@@ -1,9 +1,9 @@
 package com.promcteam.sapphire.commands;
 
-import com.promcteam.risecore.command.RiseCommand;
-import com.promcteam.risecore.item.DarkRiseItemImpl;
-import com.promcteam.risecore.legacy.util.message.MessageData;
-import com.promcteam.risecore.legacy.util.message.MessageUtil;
+import com.promcteam.codex.legacy.command.RiseCommand;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItemImpl;
+import com.promcteam.codex.util.messages.MessageData;
+import com.promcteam.codex.util.messages.MessageUtil;
 import com.promcteam.sapphire.Sapphire;
 import org.apache.commons.lang3.DoubleRange;
 import org.apache.commons.lang3.StringUtils;
