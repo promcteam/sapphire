@@ -3,16 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.promcteam</groupId>
-        <artifactId>risecore-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
-        <relativePath/>
+        <groupId>studio.magemonkey</groupId>
+        <artifactId>magemonkey-parent</artifactId>
+        <version>1.20.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>promcutilities</artifactId>
-    <name>ProMCUtilities</name>
-    <version>1.1.0-R0.1-SNAPSHOT</version>
+    <artifactId>sapphire</artifactId>
+    <name>Sapphire</name>
+    <version>1.0.0-R0.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -28,21 +27,20 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.promcteam</groupId>
-            <artifactId>risecore</artifactId>
-            <version>${rc.version}</version>
-            <scope>provided</scope>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.promcteam</groupId>
-            <artifactId>promccore</artifactId>
-            <version>1.2.0-R0.7-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 
-
     <repositories>
+        <repository>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
         <!--    PlayerPoints Repo    -->
         <repository>
             <id>dakani</id>
