@@ -1,15 +1,6 @@
 package studio.magemonkey.sapphire.listener;
 
 import com.google.common.collect.Sets;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.util.RangeUtil;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.sapphire.DarkRiseItems;
-import studio.magemonkey.sapphire.Sapphire;
-import studio.magemonkey.sapphire.cfg.PlayerData;
-import studio.magemonkey.sapphire.cfg.SapphireConfig;
-import studio.magemonkey.sapphire.cfg.VoucherManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +14,16 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.codex.util.InventoryUtil;
+import studio.magemonkey.codex.util.RangeUtil;
+import studio.magemonkey.codex.util.messages.MessageData;
+import studio.magemonkey.codex.util.messages.MessageUtil;
+import studio.magemonkey.sapphire.DarkRiseItems;
+import studio.magemonkey.sapphire.Sapphire;
+import studio.magemonkey.sapphire.cfg.PlayerData;
+import studio.magemonkey.sapphire.cfg.SapphireConfig;
+import studio.magemonkey.sapphire.cfg.VoucherManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -273,18 +274,21 @@ public class PlayerListener implements Listener {
             MessageUtil.sendMessage("sapphire.canNotDrop", event.getWhoClicked());
             return;
         }
-        if (event.getClickedInventory() == null ||
-                !event.getClickedInventory().equals(event.getView().getTopInventory()) || tradeableInventories
-                .contains(event.getClickedInventory().getType()))
+        if (event.getClickedInventory() == null
+                || !event.getClickedInventory().equals(InventoryUtil.getTopInventory(event))
+                || tradeableInventories.contains(event.getClickedInventory().getType())) {
             return;
+        }
+
         DarkRiseItem item = null;
         if (event.getCursor() != null) {
             item = items.getItemByStack(event.getCursor());
         } else if (event.getCurrentItem() != null) {
             item = items.getItemByStack(event.getCurrentItem());
         }
-        if (item == null || item.isTradeable())
-            return;
+
+        if (item == null || item.isTradeable()) return;
+
         if (event.getAction() == InventoryAction.PLACE_ALL || event
                 .getAction() == InventoryAction.PLACE_ONE || event
                 .getAction() == InventoryAction.PLACE_SOME) {
@@ -296,13 +300,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         DarkRiseItems items = Sapphire.getInstance().getItems();
-        if (event.getInventory() == null ||
-                !event.getInventory().equals(event.getView().getTopInventory()) || tradeableInventories
-                .contains(event.getInventory().getType()))
+        if (!event.getInventory().equals(InventoryUtil.getTopInventory(event))
+                || tradeableInventories.contains(event.getInventory().getType())) {
             return;
+        }
+
         DarkRiseItem item = items.getItemByStack(event.getOldCursor());
-        if (item == null || item.isTradeable())
-            return;
+        if (item == null || item.isTradeable()) return;
+
         event.setCancelled(true);
         MessageUtil.sendMessage("sapphire.canNotTrade", event.getWhoClicked());
     }
