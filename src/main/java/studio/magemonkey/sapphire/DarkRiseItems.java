@@ -1,12 +1,12 @@
 package studio.magemonkey.sapphire;
 
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItemImpl;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItemImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -203,6 +203,8 @@ public class DarkRiseItems {
 
     private void addVanillaItems() {
         for (Material material : Material.values()) {
+            if (!material.isItem()) continue;
+
             if (getItemById("vanilla_" + material.name()) == null) {
                 DarkRiseItemImpl riseItem =
                         new DarkRiseItemImpl("vanilla_" + material.name().toLowerCase(), new ItemStack(material));
