@@ -1,13 +1,13 @@
-economy:
+sapphire:
   no-money: "&cYou don't have enough money! You need $<needed> but you have $<player.money>, missing: $<missing>"
   no-points: "&cYou don't have enough points! You need $<needed> but you have $<player.points>, missing: $<missing>"
   'yes': "yes"
   'no': "no"
-  useWithConfirm: "&cYou are trying to use $<riseItem.id> power item, type \"$<yes>\" on chat to confirm, or \"$<no>\" to cancel. (will be cancelled after $<economyConfig.timeout> secs)"
+  useWithConfirm: "&cYou are trying to use $<riseItem.id> power item, type \"$<yes>\" on chat to confirm, or \"$<no>\" to cancel. (will be cancelled after $<sapphireConfig.timeout> secs)"
   canNotDrop: "&cYou can't drop this item!"
   canNotTrade: "&cYou can't trade this item!"
   used: "&3Consumed your power item ($<riseItem.id>)!"
-  timeout: "&cYou canceled using item ($<riseItem.id>) by not typing $<yes> on chat in $<economyConfig.timeout> seconds"
+  timeout: "&cYou canceled using item ($<riseItem.id>) by not typing $<yes> on chat in $<sapphireConfig.timeout> seconds"
   cancel: "&cYou canceled using item ($<riseItem.id>) by typing $<no> on chat."
   canNotFindItem: "&cWhere is your power item ($<riseItem.id>)? Did you try hide it before confirming?"
   commands:
@@ -34,13 +34,13 @@ economy:
     help: |2-
       You typed: &7$<text>&r
        Valid syntax:
-         &8/&7pmcu &ritems list &8[&7page&8]
-         &8/&7pmcu &ritems give &8<&7id&8>
-         &8/&7pmcu &ritems give &8<&7player&8> &8<&7id&8> [&7amount&8]
-         &8/&7pmcu &ritems drop &8<&7id&8>
-         &8/&7pmcu &ritems drop &8<&7player&8> &8<&7id&8> [&7amount&8]
-         &8/&7pmcu &ritems create &8<&7id&8> [&7-file&8 <&7fileName&8>] [&7-dropOnDeath&8] [&7-confirmOnUse&8] [&7-CantDrop&8] [&7-removeOnDeath&8 <&7amount&8>] [&7-removeOnUse&8 <&7amount&8>] [&7-durability&8 <&7from&8>&f-&8<&7to&8>]
-         &8/&7pmcu &ritems delete &8<&7id&8>
-         &8/&7pmcu &rclaim
-         &8/&7pmcu &rreload
-         &8/&7pmcu &rsave
+         &8/&7sapphire &ritems list &8[&7page&8]
+         &8/&7sapphire &ritems give &8<&7id&8>
+         &8/&7sapphire &ritems give &8<&7player&8> &8<&7id&8> [&7amount&8]
+         &8/&7sapphire &ritems drop &8<&7id&8>
+         &8/&7sapphire &ritems drop &8<&7player&8> &8<&7id&8> [&7amount&8]
+         &8/&7sapphire &ritems create &8<&7id&8> [&7-file&8 <&7fileName&8>] [&7-dropOnDeath&8] [&7-confirmOnUse&8] [&7-CantDrop&8] [&7-removeOnDeath&8 <&7amount&8>] [&7-removeOnUse&8 <&7amount&8>] [&7-durability&8 <&7from&8>&f-&8<&7to&8>]
+         &8/&7sapphire &ritems delete &8<&7id&8>
+         &8/&7sapphire &rclaim
+         &8/&7sapphire &rreload
+         &8/&7sapphire &rsave
