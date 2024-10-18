@@ -3,8 +3,8 @@ main: studio.magemonkey.sapphire.Sapphire
 authors: [ Travja, goflish ]
 version: ${project.version}
 api-version: 1.13
-depend: [ Codex ]
-softdepend: [ PlayerPoints, Codex ]
+depend: [ CodexCore ]
+softdepend: [ PlayerPoints ]
 commands:
   sapphire:
     description: The base command for Sapphire.
