@@ -1,14 +1,5 @@
 package studio.magemonkey.sapphire;
 
-import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
-import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
-import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
-import studio.magemonkey.sapphire.cfg.PlayerData;
-import studio.magemonkey.sapphire.cfg.SapphireConfig;
-import studio.magemonkey.sapphire.cfg.VoucherManager;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +15,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.compat.VersionManager;
+import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.sapphire.cfg.PlayerData;
+import studio.magemonkey.sapphire.cfg.SapphireConfig;
+import studio.magemonkey.sapphire.cfg.VoucherManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class Sapphire extends JavaPlugin {
         FileConfiguration lang =
                 LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
                         getResource("lang/lang_en.yml"));
-        MessageUtil.reload(lang, this);
+        CodexEngine.get().getMessageUtil().reload(lang, this);
         //this.config = (EconomyConfig) loadConfigFile(new File(getDataFolder(), "config.yml"), EconomyConfig.class);
     }
 
@@ -90,18 +90,18 @@ public class Sapphire extends JavaPlugin {
             PlaceholderRegistry.PLAYER.registerItem("points", CurrencyType.POINTS::get);
         RISE_ITEM.registerItem("name", item -> {
             TextComponent textComponent = new TextComponent(item.getName());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(item.getItem()));
             return textComponent;
         });
         RISE_ITEM.registerItem("displayName", item -> {
             TextComponent textComponent = new TextComponent(item.getName());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(item.getItem()));
             return textComponent;
         });
         RISE_ITEM.registerItem("material", d -> d.getItem().getType());
         RISE_ITEM.registerItem("id", item -> {
             TextComponent textComponent = new TextComponent(item.getId());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.getItem()));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(item.getItem()));
             return textComponent;
         });
         RISE_ITEM.registerItem("lore", c -> StringUtils.join(c.getItem().getItemMeta().getLore(), '\n'));
@@ -164,14 +164,12 @@ public class Sapphire extends JavaPlugin {
         Map<DarkRiseItem, Integer> playerMap = new HashMap<>();
         if (this.itemsToAdd.containsKey(player.getUniqueId()))
             playerMap.putAll(this.itemsToAdd.get(player.getUniqueId()));
-        if (map != null)
-            map.forEach((item, amount) -> {
-                if (playerMap.containsKey(item))
-                    amount = Integer.valueOf(amount.intValue() + playerMap.get(item).intValue());
-                playerMap.put(item, amount);
-            });
-        if (playerMap.isEmpty())
-            return new HashMap<>();
+        if (map != null) map.forEach((item, amount) -> {
+            if (playerMap.containsKey(item))
+                amount = Integer.valueOf(amount.intValue() + playerMap.get(item).intValue());
+            playerMap.put(item, amount);
+        });
+        if (playerMap.isEmpty()) return new HashMap<>();
         ItemStack[] itemsArray = playerMap.entrySet()
                 .stream()
                 .map(e -> e.getKey().getItem(e.getValue().intValue()))
@@ -184,7 +182,8 @@ public class Sapphire extends JavaPlugin {
         this.itemsToAdd.put(player.getUniqueId(), notAddedRise);
         if (this.itemsToAdd.containsKey(player.getUniqueId()) && this.itemsToAdd.get(player.getUniqueId()).isEmpty())
             this.itemsToAdd.remove(player.getUniqueId());
-        return playerMap.entrySet().stream()
+        return playerMap.entrySet()
+                .stream()
                 .filter(e -> (!notAddedRise.containsKey(e.getKey()) || !Objects.equals(notAddedRise.get(e.getKey()),
                         e.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -234,8 +233,9 @@ public class Sapphire extends JavaPlugin {
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(this.itemsToAddFile);
         cfg.getKeys(false).forEach(uuid -> {
             Map<DarkRiseItem, Integer> itemMap = new HashMap<>();
-            cfg.getConfigurationSection(uuid).getValues(false).forEach((itemName, amount) ->
-                    itemMap.put(getItems().getItemById(itemName), (Integer) amount));
+            cfg.getConfigurationSection(uuid)
+                    .getValues(false)
+                    .forEach((itemName, amount) -> itemMap.put(getItems().getItemById(itemName), (Integer) amount));
             this.itemsToAdd.put(UUID.fromString(uuid), itemMap);
         });
     }

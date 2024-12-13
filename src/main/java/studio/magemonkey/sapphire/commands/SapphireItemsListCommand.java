@@ -1,15 +1,15 @@
 package studio.magemonkey.sapphire.commands;
 
-import studio.magemonkey.codex.legacy.command.RiseCommand;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
-import studio.magemonkey.sapphire.Sapphire;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.compat.VersionManager;
+import studio.magemonkey.codex.legacy.command.RiseCommand;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.codex.util.messages.MessageData;
+import studio.magemonkey.sapphire.Sapphire;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -45,7 +45,7 @@ public class SapphireItemsListCommand extends RiseCommand {
         int         index       = 0;
 
 //        TextComponent list = new TextComponent("");
-        MessageUtil.sendMessage("sapphire.commands.items.list-header",
+        CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.items.list-header",
                 sender,
                 pageMsgData,
                 new MessageData("sender", sender));
@@ -61,19 +61,19 @@ public class SapphireItemsListCommand extends RiseCommand {
             TextComponent textComponent = new TextComponent("");
             textComponent.setClickEvent(new ClickEvent(Action.RUN_COMMAND,
                     "/econ items give " + sender.getName() + " " + entry.getKey() + " 1"));
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(entry.getValue().getItem()));
-            textComponent.setExtra(Arrays.asList(MessageUtil.getMessageAsComponent(
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(entry.getValue().getItem()));
+            textComponent.setExtra(Arrays.asList(CodexEngine.get().getMessageUtil().getMessageAsComponent(
                     "sapphire.commands.items.list-entry",
                     new MessageData("index", index),
                     new MessageData("riseItem", entry.getValue())
             )));
-            MessageUtil.sendMessage(sender, textComponent);
+            CodexEngine.get().getMessageUtil().sendMessage(sender, textComponent);
 //            list.addExtra(textComponent);
 //            if (index % PAGE_SIZE != 0 && iterator.hasNext()) {
 //                list.addExtra(new TextComponent("\n"));
 //            }
         }
-        MessageUtil.sendMessage("sapphire.commands.items.list-footer",
+        CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.items.list-footer",
                 sender,
                 pageMsgData,
                 new MessageData("sender", sender));

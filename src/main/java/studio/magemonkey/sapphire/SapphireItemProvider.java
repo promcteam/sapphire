@@ -1,12 +1,12 @@
 package studio.magemonkey.sapphire;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
-import studio.magemonkey.codex.items.providers.ICodexItemProvider;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.PrefixHelper;
+import studio.magemonkey.codex.api.items.providers.ICodexItemProvider;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 
 public class SapphireItemProvider implements ICodexItemProvider<SapphireItemProvider.SapphireItemType> {
     public static String NAMESPACE = "SAPPHIRE";
@@ -36,7 +36,7 @@ public class SapphireItemProvider implements ICodexItemProvider<SapphireItemProv
 
     @Override
     public SapphireItemType getItem(String id) {
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemById(id);
         if (riseItem == null) {
@@ -65,7 +65,7 @@ public class SapphireItemProvider implements ICodexItemProvider<SapphireItemProv
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         DarkRiseItem riseItem = Sapphire.getItemsRegistry().getItemByStack(item);
         if (riseItem == null || riseItem.getId().startsWith("vanilla_")) {

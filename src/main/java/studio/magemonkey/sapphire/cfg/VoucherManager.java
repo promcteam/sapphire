@@ -1,12 +1,12 @@
 package studio.magemonkey.sapphire.cfg;
 
-import studio.magemonkey.sapphire.Sapphire;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.sapphire.Sapphire;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,11 +1,11 @@
 package studio.magemonkey.sapphire.commands;
 
+import org.bukkit.command.CommandSender;
+import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.legacy.command.RiseCommand;
 import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 import studio.magemonkey.sapphire.Sapphire;
-import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -32,10 +32,14 @@ public class SapphireItemsDeleteCommand extends RiseCommand {
         }
         DarkRiseItem riseItem = this.plugin.getItems().getItemByIdOrName(args[0]);
         if (riseItem == null) {
-            MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[0]));
+            CodexEngine.get()
+                    .getMessageUtil()
+                    .sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[0]));
             return;
         }
         this.plugin.getItems().removeItem(riseItem, true);
-        MessageUtil.sendMessage("sapphire.commands.delete", sender, new MessageData("riseItem", riseItem));
+        CodexEngine.get()
+                .getMessageUtil()
+                .sendMessage("sapphire.commands.delete", sender, new MessageData("riseItem", riseItem));
     }
 }

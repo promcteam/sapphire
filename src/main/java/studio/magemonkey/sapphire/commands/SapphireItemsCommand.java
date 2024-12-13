@@ -1,8 +1,8 @@
 package studio.magemonkey.sapphire.commands;
 
+import org.bukkit.command.CommandSender;
 import studio.magemonkey.codex.legacy.command.RiseCommand;
 import studio.magemonkey.sapphire.Sapphire;
-import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 

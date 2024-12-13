@@ -5,7 +5,7 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>magemonkey-parent</artifactId>
-        <version>1.21.3-R0.2</version>
+        <version>1.21.4-R0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -29,7 +29,6 @@
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex</artifactId>
-            <version>1.0.0-R0.27-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

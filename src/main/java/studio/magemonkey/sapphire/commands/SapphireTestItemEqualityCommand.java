@@ -1,13 +1,13 @@
 package studio.magemonkey.sapphire.commands;
 
-import studio.magemonkey.codex.legacy.command.RiseCommand;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.sapphire.Sapphire;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.legacy.command.RiseCommand;
+import studio.magemonkey.sapphire.Sapphire;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class SapphireTestItemEqualityCommand extends RiseCommand {
     @Override
     public void runCommand(CommandSender sender, RiseCommand command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            MessageUtil.sendMessage("senderIsNotPlayer", sender);
+            CodexEngine.get().getMessageUtil().sendMessage("senderIsNotPlayer", sender);
             return;
         }
         if (!this.checkPermission(sender, "sapphire.items.create")) {
@@ -33,7 +33,7 @@ public class SapphireTestItemEqualityCommand extends RiseCommand {
         }
         ItemStack mainHand = ((Player) sender).getInventory().getItemInMainHand();
         if (mainHand == null || mainHand.getType() == Material.AIR) {
-            MessageUtil.sendMessage("sapphire.commands.create.no-item", sender);
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.create.no-item", sender);
             return;
         }
 

@@ -1,13 +1,13 @@
 package studio.magemonkey.sapphire.commands;
 
-import studio.magemonkey.codex.legacy.command.RiseCommand;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.sapphire.Sapphire;
-import studio.magemonkey.sapphire.cfg.VoucherManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.legacy.command.RiseCommand;
+import studio.magemonkey.codex.util.messages.MessageData;
+import studio.magemonkey.sapphire.Sapphire;
+import studio.magemonkey.sapphire.cfg.VoucherManager;
 
 import java.util.Collections;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class SapphireVoucherCommand extends RiseCommand {
         try {
             voucherId = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            MessageUtil.sendMessage("notANumber", sender, new MessageData("text", args[0]));
+            CodexEngine.get().getMessageUtil().sendMessage("notANumber", sender, new MessageData("text", args[0]));
             return;
         }
 
@@ -45,12 +45,12 @@ public class SapphireVoucherCommand extends RiseCommand {
             Date          time   = new Date(data.get().timestamp * 1000);
             OfflinePlayer player = Bukkit.getOfflinePlayer(data.get().playerUUID);
 
-            MessageUtil.sendMessage("sapphire.commands.voucher.info", sender,
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.voucher.info", sender,
                     new MessageData("voucher_id", voucherId),
                     new MessageData("player", player),
                     new MessageData("date", time.toString()));
         } else {
-            MessageUtil.sendMessage("sapphire.commands.voucher.info-unused", sender,
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.voucher.info-unused", sender,
                     new MessageData("voucher_id", voucherId));
         }
     }

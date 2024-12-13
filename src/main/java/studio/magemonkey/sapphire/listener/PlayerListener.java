@@ -14,11 +14,11 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.RangeUtil;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 import studio.magemonkey.sapphire.DarkRiseItems;
 import studio.magemonkey.sapphire.Sapphire;
 import studio.magemonkey.sapphire.cfg.PlayerData;
@@ -89,7 +89,7 @@ public class PlayerListener implements Listener {
         boolean                              isVoucher = VoucherManager.getInstance().isVoucher(item);
         Optional<VoucherManager.VoucherData> data      = VoucherManager.getInstance().getData(item);
         if (isVoucher && data.isPresent()) {
-            MessageUtil.sendMessage("sapphire.commands.voucher.already-used",
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.voucher.already-used",
                     event.getPlayer(),
                     new MessageData("voucher_id",
                             Integer.valueOf(data.get().id)));
@@ -105,17 +105,23 @@ public class PlayerListener implements Listener {
                 if (i != null)
                     Bukkit.getScheduler().cancelTask(i.intValue());
             }
-            MessageData yes       = new MessageData("yes", MessageUtil.getMessageAsString("sapphire.yes", "yes"));
-            MessageData no        = new MessageData("no", MessageUtil.getMessageAsString("sapphire.no", "no"));
+            MessageData yes = new MessageData("yes",
+                    CodexEngine.get().getMessageUtil().getMessageAsString("sapphire.yes", "yes"));
+            MessageData no =
+                    new MessageData("no", CodexEngine.get().getMessageUtil().getMessageAsString("sapphire.no", "no"));
             MessageData config    = new MessageData("sapphireConfig", new SapphireConfig());
             MessageData playerMsg = new MessageData("player", p);
             MessageData itemMsg   = new MessageData("riseItem", riseItem);
-            MessageUtil.sendMessage("sapphire.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
+            CodexEngine.get()
+                    .getMessageUtil()
+                    .sendMessage("sapphire.useWithConfirm", p, yes, no, config, playerMsg, itemMsg);
             this.confirm.put(p.getUniqueId(), riseItem);
             this.confirmTasks.put(p.getUniqueId(), Integer.valueOf(Sapphire.getInstance().runTaskLater(() -> {
                 if (this.confirm.remove(p.getUniqueId()) != null) {
                     this.confirmTasks.remove(p.getUniqueId());
-                    MessageUtil.sendMessage("sapphire.timeout", p, yes, no, config, playerMsg, itemMsg);
+                    CodexEngine.get()
+                            .getMessageUtil()
+                            .sendMessage("sapphire.timeout", p, yes, no, config, playerMsg, itemMsg);
                 }
             }, this.plugin.getTimeout() * 20L).getTaskId()));
             return;
@@ -201,15 +207,15 @@ public class PlayerListener implements Listener {
         PlayerData.loadPlayer(event.getPlayer());
         if (this.plugin.getItemsToAdd().containsKey(event.getPlayer().getUniqueId()) &&
                 !this.plugin.getItemsToAdd().get(event.getPlayer().getUniqueId()).isEmpty())
-            MessageUtil.sendMessage("sapphire.commands.claim.pending", event.getPlayer());
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.commands.claim.pending", event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
         if (this.confirm.containsKey(p.getUniqueId())) {
-            String       yes = MessageUtil.getMessageAsString("sapphire.yes", "yes", true);
-            String       no  = MessageUtil.getMessageAsString("sapphire.no", "no", true);
+            String       yes = CodexEngine.get().getMessageUtil().getMessageAsString("sapphire.yes", "yes", true);
+            String       no  = CodexEngine.get().getMessageUtil().getMessageAsString("sapphire.no", "no", true);
             DarkRiseItem item;
             if (event.getMessage().equalsIgnoreCase(yes) && (item = this.confirm.remove(p.getUniqueId())) != null) {
                 Integer i = this.confirmTasks.remove(p.getUniqueId());
@@ -234,13 +240,13 @@ public class PlayerListener implements Listener {
                         }
                     }
                     if (used) {
-                        MessageUtil.sendMessage("sapphire.used",
+                        CodexEngine.get().getMessageUtil().sendMessage("sapphire.used",
                                 p,
                                 new MessageData("no", no),
                                 new MessageData("riseItem", powerItem));
                         powerItem.invoke(p);
                     } else {
-                        MessageUtil.sendMessage("sapphire.canNotFindItem",
+                        CodexEngine.get().getMessageUtil().sendMessage("sapphire.canNotFindItem",
                                 p,
                                 new MessageData("no", no),
                                 new MessageData("riseItem", powerItem));
@@ -252,7 +258,7 @@ public class PlayerListener implements Listener {
                 if (i != null)
                     Bukkit.getScheduler().cancelTask(i.intValue());
                 event.setCancelled(true);
-                MessageUtil.sendMessage("sapphire.cancel",
+                CodexEngine.get().getMessageUtil().sendMessage("sapphire.cancel",
                         p,
                         new MessageData("no", no),
                         new MessageData("riseItem", item));
@@ -271,11 +277,11 @@ public class PlayerListener implements Listener {
         if (dropActions.contains(event.getAction()) && (
                 !items.canDrop(event.getCursor()) || !items.canDrop(event.getCurrentItem()))) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("sapphire.canNotDrop", event.getWhoClicked());
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.canNotDrop", event.getWhoClicked());
             return;
         }
         if (event.getClickedInventory() == null
-                || !event.getClickedInventory().equals(InventoryUtil.getTopInventory(event))
+                || !event.getClickedInventory().equals(VersionManager.getCompat().getTopInventory(event))
                 || tradeableInventories.contains(event.getClickedInventory().getType())) {
             return;
         }
@@ -293,14 +299,14 @@ public class PlayerListener implements Listener {
                 .getAction() == InventoryAction.PLACE_ONE || event
                 .getAction() == InventoryAction.PLACE_SOME) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("sapphire.canNotTrade", event.getWhoClicked());
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.canNotTrade", event.getWhoClicked());
         }
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         DarkRiseItems items = Sapphire.getInstance().getItems();
-        if (!event.getInventory().equals(InventoryUtil.getTopInventory(event))
+        if (!event.getInventory().equals(VersionManager.getCompat().getTopInventory(event))
                 || tradeableInventories.contains(event.getInventory().getType())) {
             return;
         }
@@ -309,7 +315,7 @@ public class PlayerListener implements Listener {
         if (item == null || item.isTradeable()) return;
 
         event.setCancelled(true);
-        MessageUtil.sendMessage("sapphire.canNotTrade", event.getWhoClicked());
+        CodexEngine.get().getMessageUtil().sendMessage("sapphire.canNotTrade", event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -318,7 +324,7 @@ public class PlayerListener implements Listener {
 
         if (!items.canDrop(event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
-            MessageUtil.sendMessage("sapphire.canNotDrop", event.getPlayer());
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.canNotDrop", event.getPlayer());
         }
     }
 }

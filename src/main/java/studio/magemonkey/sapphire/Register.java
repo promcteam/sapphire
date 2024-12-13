@@ -1,8 +1,8 @@
 package studio.magemonkey.sapphire;
 
+import org.bukkit.plugin.PluginManager;
 import studio.magemonkey.sapphire.commands.*;
 import studio.magemonkey.sapphire.listener.PlayerListener;
-import org.bukkit.plugin.PluginManager;
 
 public class Register {
 

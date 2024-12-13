@@ -1,9 +1,9 @@
 package studio.magemonkey.sapphire.commands;
 
-import studio.magemonkey.codex.legacy.command.RiseCommand;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.sapphire.Sapphire;
 import org.bukkit.command.CommandSender;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.legacy.command.RiseCommand;
+import studio.magemonkey.sapphire.Sapphire;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ public class SapphireSaveCommand extends RiseCommand {
             return;
         }
         this.plugin.getItems().saveItems();
-        MessageUtil.sendMessage("save", sender);
+        CodexEngine.get().getMessageUtil().sendMessage("save", sender);
     }
 }

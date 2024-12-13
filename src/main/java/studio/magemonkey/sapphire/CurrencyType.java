@@ -1,16 +1,15 @@
 package studio.magemonkey.sapphire;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.entity.Player;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.util.messages.MessageData;
 
 public enum CurrencyType {
     MONEY {
         public void sendNoMoney(Player player, double money) {
-            MessageUtil.sendMessage("sapphire.no-money",
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.no-money",
                     player,
                     new MessageData("player", player),
                     new MessageData("needed",
@@ -44,7 +43,7 @@ public enum CurrencyType {
         private final PlayerPointsAPI plugin = PlayerPoints.getPlugin(PlayerPoints.class).getAPI();
 
         public void sendNoMoney(Player player, double money) {
-            MessageUtil.sendMessage("sapphire.no-points",
+            CodexEngine.get().getMessageUtil().sendMessage("sapphire.no-points",
                     player,
                     new MessageData("player", player),
                     new MessageData("needed",

@@ -1,8 +1,8 @@
 package studio.magemonkey.sapphire;
 
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import studio.magemonkey.codex.util.DeserializationWorker;
+import studio.magemonkey.codex.util.SerializationBuilder;
 
 import java.util.Map;
 

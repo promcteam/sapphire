@@ -1,16 +1,16 @@
 package studio.magemonkey.sapphire.commands;
 
-import studio.magemonkey.codex.legacy.command.RiseCommand;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.sapphire.Sapphire;
-import studio.magemonkey.sapphire.cfg.VoucherManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.legacy.command.RiseCommand;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.codex.util.messages.MessageData;
+import studio.magemonkey.sapphire.Sapphire;
+import studio.magemonkey.sapphire.cfg.VoucherManager;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,13 +56,15 @@ public class SapphireItemsVoucherCommand extends RiseCommand {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            MessageUtil.sendMessage("notAPlayer", sender, new MessageData("name", args[0]));
+            CodexEngine.get().getMessageUtil().sendMessage("notAPlayer", sender, new MessageData("name", args[0]));
             return;
         }
 
         DarkRiseItem riseItem = this.eco.getItems().getItemById(args[1]);
         if (riseItem == null) {
-            MessageUtil.sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[1]));
+            CodexEngine.get()
+                    .getMessageUtil()
+                    .sendMessage("sapphire.commands.noItem", sender, new MessageData("name", args[1]));
             return;
         }
 
@@ -72,7 +74,7 @@ public class SapphireItemsVoucherCommand extends RiseCommand {
             try {
                 i = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
-                MessageUtil.sendMessage("notANumber", sender, new MessageData("text", args[2]));
+                CodexEngine.get().getMessageUtil().sendMessage("notANumber", sender, new MessageData("text", args[2]));
                 return;
             }
             amount = i;
