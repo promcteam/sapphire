@@ -38,16 +38,17 @@ public class Sapphire extends JavaPlugin {
             PlaceholderType.create("riseItem", DarkRiseItem.class);
     public static final PlaceholderType<SapphireConfig> SAPPHIRE_CONFIG =
             PlaceholderType.create("sapphireConfig", SapphireConfig.class);
+
     @Getter
-    private static      Sapphire                        instance;
-    //private EconomyConfig config;
-    private final       File                            itemsToAddFile;
+    private static Sapphire instance;
 
     @Getter
     private final Map<UUID, Map<DarkRiseItem, Integer>> itemsToAdd;
+    private final File                                  itemsToAddFile;
+
     @Getter
-    private       DarkRiseItems                         items;
-    private       FileConfiguration                     config;
+    private DarkRiseItems     items;
+    private FileConfiguration config;
 
     public Sapphire() {
         this.itemsToAddFile = new File(getDataFolder(), "itemstoadd.yml");
@@ -77,7 +78,6 @@ public class Sapphire extends JavaPlugin {
                 LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
                         getResource("lang/lang_en.yml"));
         CodexEngine.get().getMessageUtil().reload(lang, this);
-        //this.config = (EconomyConfig) loadConfigFile(new File(getDataFolder(), "config.yml"), EconomyConfig.class);
     }
 
     public void saveConfigs() {
